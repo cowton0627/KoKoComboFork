@@ -8,61 +8,19 @@
 import UIKit
 
 class CustomTabBar: UITabBar {
-    
-//    private let icTabbarHomeOff = "icTabbarHomeOff"
-//    private let centerButton = UIButton()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        setupCenterButton()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-//        setupCenterButton()
     }
 
-//    private func setupCenterButton() {
-//        centerButton.frame.size = CGSize(width: 70, height: 70)
-//        centerButton.setImage(UIImage(named: "\(icTabbarHomeOff)"), for: .normal)
-//        centerButton.backgroundColor = .white
-//        centerButton.layer.cornerRadius = centerButton.frame.size.width / 2
-//        centerButton.clipsToBounds = true
-//        addSubview(centerButton)
-//    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        // 設置中心按鈕的位置
-//        let tabBarHeight = self.bounds.height
-//        centerButton.center = CGPoint(x: self.bounds.midX, y: tabBarHeight / 2 - 15)
-
-        // 調整標籤按鈕的位置，使它們不與中心按鈕重疊
-//        let tabBarButtonClass: AnyClass? = NSClassFromString("UITabBarButton")
-//        for view in self.subviews {
-//            if view.isKind(of: tabBarButtonClass!) {
-//                view.frame.origin.y = 5 // 調整標籤按鈕的 Y 座標以減少與中心按鈕重疊
-//            }
-//        }
-        
-//        // 計算每個 TabBarButton 的寬度
-//        let tabBarButtons = self.subviews.filter {
-//            $0.isKind(of: NSClassFromString("UITabBarButton")!)
-//        }
-//        let numberOfButtons = tabBarButtons.count
-//        
-//        guard numberOfButtons > 0 else { return }
-//        
-//        let buttonWidth = self.bounds.width / CGFloat(numberOfButtons)
-//        for (index, button) in tabBarButtons.enumerated() {
-//            button.frame = CGRect(x: CGFloat(index) * buttonWidth,
-//                                  y: button.frame.origin.y,
-//                                  width: buttonWidth,
-//                                  height: button.frame.height)
-//        }
-        
-//        self.backgroundColor = .gray
     }
     
     private var shapeLayer: CALayer?
