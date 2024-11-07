@@ -24,6 +24,7 @@ class CustomTabBarController: UITabBarController {
     
     private let products = "錢錢"
     private let friends = "朋友"
+    private let blank = ""
     private let manage = "記帳"
     private let setting = "設定"
     
@@ -35,13 +36,13 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 未選中狀態的文字顏色
+        // 未選的文字顏色
         UITabBarItem.appearance().setTitleTextAttributes(
             [.foregroundColor: UIColor.gray],
             for: .normal
         )
 
-        // 選中狀態的文字顏色
+        // 選中的文字顏色
         UITabBarItem.appearance().setTitleTextAttributes(
             [.foregroundColor: peachColor],
             for: .selected
@@ -55,43 +56,49 @@ class CustomTabBarController: UITabBarController {
         self.setValue(customTabBar, forKey: "tabBar")
         
         // 設定 Child VC
-        let firstVC = UIViewController()
-        firstVC.view.backgroundColor = .yellow
-        firstVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-        firstVC.tabBarItem = UITabBarItem(title: products,
-                                          image: productsOffImgae,
+        let mainVC = createViewController(message: products,
+                                          image: productsOffImgae, 
                                           selectedImage: nil)
-        
-        let secondVC = UIViewController()
-        secondVC.view.backgroundColor = .cyan
-        secondVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
-        secondVC.tabBarItem = UITabBarItem(title: friends,
-                                           image: friendsOnImgae,
-                                           selectedImage: nil)
-        
-        let fifthVC = UIViewController()
-        fifthVC.view.backgroundColor = .gray
-        fifthVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 4)
-        fifthVC.tabBarItem = UITabBarItem(title: "",
+        let homeVC = createViewController(message: blank,
                                           image: homeOffImgae,
                                           selectedImage: nil)
+        let manageVC = createViewController(message: manage,
+                                            image: manageOffImgae,
+                                            selectedImage: nil)
+        let settingsVC = createViewController(message: setting,
+                                              image: settingOffImgae,
+                                              selectedImage: nil)
         
-        let thirdVC = UIViewController()
-        thirdVC.view.backgroundColor = .red
-        thirdVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 2)
-        thirdVC.tabBarItem = UITabBarItem(title: manage,
-                                          image: manageOffImgae,
-                                          selectedImage: nil)
+        let friendsVC = UIViewController()
+        friendsVC.view.backgroundColor = .cyan
+//        friendsVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
+        friendsVC.tabBarItem = UITabBarItem(title: friends,
+                                            image: friendsOnImgae,
+                                            selectedImage: nil)
         
-        let fourthVC = UIViewController()
-        fourthVC.view.backgroundColor = .green
-        fourthVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 3)
-        fourthVC.tabBarItem = UITabBarItem(title: setting,
-                                           image: settingOffImgae,
-                                           selectedImage: nil)
-        
-        self.viewControllers = [firstVC, secondVC, fifthVC, thirdVC, fourthVC]
+        self.viewControllers = [mainVC, friendsVC, homeVC, manageVC, settingsVC]
         
         self.selectedIndex = 1
+    }
+    
+    // Helper function to create a ViewController instance with a custom message
+    private func createViewController(
+        message: String,
+        image: UIImage?,
+        selectedImage: UIImage?
+    ) -> UIViewController {
+
+        let storyboard = UIStoryboard(name: .Main)
+        let vc = storyboard.instantiateVC(withClass: ViewController.self)
+        
+        vc.genreMessage = message
+        
+        vc.tabBarItem = UITabBarItem(
+            title: message,
+            image: image,
+            selectedImage: selectedImage
+        )
+        
+        return vc
     }
 }

@@ -15,6 +15,8 @@
 		917E26802CDA0596000AACA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 917E267E2CDA0596000AACA4 /* LaunchScreen.storyboard */; };
 		917E26882CDA09EC000AACA4 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26872CDA09EC000AACA4 /* CustomTabBar.swift */; };
 		917E268A2CDA0A0D000AACA4 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26892CDA0A0D000AACA4 /* CustomTabBarController.swift */; };
+		917E26912CDB62DE000AACA4 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26902CDB62DE000AACA4 /* UIStoryboard+Ext.swift */; };
+		917E26932CDB637E000AACA4 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26922CDB637E000AACA4 /* UIViewController+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		917E26812CDA0596000AACA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		917E26872CDA09EC000AACA4 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		917E26892CDA0A0D000AACA4 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		917E26902CDB62DE000AACA4 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
+		917E26922CDB637E000AACA4 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,15 +66,57 @@
 			children = (
 				917E26732CDA0594000AACA4 /* AppDelegate.swift */,
 				917E26752CDA0594000AACA4 /* SceneDelegate.swift */,
-				917E26772CDA0594000AACA4 /* ViewController.swift */,
-				917E26872CDA09EC000AACA4 /* CustomTabBar.swift */,
-				917E26892CDA0A0D000AACA4 /* CustomTabBarController.swift */,
-				917E26792CDA0594000AACA4 /* Main.storyboard */,
+				917E268B2CDB5EBC000AACA4 /* Model */,
+				917E268C2CDB5EC3000AACA4 /* ViewModel */,
+				917E268D2CDB5ED6000AACA4 /* View */,
+				917E268E2CDB603C000AACA4 /* Controller */,
+				917E268F2CDB62B9000AACA4 /* Extension */,
 				917E267C2CDA0596000AACA4 /* Assets.xcassets */,
 				917E267E2CDA0596000AACA4 /* LaunchScreen.storyboard */,
 				917E26812CDA0596000AACA4 /* Info.plist */,
 			);
 			path = KoKoComboFork;
+			sourceTree = "<group>";
+		};
+		917E268B2CDB5EBC000AACA4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		917E268C2CDB5EC3000AACA4 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		917E268D2CDB5ED6000AACA4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				917E26792CDA0594000AACA4 /* Main.storyboard */,
+				917E26872CDA09EC000AACA4 /* CustomTabBar.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		917E268E2CDB603C000AACA4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				917E26892CDA0A0D000AACA4 /* CustomTabBarController.swift */,
+				917E26772CDA0594000AACA4 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		917E268F2CDB62B9000AACA4 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				917E26902CDB62DE000AACA4 /* UIStoryboard+Ext.swift */,
+				917E26922CDB637E000AACA4 /* UIViewController+Ext.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,6 +192,8 @@
 			files = (
 				917E26882CDA09EC000AACA4 /* CustomTabBar.swift in Sources */,
 				917E26782CDA0594000AACA4 /* ViewController.swift in Sources */,
+				917E26932CDB637E000AACA4 /* UIViewController+Ext.swift in Sources */,
+				917E26912CDB62DE000AACA4 /* UIStoryboard+Ext.swift in Sources */,
 				917E268A2CDA0A0D000AACA4 /* CustomTabBarController.swift in Sources */,
 				917E26742CDA0594000AACA4 /* AppDelegate.swift in Sources */,
 				917E26762CDA0594000AACA4 /* SceneDelegate.swift in Sources */,
