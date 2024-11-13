@@ -20,7 +20,6 @@ class CustomTabBar: UITabBar {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-
     }
     
     private var shapeLayer: CALayer?

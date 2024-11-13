@@ -69,5 +69,4 @@ class APIService {
 //        let decoder = JSONDecoder()
 //        return try decoder.decode(T.self, from: data)
 //    }
-    
 }

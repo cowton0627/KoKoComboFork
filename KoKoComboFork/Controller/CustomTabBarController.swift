@@ -87,12 +87,9 @@ class CustomTabBarController: UITabBarController {
         self.selectedIndex = 1
     }
     
-    // Helper function to create a ViewController instance with a custom message
-    private func createViewController(
-        message: String,
-        image: UIImage?,
-        selectedImage: UIImage?
-    ) -> UIViewController {
+    private func createViewController(message: String,
+                                      image: UIImage?,
+                                      selectedImage: UIImage?) -> UIViewController {
 
         let storyboard = UIStoryboard(name: .Main)
         let vc = storyboard.instantiateVC(withClass: ViewController.self)
