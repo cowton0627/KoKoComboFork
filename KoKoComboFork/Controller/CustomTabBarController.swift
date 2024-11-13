@@ -62,21 +62,27 @@ class CustomTabBarController: UITabBarController {
         let homeVC = createViewController(message: blank,
                                           image: homeOffImgae,
                                           selectedImage: nil)
-        let manageVC = createViewController(message: manage,
+        let manageVC  = createViewController(message: manage,
                                             image: manageOffImgae,
                                             selectedImage: nil)
         let settingsVC = createViewController(message: setting,
                                               image: settingOffImgae,
                                               selectedImage: nil)
         
-        let friendsVC = UIViewController()
-        friendsVC.view.backgroundColor = .cyan
+//        let friendsVC = UIViewController()
+//        friendsVC.view.backgroundColor = .cyan
 //        friendsVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
+        
+        let navC = ThemeNavigationController()
+        let storyboard = UIStoryboard(name: .Friend)
+        let friendsVC = storyboard.instantiateVC(withClass: FriendsViewController.self)
+        navC.addChild(friendsVC)
+        
         friendsVC.tabBarItem = UITabBarItem(title: friends,
                                             image: friendsOnImgae,
                                             selectedImage: nil)
         
-        self.viewControllers = [mainVC, friendsVC, homeVC, manageVC, settingsVC]
+        self.viewControllers = [mainVC, navC, homeVC, manageVC, settingsVC]
         
         self.selectedIndex = 1
     }

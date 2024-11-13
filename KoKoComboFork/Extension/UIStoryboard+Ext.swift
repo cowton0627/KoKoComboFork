@@ -13,6 +13,7 @@ extension UIStoryboard {
     enum BoardName: String {
         case LaunchScreen
         case Main
+        case Friend
     }
     
     convenience init(name: BoardName, bundle: Bundle? = nil) {
