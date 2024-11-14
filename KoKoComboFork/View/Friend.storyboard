@@ -41,8 +41,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QvP-kG-7wS">
                                 <rect key="frame" x="0.0" y="103" width="393" height="150"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVZ-cP-h8H">
-                                        <rect key="frame" x="30" y="25" width="42" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Dow" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVZ-cP-h8H">
+                                        <rect key="frame" x="30" y="25" width="76" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -87,24 +87,49 @@
                                     <constraint firstItem="asX-pF-Hrd" firstAttribute="top" secondItem="QVZ-cP-h8H" secondAttribute="bottom" constant="8" symbolic="YES" id="oYV-a0-q8L"/>
                                 </constraints>
                             </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2RJ-ca-Af4">
+                                <rect key="frame" x="0.0" y="253" width="393" height="565"/>
+                                <connections>
+                                    <segue destination="zmu-Bh-RT4" kind="embed" id="BnQ-u2-nM1"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w4C-pz-OkK">
+                                <rect key="frame" x="0.0" y="253" width="393" height="565"/>
+                                <connections>
+                                    <segue destination="VVC-Ef-c0l" kind="embed" id="YPu-ow-ENv"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="w4C-pz-OkK" secondAttribute="bottom" id="3oA-pc-4aT"/>
                             <constraint firstItem="QvP-kG-7wS" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="784-mB-zjl"/>
                             <constraint firstItem="Vcz-8O-0JT" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="69" id="KwL-18-sE6"/>
                             <constraint firstItem="AAa-dM-Xsr" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="69" id="McM-Xi-var"/>
                             <constraint firstItem="QvP-kG-7wS" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="PsI-nO-WzL"/>
+                            <constraint firstItem="2RJ-ca-Af4" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="QQ3-Ao-AnL"/>
+                            <constraint firstItem="w4C-pz-OkK" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Qhw-dL-3kr"/>
                             <constraint firstItem="HHp-dZ-DAq" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="69" id="S78-iF-cPE"/>
                             <constraint firstItem="QvP-kG-7wS" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="ayv-VD-Hgr"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="2RJ-ca-Af4" secondAttribute="bottom" id="bAO-Iv-nGy"/>
+                            <constraint firstItem="2RJ-ca-Af4" firstAttribute="top" secondItem="QvP-kG-7wS" secondAttribute="bottom" id="deB-ys-h8g"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="2RJ-ca-Af4" secondAttribute="trailing" id="e1N-mY-ZYo"/>
                             <constraint firstItem="AAa-dM-Xsr" firstAttribute="leading" secondItem="HHp-dZ-DAq" secondAttribute="trailing" constant="24" id="gC9-PH-6pL"/>
                             <constraint firstAttribute="trailing" secondItem="Vcz-8O-0JT" secondAttribute="trailing" constant="20" id="h8g-eE-c3F"/>
+                            <constraint firstItem="w4C-pz-OkK" firstAttribute="top" secondItem="QvP-kG-7wS" secondAttribute="bottom" id="lWV-Yb-JSz"/>
                             <constraint firstItem="HHp-dZ-DAq" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" constant="20" id="rGM-Ri-BRF"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="w4C-pz-OkK" secondAttribute="trailing" id="rxG-CH-hfe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="tRf-ei-MQb"/>
                     <connections>
+                        <outlet property="chatContainerView" destination="w4C-pz-OkK" id="RCD-Nc-gAv"/>
+                        <outlet property="friendsContainerView" destination="2RJ-ca-Af4" id="paz-zA-aP7"/>
+                        <outlet property="kokoIDLabel" destination="asX-pF-Hrd" id="Iv3-Wv-iEG"/>
+                        <outlet property="remindImgView" destination="rsa-jT-p1c" id="zsi-Eu-Sr1"/>
                         <outlet property="upView" destination="QvP-kG-7wS" id="6KK-M7-qcC"/>
+                        <outlet property="userNameLabel" destination="QVZ-cP-h8H" id="LIR-b2-nXT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -129,6 +154,46 @@
             </objects>
             <point key="canvasLocation" x="100" y="-2.1126760563380285"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="Xmy-s3-GwD">
+            <objects>
+                <viewController id="VVC-Ef-c0l" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vHr-0q-dwc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="565"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="功能建構中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t7b-ys-Db9">
+                                <rect key="frame" x="135.66666666666666" y="268.66666666666669" width="121.66666666666666" height="27.666666666666686"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGray3Color"/>
+                        <constraints>
+                            <constraint firstItem="t7b-ys-Db9" firstAttribute="centerX" secondItem="vHr-0q-dwc" secondAttribute="centerX" id="G5B-nz-avb"/>
+                            <constraint firstItem="t7b-ys-Db9" firstAttribute="centerY" secondItem="vHr-0q-dwc" secondAttribute="centerY" id="WwA-dt-DSI"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NYI-hb-IJE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2405" y="-20"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="39e-gO-K5s">
+            <objects>
+                <viewController id="zmu-Bh-RT4" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FaL-57-2Pw">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="565"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P3S-lA-9vA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1801" y="481"/>
+        </scene>
     </scenes>
     <resources>
         <image name="icNavPinkScan" width="24" height="24"/>
@@ -137,6 +202,9 @@
         <image name="imgFriendsFemaleDefault" width="52" height="54"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
