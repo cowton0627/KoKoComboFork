@@ -163,7 +163,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="功能建構中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t7b-ys-Db9">
-                                <rect key="frame" x="135.66666666666666" y="268.66666666666669" width="121.66666666666666" height="27.666666666666686"/>
+                                <rect key="frame" x="135.66666666666666" y="268" width="121.99999999999997" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -180,25 +180,82 @@
             </objects>
             <point key="canvasLocation" x="2405" y="-20"/>
         </scene>
-        <!--View Controller-->
+        <!--Friends Detail View Controller-->
         <scene sceneID="39e-gO-K5s">
             <objects>
-                <viewController id="zmu-Bh-RT4" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FriendsDetailViewController" id="zmu-Bh-RT4" customClass="FriendsDetailViewController" customModule="KoKoComboFork" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FaL-57-2Pw">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="565"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgFriendsEmpty" translatesAutoresizingMaskIntoConstraints="NO" id="GeC-BF-tNO">
+                                <rect key="frame" x="65" y="30" width="263" height="172"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="就從加好友開始吧：）" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="saC-pO-Cjz">
+                                <rect key="frame" x="65" y="243" width="263" height="26"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNK-se-Kxk">
+                                <rect key="frame" x="56" y="277" width="281.33333333333331" height="40.666666666666686"/>
+                                <string key="text">與好友們一起用 KOKO 聊起來！
+還能互相收付款、發紅包喔：）</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7J3-zb-zLv" customClass="CustomGradientButton" customModule="KoKoComboFork" customModuleProvider="target">
+                                <rect key="frame" x="159" y="457" width="75" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="2cW-L3-Dgt"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="幫助好友更快找到你？設定 KOKO ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bb-ik-O8K">
+                                <rect key="frame" x="89" y="534" width="215" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="GeC-BF-tNO" firstAttribute="top" secondItem="FaL-57-2Pw" secondAttribute="top" constant="30" id="49U-qN-r2O"/>
+                            <constraint firstItem="saC-pO-Cjz" firstAttribute="leading" secondItem="FaL-57-2Pw" secondAttribute="leading" constant="65" id="9te-6R-tBS"/>
+                            <constraint firstAttribute="trailing" secondItem="saC-pO-Cjz" secondAttribute="trailing" constant="65" id="Ae6-RJ-3Fd"/>
+                            <constraint firstItem="gNK-se-Kxk" firstAttribute="leading" secondItem="FaL-57-2Pw" secondAttribute="leading" constant="56" id="T9N-l4-jOe"/>
+                            <constraint firstItem="4Bb-ik-O8K" firstAttribute="top" secondItem="7J3-zb-zLv" secondAttribute="bottom" constant="37" id="ZuN-gW-ESR"/>
+                            <constraint firstAttribute="bottom" secondItem="4Bb-ik-O8K" secondAttribute="bottom" constant="15" id="adQ-sW-BKs"/>
+                            <constraint firstItem="GeC-BF-tNO" firstAttribute="leading" relation="lessThanOrEqual" secondItem="FaL-57-2Pw" secondAttribute="leading" constant="65" id="dE8-ve-DYB"/>
+                            <constraint firstItem="saC-pO-Cjz" firstAttribute="top" secondItem="GeC-BF-tNO" secondAttribute="bottom" constant="41" id="dIv-TN-pkJ"/>
+                            <constraint firstItem="4Bb-ik-O8K" firstAttribute="centerX" secondItem="FaL-57-2Pw" secondAttribute="centerX" id="e4d-06-dYl"/>
+                            <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="GeC-BF-tNO" secondAttribute="trailing" constant="65" id="hY0-w2-Eyd"/>
+                            <constraint firstItem="gNK-se-Kxk" firstAttribute="top" secondItem="saC-pO-Cjz" secondAttribute="bottom" constant="8" id="jqz-bI-Ins"/>
+                            <constraint firstAttribute="trailing" secondItem="gNK-se-Kxk" secondAttribute="trailing" constant="55.670000000000002" id="uDu-Lj-7EB"/>
+                            <constraint firstItem="7J3-zb-zLv" firstAttribute="centerX" secondItem="FaL-57-2Pw" secondAttribute="centerX" id="yvj-1R-fig"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="addFriendsButton" destination="7J3-zb-zLv" id="U6N-dA-TSD"/>
+                        <outlet property="kokoFriendsImgView" destination="GeC-BF-tNO" id="aIO-Yg-gNo"/>
+                        <outlet property="linkedLabel" destination="4Bb-ik-O8K" id="D2L-D6-Hcz"/>
+                        <outletCollection property="labelCollection" destination="saC-pO-Cjz" collectionClass="NSMutableArray" id="kMI-Xh-27a"/>
+                        <outletCollection property="labelCollection" destination="gNK-se-Kxk" collectionClass="NSMutableArray" id="8Em-SB-xI8"/>
+                        <outletCollection property="labelCollection" destination="4Bb-ik-O8K" collectionClass="NSMutableArray" id="UEo-q6-KT5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P3S-lA-9vA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1801" y="481"/>
+            <point key="canvasLocation" x="1800.7633587786258" y="480.63380281690144"/>
         </scene>
     </scenes>
     <resources>
         <image name="icNavPinkScan" width="24" height="24"/>
         <image name="icNavPinkTransfer" width="24" height="24"/>
         <image name="icNavPinkWithdraw" width="24" height="24"/>
+        <image name="imgFriendsEmpty" width="245" height="172"/>
         <image name="imgFriendsFemaleDefault" width="52" height="54"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

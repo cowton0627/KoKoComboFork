@@ -23,4 +23,13 @@ class UserService: APIService {
         return try await self.send(request: request)
     }
     
+    func getFriendsData(token: String? = nil) async throws -> GetFriendsResponse {
+        
+        guard let url = URL(string: KoKoAPI.Endpoint.getFriendsData.urlString) else { throw APIError.encodingError }
+        
+        let request = APIRequest(url: url, method: .get)
+        
+        return try await self.send(request: request)
+    }
+    
 }
