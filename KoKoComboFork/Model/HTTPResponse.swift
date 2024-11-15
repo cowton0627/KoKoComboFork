@@ -26,15 +26,16 @@ struct UserData: Decodable {
     let kokoid: String
 }
 
-struct GetFriendResponse: APIResponse {
-    var success: Bool
-    var message: String
+struct GetFriendsResponse: APIResponse {
+//    var success: Bool
+//    var message: String
+    let response: [Friend]?
 }
 
 struct Friend: Decodable {
     let name: String
     let status: Int
-    let isTop: Bool
+    let isTop: String
     let fid: String
     let updateDate: String
 }

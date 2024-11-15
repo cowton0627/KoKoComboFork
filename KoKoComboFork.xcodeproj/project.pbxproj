@@ -27,6 +27,8 @@
 		917E26A62CE33807000AACA4 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26A52CE33807000AACA4 /* UserService.swift */; };
 		917E26A82CE3398A000AACA4 /* KoKoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26A72CE3398A000AACA4 /* KoKoAPI.swift */; };
 		917E26AA2CE344D3000AACA4 /* ThemeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26A92CE344D3000AACA4 /* ThemeNavigationController.swift */; };
+		917E26AC2CE5ECAD000AACA4 /* FriendsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26AB2CE5ECAD000AACA4 /* FriendsDetailViewController.swift */; };
+		917E26AF2CE62957000AACA4 /* CustomGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26AE2CE62957000AACA4 /* CustomGradientButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,8 @@
 		917E26A52CE33807000AACA4 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		917E26A72CE3398A000AACA4 /* KoKoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoKoAPI.swift; sourceTree = "<group>"; };
 		917E26A92CE344D3000AACA4 /* ThemeNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeNavigationController.swift; sourceTree = "<group>"; };
+		917E26AB2CE5ECAD000AACA4 /* FriendsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsDetailViewController.swift; sourceTree = "<group>"; };
+		917E26AE2CE62957000AACA4 /* CustomGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,9 +124,9 @@
 		917E268D2CDB5ED6000AACA4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				917E26AD2CE628D8000AACA4 /* Customised */,
 				917E26792CDA0594000AACA4 /* Main.storyboard */,
 				917E26992CDDEFF9000AACA4 /* Friend.storyboard */,
-				917E26872CDA09EC000AACA4 /* CustomTabBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -159,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				917E26962CDDEF94000AACA4 /* FriendsViewController.swift */,
+				917E26AB2CE5ECAD000AACA4 /* FriendsDetailViewController.swift */,
 			);
 			path = Friend;
 			sourceTree = "<group>";
@@ -171,6 +176,15 @@
 				917E26A52CE33807000AACA4 /* UserService.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		917E26AD2CE628D8000AACA4 /* Customised */ = {
+			isa = PBXGroup;
+			children = (
+				917E26872CDA09EC000AACA4 /* CustomTabBar.swift */,
+				917E26AE2CE62957000AACA4 /* CustomGradientButton.swift */,
+			);
+			path = Customised;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,7 +261,9 @@
 			files = (
 				917E26A62CE33807000AACA4 /* UserService.swift in Sources */,
 				917E26AA2CE344D3000AACA4 /* ThemeNavigationController.swift in Sources */,
+				917E26AC2CE5ECAD000AACA4 /* FriendsDetailViewController.swift in Sources */,
 				917E26882CDA09EC000AACA4 /* CustomTabBar.swift in Sources */,
+				917E26AF2CE62957000AACA4 /* CustomGradientButton.swift in Sources */,
 				917E26A02CE331B7000AACA4 /* HTTPRequest.swift in Sources */,
 				917E26972CDDEF94000AACA4 /* FriendsViewController.swift in Sources */,
 				917E26A22CE331D4000AACA4 /* HTTPBody.swift in Sources */,
