@@ -12,6 +12,7 @@ extension UIStoryboard {
     /// 將 Storyboard 名稱集中管理
     enum BoardName: String {
         case LaunchScreen
+        case Scenario
         case Main
         case Friend
     }
