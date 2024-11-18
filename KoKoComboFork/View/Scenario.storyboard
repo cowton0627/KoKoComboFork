@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Scenario View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="ScenarioViewController" id="Y6W-OH-hqX" customClass="ScenarioViewController" customModule="KoKoComboFork" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MO1-FB-p4o">
+                                <rect key="frame" x="139.66666666666666" y="247.00000000000003" width="114" height="39.333333333333343"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="無好友畫面">
+                                            <attributes>
+                                                <font key="NSFont" size="18" name="PingFangTC-Regular"/>
+                                                <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="scenarioButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="NEE-u6-Hr2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fPK-ZV-Hyr">
+                                <rect key="frame" x="121.66666666666669" y="565.66666666666663" width="150" height="39.333333333333371"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="好友列表含邀請">
+                                            <attributes>
+                                                <font key="NSFont" size="18" name="PingFangTC-Regular"/>
+                                                <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="scenarioButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="HsS-b5-l0X"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rp8-i8-Xwz">
+                                <rect key="frame" x="130.66666666666666" y="406.33333333333331" width="131.99999999999997" height="39.333333333333314"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="只有好友列表">
+                                            <attributes>
+                                                <font key="NSFont" size="18" name="PingFangTC-Regular"/>
+                                                <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="scenarioButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="fIm-ta-6ZD"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="MO1-FB-p4o" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="B1b-qs-52P"/>
+                            <constraint firstItem="rp8-i8-Xwz" firstAttribute="top" secondItem="MO1-FB-p4o" secondAttribute="bottom" constant="120" id="B29-QV-G84"/>
+                            <constraint firstItem="rp8-i8-Xwz" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="V6r-dB-x0W"/>
+                            <constraint firstItem="fPK-ZV-Hyr" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="ZrH-ek-TFG"/>
+                            <constraint firstItem="fPK-ZV-Hyr" firstAttribute="top" secondItem="rp8-i8-Xwz" secondAttribute="bottom" constant="120" id="lKn-Hd-ttb"/>
+                            <constraint firstItem="rp8-i8-Xwz" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="oGg-uJ-bzX"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="69" y="-2"/>
+        </scene>
+        <!--Custom Tab Bar Controller-->
+        <scene sceneID="Zbw-rx-zdS">
+            <objects>
+                <tabBarController storyboardIdentifier="CustomTabBarController" id="9Yv-x7-QM9" customClass="CustomTabBarController" customModule="KoKoComboFork" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4Jr-Fl-cfh">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dZc-xg-1fP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1673" y="-2"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
