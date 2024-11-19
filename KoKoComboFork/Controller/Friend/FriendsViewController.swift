@@ -25,9 +25,6 @@ class FriendsViewController: UIViewController {
     
     private let hintText = "邀請你成為好友 : )"
     
-    private let invitationView = UIView() // 好友邀請視圖
-    private var invitationStackView = UIStackView() // 堆疊子視圖
-    
     private let atmImage = UIImage(
         named: "icNavPinkWithdraw")?.withRenderingMode(.alwaysOriginal)
     private let withdrawImage = UIImage(
@@ -39,6 +36,12 @@ class FriendsViewController: UIViewController {
     private let accept = UIImage(named: "btnFriendsAgree")
     private let reject = UIImage(named: "btnFriendsDelet")
     
+    private let invitationView = UIView()
+    
+    private var invitationStackView = UIStackView()
+    
+    private var viewModel: UserViewModel!
+
     private var leadingDistanceConstraint: NSLayoutConstraint!
     private var underlineWidthConstraint: NSLayoutConstraint!
     
@@ -130,7 +133,22 @@ class FriendsViewController: UIViewController {
         setupSegmentedConstraint()
         updateView()
         
-        retrieveUserData()
+//        retrieveUserData()
+        
+        setupViewModel()
+        
+        viewModel.$userName.bind { userName in
+            DispatchQueue.main.async { self.userNameLabel.text = userName }
+        }
+        
+        viewModel.$kokoID.bind { kokoID in
+            DispatchQueue.main.async { self.kokoIDLabel.text = kokoID }
+        }
+        
+        viewModel.$isInvitationViewHidden.bind { isHidden in
+            DispatchQueue.main.async { self.invitationView.isHidden = isHidden }
+        }
+        
         
         if let scenario = scenario, 
             scenario == 3 {
@@ -139,9 +157,9 @@ class FriendsViewController: UIViewController {
         } else {
             setupInvitationView(isHidden: true)
 //            upViewConstraint.constant = 150
-
         }
         
+                
 
     }
     
@@ -175,22 +193,8 @@ class FriendsViewController: UIViewController {
     
     
     // MARK: - Private Func
-    private func retrieveUserData() {
-        Task {
-            do {
-                let resp = try await UserService.shared.getUserData()
-                print(resp)
-                
-                if let userResp = resp.response?.first {
-                    userNameLabel.text = userResp.name
-                    kokoIDLabel.text = "KOKO ID：\(userResp.kokoid) 〉"
-                    remindImgView.isHidden = true
-                }
-                
-            } catch (let error) {
-                print(error)
-            }
-        }
+    private func setupViewModel() {
+        viewModel = UserViewModel(scenario: scenario)
     }
     
     private func setupInvitationView(isHidden: Bool) {
@@ -252,6 +256,11 @@ class FriendsViewController: UIViewController {
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
+        let heightConstraint =
+        imageView.heightAnchor.constraint(equalToConstant: 60)
+        heightConstraint.priority = UILayoutPriority(999)
+        heightConstraint.isActive = true
+        
         let nameLabel = UILabel()
         nameLabel.text = friend.name
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
@@ -303,7 +312,7 @@ class FriendsViewController: UIViewController {
         cell.addSubview(hStack)
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 60),
-            imageView.heightAnchor.constraint(equalToConstant: 60),
+            heightConstraint,
 
             acceptButton.widthAnchor.constraint(equalToConstant: 40),
             acceptButton.heightAnchor.constraint(equalToConstant: 40),

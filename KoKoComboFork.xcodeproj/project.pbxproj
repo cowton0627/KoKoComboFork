@@ -39,6 +39,7 @@
 		917E26C42CEB2FE6000AACA4 /* CustomTransferButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C32CEB2FE6000AACA4 /* CustomTransferButton.swift */; };
 		917E26C62CEB38FC000AACA4 /* CustomInvitingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */; };
 		917E26C82CEC18A1000AACA4 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */; };
+		917E26CB2CEC6337000AACA4 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CA2CEC6337000AACA4 /* UserViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		917E26C32CEB2FE6000AACA4 /* CustomTransferButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTransferButton.swift; sourceTree = "<group>"; };
 		917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInvitingButton.swift; sourceTree = "<group>"; };
 		917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		917E26CA2CEC6337000AACA4 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 		917E268C2CDB5EC3000AACA4 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				917E26CA2CEC6337000AACA4 /* UserViewModel.swift */,
 				917E26A32CE3339E000AACA4 /* FriendsViewModel.swift */,
 			);
 			path = ViewModel;
@@ -343,6 +346,7 @@
 				917E26AA2CE344D3000AACA4 /* ThemeNavigationController.swift in Sources */,
 				917E26AC2CE5ECAD000AACA4 /* FriendsDetailViewController.swift in Sources */,
 				917E26C42CEB2FE6000AACA4 /* CustomTransferButton.swift in Sources */,
+				917E26CB2CEC6337000AACA4 /* UserViewModel.swift in Sources */,
 				917E26B82CEB1160000AACA4 /* FriendsTableViewCell.swift in Sources */,
 				917E26882CDA09EC000AACA4 /* CustomTabBar.swift in Sources */,
 				917E26AF2CE62957000AACA4 /* CustomGradientButton.swift in Sources */,
@@ -442,7 +446,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -499,7 +503,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -524,7 +528,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -553,7 +557,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
