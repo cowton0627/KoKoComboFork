@@ -17,6 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
+        // 設置情境頁為起始頁
         let navC = UINavigationController()
         let storyboard = UIStoryboard(name: .Scenario)
         let vc = storyboard.instantiateVC(withClass: ScenarioViewController.self)
