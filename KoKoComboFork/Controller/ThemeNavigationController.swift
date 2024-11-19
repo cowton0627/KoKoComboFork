@@ -16,12 +16,12 @@ class ThemeNavigationController: UINavigationController {
     
 
     private func configureUI() {
-        let barAppearance = UINavigationBarAppearance()
-        barAppearance.configureWithOpaqueBackground()
-        barAppearance.backgroundColor = .systemGray5
-        barAppearance.shadowColor = .clear
-        
         if #available(iOS 15.0, *) {
+            let barAppearance = UINavigationBarAppearance()
+            barAppearance.configureWithOpaqueBackground()
+            barAppearance.backgroundColor = .systemGray5
+            barAppearance.shadowColor = .clear
+            
             UINavigationBar.appearance().standardAppearance = barAppearance
             UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
         } else {
