@@ -7,7 +7,10 @@
 
 import UIKit
 
+/// 好友呈現主頁
 class FriendsViewController: UIViewController {
+    
+    var scenario: Int?
     
     private enum Constants {
 //        static let segmentedControlHeight: CGFloat = 44
@@ -97,18 +100,24 @@ class FriendsViewController: UIViewController {
 
     @IBOutlet weak var friendsContainerView: UIView!
     @IBOutlet weak var chatContainerView: UIView!
+
     
     // MARK: - Life Cycle
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let childVC = segue.destination as? FriendsDetailViewController {
+            childVC.scenario = scenario
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        let statusBarHeight = UIApplication.shared.statusBarFrame.height
 //        print("Status Bar Height: \(statusBarHeight)")  // 54
 //        print(navigationController?.navigationBar.bounds) // 96
-
+        
         setupNavigationBar()
         setupSegmentedConstraint()
         updateView()
-        
         
         Task {
             do {
@@ -125,18 +134,6 @@ class FriendsViewController: UIViewController {
                 print(error)
             }
         }
-        
-        
-        Task {
-            do {
-                let resp = try await UserService.shared.getFriendsData()
-                print(resp)
-                
-            } catch (let error) {
-                print(error.localizedDescription)
-            }
-        }
-        
 
     }
     
@@ -157,6 +154,11 @@ class FriendsViewController: UIViewController {
 //            }
 //        }
     }
+    
+    @IBAction func kokoIDLabelTapped(_ sender: UITapGestureRecognizer) {
+        print("kokoIDLabelTapped")
+    }
+    
     
     // MARK: - Private Func
     private func updateView() {
@@ -233,27 +235,7 @@ class FriendsViewController: UIViewController {
         })
     }
     
-    private func setupNavigationBar() {
-        // 左邊的第一個按鈕
-        let atmButton = createBarButton(image: atmImage, 
-                                        action: #selector(atmBtnTapped))
-        // 設置按鈕之間的間距
-        let fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace,
-                                         target: nil,
-                                         action: nil)
-        fixedSpace.width = 24
-            
-        // 左邊的第二個按鈕
-        let withdrawButton = createBarButton(image: withdrawImage,
-                                             action: #selector(withdrawBtnTapped))
-            
-        navigationItem.leftBarButtonItems = [atmButton, fixedSpace, withdrawButton]
-            
-        // 右邊的按鈕
-        let scanButton = createBarButton(image: scanImage, 
-                                         action: #selector(scanBtnTapped))
-        navigationItem.rightBarButtonItem = scanButton
-    }
+    
         
     private func createBarButton(image: UIImage?,
                                  action: Selector) -> UIBarButtonItem {
@@ -278,9 +260,43 @@ class FriendsViewController: UIViewController {
     }
     
     // MARK: Objc Func
+    @objc 
+    private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        changeSegmentedControlLinePosition()
+        updateView()
+    }
+    
+
+}
+
+extension FriendsViewController {
+    private func setupNavigationBar() {
+        // 左邊的第一個按鈕
+        let atmButton = createBarButton(image: atmImage,
+                                        action: #selector(atmBtnTapped))
+        // 設置按鈕之間的間距
+        let fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace,
+                                         target: nil,
+                                         action: nil)
+        fixedSpace.width = 24
+            
+        // 左邊的第二個按鈕
+        let withdrawButton = createBarButton(image: withdrawImage,
+                                             action: #selector(withdrawBtnTapped))
+            
+        navigationItem.leftBarButtonItems = [atmButton, fixedSpace, withdrawButton]
+            
+        // 右邊的按鈕
+        let scanButton = createBarButton(image: scanImage,
+                                         action: #selector(scanBtnTapped))
+        navigationItem.rightBarButtonItem = scanButton
+    }
+    
     @objc
     private func atmBtnTapped() {
         print("atmBtnTapped")
+        self.navigationController?.popToRootViewController(animated: true)
+//        self.navigationController?.viewControllers.remove(at: 0)
     }
     
     @objc
@@ -292,12 +308,5 @@ class FriendsViewController: UIViewController {
     private func scanBtnTapped() {
         print("scanBtnTapped")
     }
-
-    @objc 
-    private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        changeSegmentedControlLinePosition()
-        updateView()
-    }
-    
 
 }

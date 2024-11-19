@@ -29,6 +29,16 @@
 		917E26AA2CE344D3000AACA4 /* ThemeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26A92CE344D3000AACA4 /* ThemeNavigationController.swift */; };
 		917E26AC2CE5ECAD000AACA4 /* FriendsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26AB2CE5ECAD000AACA4 /* FriendsDetailViewController.swift */; };
 		917E26AF2CE62957000AACA4 /* CustomGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26AE2CE62957000AACA4 /* CustomGradientButton.swift */; };
+		917E26B12CEAE12D000AACA4 /* Scenario.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 917E26B02CEAE12D000AACA4 /* Scenario.storyboard */; };
+		917E26B42CEAE15A000AACA4 /* ScenarioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26B32CEAE15A000AACA4 /* ScenarioViewController.swift */; };
+		917E26B82CEB1160000AACA4 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26B72CEB1160000AACA4 /* FriendsTableViewCell.swift */; };
+		917E26BA2CEB172E000AACA4 /* FriendsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26B92CEB172E000AACA4 /* FriendsItem.swift */; };
+		917E26BD2CEB1C5E000AACA4 /* Boxed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BC2CEB1C5E000AACA4 /* Boxed.swift */; };
+		917E26BF2CEB1DE5000AACA4 /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BE2CEB1DE5000AACA4 /* UITableView+Ext.swift */; };
+		917E26C12CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C02CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift */; };
+		917E26C42CEB2FE6000AACA4 /* CustomTransferButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C32CEB2FE6000AACA4 /* CustomTransferButton.swift */; };
+		917E26C62CEB38FC000AACA4 /* CustomInvitingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */; };
+		917E26C82CEC18A1000AACA4 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +66,16 @@
 		917E26A92CE344D3000AACA4 /* ThemeNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeNavigationController.swift; sourceTree = "<group>"; };
 		917E26AB2CE5ECAD000AACA4 /* FriendsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsDetailViewController.swift; sourceTree = "<group>"; };
 		917E26AE2CE62957000AACA4 /* CustomGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientButton.swift; sourceTree = "<group>"; };
+		917E26B02CEAE12D000AACA4 /* Scenario.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scenario.storyboard; sourceTree = "<group>"; };
+		917E26B32CEAE15A000AACA4 /* ScenarioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioViewController.swift; sourceTree = "<group>"; };
+		917E26B72CEB1160000AACA4 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
+		917E26B92CEB172E000AACA4 /* FriendsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsItem.swift; sourceTree = "<group>"; };
+		917E26BC2CEB1C5E000AACA4 /* Boxed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boxed.swift; sourceTree = "<group>"; };
+		917E26BE2CEB1DE5000AACA4 /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
+		917E26C02CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+Ext.swift"; sourceTree = "<group>"; };
+		917E26C32CEB2FE6000AACA4 /* CustomTransferButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTransferButton.swift; sourceTree = "<group>"; };
+		917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInvitingButton.swift; sourceTree = "<group>"; };
+		917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +116,7 @@
 				917E268E2CDB603C000AACA4 /* Controller */,
 				917E269C2CE32EAB000AACA4 /* Network */,
 				917E268F2CDB62B9000AACA4 /* Extension */,
+				917E26BB2CEB1C41000AACA4 /* Helper */,
 				917E267C2CDA0596000AACA4 /* Assets.xcassets */,
 				917E267E2CDA0596000AACA4 /* LaunchScreen.storyboard */,
 				917E26812CDA0596000AACA4 /* Info.plist */,
@@ -109,6 +130,7 @@
 				917E269F2CE331B7000AACA4 /* HTTPRequest.swift */,
 				917E26A12CE331D4000AACA4 /* HTTPBody.swift */,
 				917E26942CDDED7B000AACA4 /* HTTPResponse.swift */,
+				917E26B92CEB172E000AACA4 /* FriendsItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -125,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				917E26AD2CE628D8000AACA4 /* Customised */,
+				917E26B62CEB1139000AACA4 /* TableViewCell */,
+				917E26B02CEAE12D000AACA4 /* Scenario.storyboard */,
 				917E26792CDA0594000AACA4 /* Main.storyboard */,
 				917E26992CDDEFF9000AACA4 /* Friend.storyboard */,
 			);
@@ -134,8 +158,9 @@
 		917E268E2CDB603C000AACA4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				917E26892CDA0A0D000AACA4 /* CustomTabBarController.swift */,
 				917E26A92CE344D3000AACA4 /* ThemeNavigationController.swift */,
+				917E26B22CEAE13B000AACA4 /* Scenario */,
+				917E26B52CEAE643000AACA4 /* MainTabBarController */,
 				917E26982CDDEFC3000AACA4 /* Main */,
 				917E269B2CDDF004000AACA4 /* Friend */,
 			);
@@ -147,6 +172,9 @@
 			children = (
 				917E26902CDB62DE000AACA4 /* UIStoryboard+Ext.swift */,
 				917E26922CDB637E000AACA4 /* UIViewController+Ext.swift */,
+				917E26BE2CEB1DE5000AACA4 /* UITableView+Ext.swift */,
+				917E26C02CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift */,
+				917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -181,10 +209,60 @@
 		917E26AD2CE628D8000AACA4 /* Customised */ = {
 			isa = PBXGroup;
 			children = (
-				917E26872CDA09EC000AACA4 /* CustomTabBar.swift */,
-				917E26AE2CE62957000AACA4 /* CustomGradientButton.swift */,
+				917E26C92CEC1B4C000AACA4 /* TabBar */,
+				917E26C22CEB2FC1000AACA4 /* Button */,
 			);
 			path = Customised;
+			sourceTree = "<group>";
+		};
+		917E26B22CEAE13B000AACA4 /* Scenario */ = {
+			isa = PBXGroup;
+			children = (
+				917E26B32CEAE15A000AACA4 /* ScenarioViewController.swift */,
+			);
+			path = Scenario;
+			sourceTree = "<group>";
+		};
+		917E26B52CEAE643000AACA4 /* MainTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				917E26892CDA0A0D000AACA4 /* CustomTabBarController.swift */,
+			);
+			path = MainTabBarController;
+			sourceTree = "<group>";
+		};
+		917E26B62CEB1139000AACA4 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				917E26B72CEB1160000AACA4 /* FriendsTableViewCell.swift */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
+		917E26BB2CEB1C41000AACA4 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				917E26BC2CEB1C5E000AACA4 /* Boxed.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		917E26C22CEB2FC1000AACA4 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				917E26AE2CE62957000AACA4 /* CustomGradientButton.swift */,
+				917E26C32CEB2FE6000AACA4 /* CustomTransferButton.swift */,
+				917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		917E26C92CEC1B4C000AACA4 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				917E26872CDA09EC000AACA4 /* CustomTabBar.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				917E269A2CDDEFF9000AACA4 /* Friend.storyboard in Resources */,
+				917E26B12CEAE12D000AACA4 /* Scenario.storyboard in Resources */,
 				917E26802CDA0596000AACA4 /* LaunchScreen.storyboard in Resources */,
 				917E267D2CDA0596000AACA4 /* Assets.xcassets in Resources */,
 				917E267B2CDA0594000AACA4 /* Main.storyboard in Resources */,
@@ -259,23 +338,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				917E26BF2CEB1DE5000AACA4 /* UITableView+Ext.swift in Sources */,
 				917E26A62CE33807000AACA4 /* UserService.swift in Sources */,
 				917E26AA2CE344D3000AACA4 /* ThemeNavigationController.swift in Sources */,
 				917E26AC2CE5ECAD000AACA4 /* FriendsDetailViewController.swift in Sources */,
+				917E26C42CEB2FE6000AACA4 /* CustomTransferButton.swift in Sources */,
+				917E26B82CEB1160000AACA4 /* FriendsTableViewCell.swift in Sources */,
 				917E26882CDA09EC000AACA4 /* CustomTabBar.swift in Sources */,
 				917E26AF2CE62957000AACA4 /* CustomGradientButton.swift in Sources */,
 				917E26A02CE331B7000AACA4 /* HTTPRequest.swift in Sources */,
 				917E26972CDDEF94000AACA4 /* FriendsViewController.swift in Sources */,
 				917E26A22CE331D4000AACA4 /* HTTPBody.swift in Sources */,
 				917E26782CDA0594000AACA4 /* ViewController.swift in Sources */,
+				917E26C12CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift in Sources */,
 				917E26932CDB637E000AACA4 /* UIViewController+Ext.swift in Sources */,
 				917E26A82CE3398A000AACA4 /* KoKoAPI.swift in Sources */,
+				917E26C82CEC18A1000AACA4 /* UIColor+Ext.swift in Sources */,
+				917E26BD2CEB1C5E000AACA4 /* Boxed.swift in Sources */,
 				917E26912CDB62DE000AACA4 /* UIStoryboard+Ext.swift in Sources */,
 				917E26952CDDED7B000AACA4 /* HTTPResponse.swift in Sources */,
+				917E26C62CEB38FC000AACA4 /* CustomInvitingButton.swift in Sources */,
 				917E269E2CE32F01000AACA4 /* APIService.swift in Sources */,
 				917E268A2CDA0A0D000AACA4 /* CustomTabBarController.swift in Sources */,
+				917E26BA2CEB172E000AACA4 /* FriendsItem.swift in Sources */,
 				917E26742CDA0594000AACA4 /* AppDelegate.swift in Sources */,
 				917E26A42CE3339E000AACA4 /* FriendsViewModel.swift in Sources */,
+				917E26B42CEAE15A000AACA4 /* ScenarioViewController.swift in Sources */,
 				917E26762CDA0594000AACA4 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
