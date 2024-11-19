@@ -129,9 +129,10 @@
                     <connections>
                         <outlet property="chatContainerView" destination="w4C-pz-OkK" id="RCD-Nc-gAv"/>
                         <outlet property="friendsContainerView" destination="2RJ-ca-Af4" id="paz-zA-aP7"/>
+                        <outlet property="headerView" destination="QvP-kG-7wS" id="6KK-M7-qcC"/>
                         <outlet property="kokoIDLabel" destination="asX-pF-Hrd" id="Iv3-Wv-iEG"/>
                         <outlet property="remindImgView" destination="rsa-jT-p1c" id="zsi-Eu-Sr1"/>
-                        <outlet property="upView" destination="QvP-kG-7wS" id="6KK-M7-qcC"/>
+                        <outlet property="upViewConstraint" destination="Mh2-G1-cxj" id="veG-Ep-4Mr"/>
                         <outlet property="userNameLabel" destination="QVZ-cP-h8H" id="LIR-b2-nXT"/>
                     </connections>
                 </viewController>
