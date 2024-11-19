@@ -14,13 +14,19 @@ class FriendsViewController: UIViewController {
     
     private enum Constants {
 //        static let segmentedControlHeight: CGFloat = 44
-        static let underlineViewColor: UIColor = .systemPink
+//        static let underlineViewColor: UIColor = .systemPink
         static let underlineViewHeight: CGFloat = 4
+        static let shadowOffset: CGSize = CGSize(width: 0, height: 2)
     }
     
     // MARK: - Properties
     private let goodFriends = "好友"
     private let chatChat = "聊天"
+    
+    private let hintText = "邀請你成為好友 : )"
+    
+    private let invitationView = UIView() // 好友邀請視圖
+    private var invitationStackView = UIStackView() // 堆疊子視圖
     
     private let atmImage = UIImage(
         named: "icNavPinkWithdraw")?.withRenderingMode(.alwaysOriginal)
@@ -28,6 +34,10 @@ class FriendsViewController: UIViewController {
         named: "icNavPinkTransfer")?.withRenderingMode(.alwaysOriginal)
     private let scanImage = UIImage(
         named: "icNavPinkScan")?.withRenderingMode(.alwaysOriginal)
+    
+    private let avatar = UIImage(named: "imgFriendsList")
+    private let accept = UIImage(named: "btnFriendsAgree")
+    private let reject = UIImage(named: "btnFriendsDelet")
     
     private var leadingDistanceConstraint: NSLayoutConstraint!
     private var underlineWidthConstraint: NSLayoutConstraint!
@@ -87,13 +97,13 @@ class FriendsViewController: UIViewController {
     // The underline view below the segmented control
     private lazy var bottomUnderlineView: UIView = {
         let underlineView = UIView()
-        underlineView.backgroundColor = Constants.underlineViewColor
+        underlineView.backgroundColor = UIColor.mainPeach
         underlineView.translatesAutoresizingMaskIntoConstraints = false
         return underlineView
     }()
     
     // MARK: - IBOutlet
-    @IBOutlet weak var upView: UIView!
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var kokoIDLabel: UILabel!
     @IBOutlet weak var remindImgView: UIView!
@@ -101,6 +111,7 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var friendsContainerView: UIView!
     @IBOutlet weak var chatContainerView: UIView!
 
+    @IBOutlet weak var upViewConstraint: NSLayoutConstraint!
     
     // MARK: - Life Cycle
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -119,6 +130,52 @@ class FriendsViewController: UIViewController {
         setupSegmentedConstraint()
         updateView()
         
+        retrieveUserData()
+        
+        if let scenario = scenario, 
+            scenario == 3 {
+            setupInvitationView(isHidden: false)
+
+        } else {
+            setupInvitationView(isHidden: true)
+//            upViewConstraint.constant = 150
+
+        }
+        
+
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateUnderlineWidth()
+        changeSegmentedControlLinePosition()
+        
+        if let scenario = scenario,
+           scenario == 3 {
+            upViewConstraint.constant = invitationView.frame.height + 150
+        }
+
+//        if #available(iOS 15.0, *) {
+//            // 再次確保所有樣式被正確應用
+//            segmentedControl.layer.cornerRadius = 0
+//            segmentedControl.layer.masksToBounds = true
+//            
+//            // 更新所有子視圖的樣式
+//            segmentedControl.subviews.forEach { subview in
+//                subview.layer.cornerRadius = 0
+//                subview.backgroundColor = .clear
+//            }
+//        }
+    }
+    
+    // MARK: - IBAction
+    @IBAction func kokoIDLabelTapped(_ sender: UITapGestureRecognizer) {
+        print("kokoIDLabelTapped")
+    }
+    
+    
+    // MARK: - Private Func
+    private func retrieveUserData() {
         Task {
             do {
                 let resp = try await UserService.shared.getUserData()
@@ -134,33 +191,141 @@ class FriendsViewController: UIViewController {
                 print(error)
             }
         }
-
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateUnderlineWidth()
-        changeSegmentedControlLinePosition()
+    private func setupInvitationView(isHidden: Bool) {
+        invitationView.translatesAutoresizingMaskIntoConstraints = false
+        invitationView.backgroundColor = .white
+        invitationView.isHidden = isHidden
+        self.view.addSubview(invitationView)
         
-//        if #available(iOS 15.0, *) {
-//            // 再次確保所有樣式被正確應用
-//            segmentedControl.layer.cornerRadius = 0
-//            segmentedControl.layer.masksToBounds = true
-//            
-//            // 更新所有子視圖的樣式
-//            segmentedControl.subviews.forEach { subview in
-//                subview.layer.cornerRadius = 0
-//                subview.backgroundColor = .clear
-//            }
-//        }
+        invitationStackView = UIStackView()
+        invitationStackView.axis = .vertical
+        invitationStackView.spacing = 10
+        invitationStackView.translatesAutoresizingMaskIntoConstraints = false
+        invitationView.addSubview(invitationStackView)
+
+        NSLayoutConstraint.activate([
+            invitationView.topAnchor.constraint(
+                equalTo: kokoIDLabel.bottomAnchor, constant: 20),
+            invitationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            invitationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            invitationStackView.topAnchor.constraint(equalTo: invitationView.topAnchor, constant: 10),
+            invitationStackView.leadingAnchor.constraint(equalTo: invitationView.leadingAnchor, constant: 10),
+            invitationStackView.trailingAnchor.constraint(equalTo: invitationView.trailingAnchor, constant: -10),
+            invitationStackView.bottomAnchor.constraint(equalTo: invitationView.bottomAnchor, constant: -10)
+        ])
+        invitationView.backgroundColor = .clear
+        addStaticInvitations()
     }
     
-    @IBAction func kokoIDLabelTapped(_ sender: UITapGestureRecognizer) {
-        print("kokoIDLabelTapped")
+    private func addStaticInvitations() {
+        // Static Data
+        let staticFriends = [
+            Friend(name: "彭安亭", status: 1, isTop: "0",
+                   fid: "001", updateDate: "1983/06/27"),
+            Friend(name: "施君凌", status: 1, isTop: "0", 
+                   fid: "002", updateDate: "1983/06/27")
+        ]
+        
+        for friend in staticFriends {
+            let cell = createInvitationCell(for: friend)
+            invitationStackView.addArrangedSubview(cell)
+        }
     }
     
+    private func createInvitationCell(for friend: Friend) -> UIView {
+        let cell = UIView()
+        cell.backgroundColor = .white
+        cell.layer.cornerRadius = 8
+        cell.layer.shadowColor = UIColor.gray.cgColor
+        cell.layer.shadowOpacity = 0.2
+        cell.layer.shadowRadius = 4
+        cell.layer.shadowOffset = Constants.shadowOffset
+        cell.translatesAutoresizingMaskIntoConstraints = false
+        cell.heightAnchor.constraint(equalToConstant: 60).isActive = true
+
+        let imageView = UIImageView()
+        imageView.image = avatar
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 30
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let nameLabel = UILabel()
+        nameLabel.text = friend.name
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let hintLabel = UILabel()
+        hintLabel.text = hintText
+        hintLabel.font = UIFont.systemFont(ofSize: 14)
+        hintLabel.textColor = .gray
+        hintLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let acceptButton = UIButton(type: .system)
+        acceptButton.setImage(accept, for: .normal)
+        acceptButton.backgroundColor = .white
+        acceptButton.tintColor = UIColor.mainPeach
+        acceptButton.layer.cornerRadius = 20
+        acceptButton.tag = Int(friend.fid) ?? 0
+        acceptButton.addTarget(self, 
+                               action: #selector(handleAcceptInvitation(_:)),
+                               for: .touchUpInside)
+        acceptButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let rejectButton = UIButton(type: .system)
+        rejectButton.setImage(reject, for: .normal)
+        rejectButton.backgroundColor = .white
+        rejectButton.tintColor = UIColor.systemGray5
+        rejectButton.layer.cornerRadius = 20
+        rejectButton.tag = Int(friend.fid) ?? 0
+        rejectButton.addTarget(self, 
+                               action: #selector(handleRejectInvitation(_:)),
+                               for: .touchUpInside)
+        rejectButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let vStack = UIStackView(
+            arrangedSubviews: [nameLabel, hintLabel]
+        )
+        vStack.axis = .vertical
+        vStack.spacing = 5
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+                
+        let hStack = UIStackView(
+            arrangedSubviews: [imageView, vStack, acceptButton, rejectButton]
+        )
+        hStack.axis = .horizontal
+        hStack.alignment = .center
+        hStack.spacing = 10
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+
+        cell.addSubview(hStack)
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 60),
+            imageView.heightAnchor.constraint(equalToConstant: 60),
+
+            acceptButton.widthAnchor.constraint(equalToConstant: 40),
+            acceptButton.heightAnchor.constraint(equalToConstant: 40),
+
+            rejectButton.widthAnchor.constraint(equalToConstant: 40),
+            rejectButton.heightAnchor.constraint(equalToConstant: 40),
+
+            hStack.topAnchor.constraint(equalTo: cell.topAnchor, 
+                                        constant: 10),
+            hStack.leadingAnchor.constraint(equalTo: cell.leadingAnchor, 
+                                            constant: 10),
+            hStack.trailingAnchor.constraint(equalTo: cell.trailingAnchor,
+                                             constant: -10),
+            hStack.bottomAnchor.constraint(equalTo: cell.bottomAnchor, 
+                                           constant: -10)
+        ])
+        
+        cell.backgroundColor = .systemGray6
+                        
+        return cell
+    }
     
-    // MARK: - Private Func
     private func updateView() {
         if segmentedControl.selectedSegmentIndex == 0 {
             friendsContainerView.isHidden = false
@@ -181,7 +346,7 @@ class FriendsViewController: UIViewController {
         let safeLayoutGuide = self.view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             segmentedControlContainerView.bottomAnchor.constraint(
-                equalTo: upView.bottomAnchor, constant: 0),
+                equalTo: headerView.bottomAnchor, constant: 0),
             segmentedControlContainerView.leadingAnchor.constraint(
                 equalTo: safeLayoutGuide.leadingAnchor, constant: 20),
             segmentedControlContainerView.trailingAnchor.constraint(
@@ -217,6 +382,7 @@ class FriendsViewController: UIViewController {
     }
     
     private func updateUnderlineWidth() {
+        guard segmentedControl.numberOfSegments > 0 else { return }
         // 計算 UISegmentedControl 的 1/4 寬度
         let segmentWidth = segmentedControl.frame.width / 4
         underlineWidthConstraint.constant = segmentWidth
@@ -235,8 +401,6 @@ class FriendsViewController: UIViewController {
         })
     }
     
-    
-        
     private func createBarButton(image: UIImage?,
                                  action: Selector) -> UIBarButtonItem {
         let button = UIButton(type: .custom)
@@ -264,6 +428,16 @@ class FriendsViewController: UIViewController {
     private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         changeSegmentedControlLinePosition()
         updateView()
+    }
+    
+    @objc
+    private func handleAcceptInvitation(_ sender: UIButton) {
+        print("Accepted invitation from \(sender.tag)")
+    }
+
+    @objc
+    private func handleRejectInvitation(_ sender: UIButton) {
+        print("Rejected invitation from \(sender.tag)")
     }
     
 
