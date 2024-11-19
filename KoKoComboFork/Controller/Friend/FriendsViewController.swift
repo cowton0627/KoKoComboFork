@@ -14,7 +14,6 @@ class FriendsViewController: UIViewController {
     
     private enum Constants {
 //        static let segmentedControlHeight: CGFloat = 44
-//        static let underlineViewColor: UIColor = .systemPink
         static let underlineViewHeight: CGFloat = 4
         static let shadowOffset: CGSize = CGSize(width: 0, height: 2)
     }
@@ -78,22 +77,19 @@ class FriendsViewController: UIViewController {
         segmentedControl.setTitleTextAttributes(
             [.foregroundColor: UIColor.systemGray,
              .font: UIFont.systemFont(ofSize: 16, weight: .regular)],
-            for: .normal)
+            for: .normal
+        )
         segmentedControl.setTitleTextAttributes(
             [.foregroundColor: UIColor.black,
              .font: UIFont.systemFont(ofSize: 16, weight: .bold)],
-            for: .selected)
+            for: .selected
+        )
 
-        // add segmentedControl action
         segmentedControl.addTarget(self,
                                    action: #selector(segmentedControlValueChanged),
                                    for: .valueChanged)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         
-//        for subview in segmentedControl.subviews {
-//            subview.layer.cornerRadius = 0
-//            subview.layer.masksToBounds = false
-//        }
         return segmentedControl
     }()
     
@@ -114,7 +110,7 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var friendsContainerView: UIView!
     @IBOutlet weak var chatContainerView: UIView!
 
-    @IBOutlet weak var upViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var headerViewConstraint: NSLayoutConstraint!
     
     // MARK: - Life Cycle
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -131,14 +127,24 @@ class FriendsViewController: UIViewController {
         
         setupNavigationBar()
         setupSegmentedConstraint()
-        updateView()
+        updateSegmentView()
+                
         
-//        retrieveUserData()
+        if let scenario = scenario,
+            scenario == 3 {
+            setupInvitationView(isHidden: false)
+        } else {
+            setupInvitationView(isHidden: true)
+        }
+        
         
         setupViewModel()
         
         viewModel.$userName.bind { userName in
-            DispatchQueue.main.async { self.userNameLabel.text = userName }
+            DispatchQueue.main.async {
+                self.userNameLabel.text = userName
+                self.remindImgView.isHidden = true
+            }
         }
         
         viewModel.$kokoID.bind { kokoID in
@@ -149,41 +155,19 @@ class FriendsViewController: UIViewController {
             DispatchQueue.main.async { self.invitationView.isHidden = isHidden }
         }
         
-        
-        if let scenario = scenario, 
-            scenario == 3 {
-            setupInvitationView(isHidden: false)
-
-        } else {
-            setupInvitationView(isHidden: true)
-//            upViewConstraint.constant = 150
-        }
-        
-                
 
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUnderlineWidth()
-        changeSegmentedControlLinePosition()
+        updateSegmentedUnderLinePosition()
         
         if let scenario = scenario,
            scenario == 3 {
-            upViewConstraint.constant = invitationView.frame.height + 150
+            headerViewConstraint.constant = invitationView.frame.height + 150
         }
 
-//        if #available(iOS 15.0, *) {
-//            // 再次確保所有樣式被正確應用
-//            segmentedControl.layer.cornerRadius = 0
-//            segmentedControl.layer.masksToBounds = true
-//            
-//            // 更新所有子視圖的樣式
-//            segmentedControl.subviews.forEach { subview in
-//                subview.layer.cornerRadius = 0
-//                subview.backgroundColor = .clear
-//            }
-//        }
     }
     
     // MARK: - IBAction
@@ -220,15 +204,12 @@ class FriendsViewController: UIViewController {
             invitationStackView.bottomAnchor.constraint(equalTo: invitationView.bottomAnchor, constant: -10)
         ])
         invitationView.backgroundColor = .clear
-        addStaticInvitations()
-    }
-    
-    private func addStaticInvitations() {
+        
         // Static Data
         let staticFriends = [
             Friend(name: "彭安亭", status: 1, isTop: "0",
                    fid: "001", updateDate: "1983/06/27"),
-            Friend(name: "施君凌", status: 1, isTop: "0", 
+            Friend(name: "施君凌", status: 1, isTop: "0",
                    fid: "002", updateDate: "1983/06/27")
         ]
         
@@ -335,7 +316,7 @@ class FriendsViewController: UIViewController {
         return cell
     }
     
-    private func updateView() {
+    private func updateSegmentView() {
         if segmentedControl.selectedSegmentIndex == 0 {
             friendsContainerView.isHidden = false
             chatContainerView.isHidden = true
@@ -398,7 +379,7 @@ class FriendsViewController: UIViewController {
     }
     
     // Change position of the underline
-    private func changeSegmentedControlLinePosition() {
+    private func updateSegmentedUnderLinePosition() {
         let padding = segmentedControl.frame.width / 8
 
         let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
@@ -435,8 +416,8 @@ class FriendsViewController: UIViewController {
     // MARK: Objc Func
     @objc 
     private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        changeSegmentedControlLinePosition()
-        updateView()
+        updateSegmentedUnderLinePosition()
+        updateSegmentView()
     }
     
     @objc

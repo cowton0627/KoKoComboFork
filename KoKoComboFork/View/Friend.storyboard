@@ -130,9 +130,9 @@
                         <outlet property="chatContainerView" destination="w4C-pz-OkK" id="RCD-Nc-gAv"/>
                         <outlet property="friendsContainerView" destination="2RJ-ca-Af4" id="paz-zA-aP7"/>
                         <outlet property="headerView" destination="QvP-kG-7wS" id="6KK-M7-qcC"/>
+                        <outlet property="headerViewConstraint" destination="Mh2-G1-cxj" id="veG-Ep-4Mr"/>
                         <outlet property="kokoIDLabel" destination="asX-pF-Hrd" id="Iv3-Wv-iEG"/>
                         <outlet property="remindImgView" destination="rsa-jT-p1c" id="zsi-Eu-Sr1"/>
-                        <outlet property="upViewConstraint" destination="Mh2-G1-cxj" id="veG-Ep-4Mr"/>
                         <outlet property="userNameLabel" destination="QVZ-cP-h8H" id="LIR-b2-nXT"/>
                     </connections>
                 </viewController>
@@ -232,7 +232,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <searchBar contentMode="redraw" placeholder="想轉一筆給誰呢？" translatesAutoresizingMaskIntoConstraints="NO" id="ti3-Hk-tCk">
-                                <rect key="frame" x="15" y="30" width="289" height="56"/>
+                                <rect key="frame" x="15" y="30" width="309" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="zmu-Bh-RT4" id="asx-qY-zPM"/>
@@ -358,7 +358,7 @@
                             <constraint firstAttribute="bottom" secondItem="a3E-Mi-RDe" secondAttribute="bottom" id="7eU-J8-FT1"/>
                             <constraint firstItem="saC-pO-Cjz" firstAttribute="leading" secondItem="FaL-57-2Pw" secondAttribute="leading" constant="65" id="9te-6R-tBS"/>
                             <constraint firstAttribute="trailing" secondItem="saC-pO-Cjz" secondAttribute="trailing" constant="65" id="Ae6-RJ-3Fd"/>
-                            <constraint firstItem="zXs-ny-CCq" firstAttribute="leading" secondItem="ti3-Hk-tCk" secondAttribute="trailing" constant="35" id="DLG-lV-Wkr"/>
+                            <constraint firstItem="zXs-ny-CCq" firstAttribute="leading" secondItem="ti3-Hk-tCk" secondAttribute="trailing" constant="15" id="DLG-lV-Wkr"/>
                             <constraint firstItem="ti3-Hk-tCk" firstAttribute="leading" secondItem="FaL-57-2Pw" secondAttribute="leading" constant="15" id="M01-Eh-tQe"/>
                             <constraint firstItem="a3E-Mi-RDe" firstAttribute="leading" secondItem="FaL-57-2Pw" secondAttribute="leading" constant="20" id="Slq-Em-5Te"/>
                             <constraint firstItem="gNK-se-Kxk" firstAttribute="leading" secondItem="FaL-57-2Pw" secondAttribute="leading" constant="56" id="T9N-l4-jOe"/>
