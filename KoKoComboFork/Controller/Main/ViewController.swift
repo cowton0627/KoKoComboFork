@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// 呈現頁面建構中頁面
 class ViewController: UIViewController {
 
     
