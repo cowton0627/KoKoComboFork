@@ -7,11 +7,13 @@
 
 import Foundation
 
+/// 使用者服務
 class UserService: APIService {
     
     static let shared = UserService()
     private override init() {}
     
+    /// 取回使用者資料
     func getUserData(token: String? = nil) async throws -> GetUserDataResponse {
         
         guard let url = URL(string: KoKoAPI.Endpoint.getUserData.urlString) else {
@@ -23,9 +25,10 @@ class UserService: APIService {
         return try await self.send(request: request)
     }
     
-    func getFriendsData(token: String? = nil) async throws -> GetFriendsResponse {
+    /// 取回好友資料
+    func getFriendsData(token: String? = nil, scenario: Int) async throws -> GetFriendsResponse {
         
-        guard let url = URL(string: KoKoAPI.Endpoint.getFriendsData.urlString) else { throw APIError.encodingError }
+        guard let url = URL(string: KoKoAPI.Endpoint.getFriendsData(scenario: scenario).urlString) else { throw APIError.encodingError }
         
         let request = APIRequest(url: url, method: .get)
         
