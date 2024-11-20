@@ -39,6 +39,8 @@ class FriendsViewController: UIViewController {
     
     private var invitationStackView = UIStackView()
     
+    private var invitationListView: InvitationListView!
+    
     private var viewModel: UserViewModel!
 
     private var leadingDistanceConstraint: NSLayoutConstraint!
@@ -129,12 +131,12 @@ class FriendsViewController: UIViewController {
         setupSegmentedConstraint()
         updateSegmentView()
                 
-        
         if let scenario = scenario,
             scenario == 3 {
-            setupInvitationView(isHidden: false)
+            setupInvitationList()
+//            setupInvitationView(isHidden: false)
         } else {
-            setupInvitationView(isHidden: true)
+//            setupInvitationView(isHidden: true)
         }
         
         
@@ -165,7 +167,8 @@ class FriendsViewController: UIViewController {
         
         if let scenario = scenario,
            scenario == 3 {
-            headerViewConstraint.constant = invitationView.frame.height + 150
+//            headerViewConstraint.constant = invitationView.frame.height + 150
+            headerViewConstraint.constant = invitationListView.frame.height + 150
         }
 
     }
@@ -181,13 +184,40 @@ class FriendsViewController: UIViewController {
         viewModel = UserViewModel(scenario: scenario)
     }
     
+    private func setupInvitationList() {
+        let staticFriends = [
+            Friend(name: "彭安亭", status: 1, isTop: "0", fid: "001", updateDate: "1983/06/27"),
+            Friend(name: "施君凌", status: 1, isTop: "0", fid: "002", updateDate: "1983/06/27")
+        ]
+
+        invitationListView = InvitationListView(
+            friends: staticFriends,
+            avatar: avatar,
+            acceptImage: accept,
+            rejectImage: reject
+        )
+
+        invitationListView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(invitationListView)
+
+        NSLayoutConstraint.activate([
+            invitationListView.topAnchor.constraint(
+                equalTo: kokoIDLabel.bottomAnchor, constant: 20),
+            invitationListView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor, constant: 20),
+            invitationListView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor, constant: -20),
+//            invitationListView.bottomAnchor.constraint(
+//                lessThanOrEqualTo: view.bottomAnchor, constant: -20) // 可選
+        ])
+    }
+    
     private func setupInvitationView(isHidden: Bool) {
         invitationView.translatesAutoresizingMaskIntoConstraints = false
         invitationView.backgroundColor = .white
         invitationView.isHidden = isHidden
         self.view.addSubview(invitationView)
         
-        invitationStackView = UIStackView()
         invitationStackView.axis = .vertical
         invitationStackView.spacing = 10
         invitationStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -198,6 +228,7 @@ class FriendsViewController: UIViewController {
                 equalTo: kokoIDLabel.bottomAnchor, constant: 20),
             invitationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
             invitationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            
             invitationStackView.topAnchor.constraint(equalTo: invitationView.topAnchor, constant: 10),
             invitationStackView.leadingAnchor.constraint(equalTo: invitationView.leadingAnchor, constant: 10),
             invitationStackView.trailingAnchor.constraint(equalTo: invitationView.trailingAnchor, constant: -10),
@@ -230,8 +261,7 @@ class FriendsViewController: UIViewController {
         cell.translatesAutoresizingMaskIntoConstraints = false
         cell.heightAnchor.constraint(equalToConstant: 60).isActive = true
 
-        let imageView = UIImageView()
-        imageView.image = avatar
+        let imageView = UIImageView(image: avatar)
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 30
         imageView.clipsToBounds = true
@@ -259,8 +289,7 @@ class FriendsViewController: UIViewController {
         acceptButton.tintColor = UIColor.mainPeach
         acceptButton.layer.cornerRadius = 20
         acceptButton.tag = Int(friend.fid) ?? 0
-        acceptButton.addTarget(self, 
-                               action: #selector(handleAcceptInvitation(_:)),
+        acceptButton.addTarget(self, action: #selector(handleAcceptInvitation(_:)),
                                for: .touchUpInside)
         acceptButton.translatesAutoresizingMaskIntoConstraints = false
         
