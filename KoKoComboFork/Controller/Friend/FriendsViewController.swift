@@ -35,10 +35,6 @@ class FriendsViewController: UIViewController {
     private let accept = UIImage(named: "btnFriendsAgree")
     private let reject = UIImage(named: "btnFriendsDelet")
     
-    private let invitationView = UIView()
-    
-    private var invitationStackView = UIStackView()
-    
     private var invitationListView: InvitationListView!
     
     private var viewModel: UserViewModel!
@@ -131,30 +127,19 @@ class FriendsViewController: UIViewController {
         setupSegmentedConstraint()
         updateSegmentView()
                 
-        if let scenario = scenario,
-            scenario == 3 {
-            setupInvitationList()
-//            setupInvitationView(isHidden: false)
-        } else {
-//            setupInvitationView(isHidden: true)
-        }
-        
-        
         setupViewModel()
         
-        viewModel.$userName.bind { userName in
+        if let scenario = scenario,
+            scenario == 3 {
+            setupInvitationList(with: viewModel)
+        }
+        
+        viewModel.$userData.bind { userData in
             DispatchQueue.main.async {
-                self.userNameLabel.text = userName
+                self.userNameLabel.text = userData?.name
+                self.kokoIDLabel.text = userData?.kokoid
                 self.remindImgView.isHidden = true
             }
-        }
-        
-        viewModel.$kokoID.bind { kokoID in
-            DispatchQueue.main.async { self.kokoIDLabel.text = kokoID }
-        }
-        
-        viewModel.$isInvitationViewHidden.bind { isHidden in
-            DispatchQueue.main.async { self.invitationView.isHidden = isHidden }
         }
         
 
@@ -184,14 +169,9 @@ class FriendsViewController: UIViewController {
         viewModel = UserViewModel(scenario: scenario)
     }
     
-    private func setupInvitationList() {
-        let staticFriends = [
-            Friend(name: "彭安亭", status: 1, isTop: "0", fid: "001", updateDate: "1983/06/27"),
-            Friend(name: "施君凌", status: 1, isTop: "0", fid: "002", updateDate: "1983/06/27")
-        ]
-
+    private func setupInvitationList(with viewModel: UserViewModel) {
         invitationListView = InvitationListView(
-            friends: staticFriends,
+            friends: viewModel.friendsList,
             avatar: avatar,
             acceptImage: accept,
             rejectImage: reject
@@ -207,143 +187,9 @@ class FriendsViewController: UIViewController {
                 equalTo: view.leadingAnchor, constant: 20),
             invitationListView.trailingAnchor.constraint(
                 equalTo: view.trailingAnchor, constant: -20),
-//            invitationListView.bottomAnchor.constraint(
-//                lessThanOrEqualTo: view.bottomAnchor, constant: -20) // 可選
         ])
     }
     
-    private func setupInvitationView(isHidden: Bool) {
-        invitationView.translatesAutoresizingMaskIntoConstraints = false
-        invitationView.backgroundColor = .white
-        invitationView.isHidden = isHidden
-        self.view.addSubview(invitationView)
-        
-        invitationStackView.axis = .vertical
-        invitationStackView.spacing = 10
-        invitationStackView.translatesAutoresizingMaskIntoConstraints = false
-        invitationView.addSubview(invitationStackView)
-
-        NSLayoutConstraint.activate([
-            invitationView.topAnchor.constraint(
-                equalTo: kokoIDLabel.bottomAnchor, constant: 20),
-            invitationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            invitationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-            
-            invitationStackView.topAnchor.constraint(equalTo: invitationView.topAnchor, constant: 10),
-            invitationStackView.leadingAnchor.constraint(equalTo: invitationView.leadingAnchor, constant: 10),
-            invitationStackView.trailingAnchor.constraint(equalTo: invitationView.trailingAnchor, constant: -10),
-            invitationStackView.bottomAnchor.constraint(equalTo: invitationView.bottomAnchor, constant: -10)
-        ])
-        invitationView.backgroundColor = .clear
-        
-        // Static Data
-        let staticFriends = [
-            Friend(name: "彭安亭", status: 1, isTop: "0",
-                   fid: "001", updateDate: "1983/06/27"),
-            Friend(name: "施君凌", status: 1, isTop: "0",
-                   fid: "002", updateDate: "1983/06/27")
-        ]
-        
-        for friend in staticFriends {
-            let cell = createInvitationCell(for: friend)
-            invitationStackView.addArrangedSubview(cell)
-        }
-    }
-    
-    private func createInvitationCell(for friend: Friend) -> UIView {
-        let cell = UIView()
-        cell.backgroundColor = .white
-        cell.layer.cornerRadius = 8
-        cell.layer.shadowColor = UIColor.gray.cgColor
-        cell.layer.shadowOpacity = 0.2
-        cell.layer.shadowRadius = 4
-        cell.layer.shadowOffset = Constants.shadowOffset
-        cell.translatesAutoresizingMaskIntoConstraints = false
-        cell.heightAnchor.constraint(equalToConstant: 60).isActive = true
-
-        let imageView = UIImageView(image: avatar)
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 30
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let heightConstraint =
-        imageView.heightAnchor.constraint(equalToConstant: 60)
-        heightConstraint.priority = UILayoutPriority(999)
-        heightConstraint.isActive = true
-        
-        let nameLabel = UILabel()
-        nameLabel.text = friend.name
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        let hintLabel = UILabel()
-        hintLabel.text = hintText
-        hintLabel.font = UIFont.systemFont(ofSize: 14)
-        hintLabel.textColor = .gray
-        hintLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        let acceptButton = UIButton(type: .system)
-        acceptButton.setImage(accept, for: .normal)
-        acceptButton.backgroundColor = .white
-        acceptButton.tintColor = UIColor.mainPeach
-        acceptButton.layer.cornerRadius = 20
-        acceptButton.tag = Int(friend.fid) ?? 0
-        acceptButton.addTarget(self, action: #selector(handleAcceptInvitation(_:)),
-                               for: .touchUpInside)
-        acceptButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let rejectButton = UIButton(type: .system)
-        rejectButton.setImage(reject, for: .normal)
-        rejectButton.backgroundColor = .white
-        rejectButton.tintColor = UIColor.systemGray5
-        rejectButton.layer.cornerRadius = 20
-        rejectButton.tag = Int(friend.fid) ?? 0
-        rejectButton.addTarget(self, 
-                               action: #selector(handleRejectInvitation(_:)),
-                               for: .touchUpInside)
-        rejectButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let vStack = UIStackView(
-            arrangedSubviews: [nameLabel, hintLabel]
-        )
-        vStack.axis = .vertical
-        vStack.spacing = 5
-        vStack.translatesAutoresizingMaskIntoConstraints = false
-                
-        let hStack = UIStackView(
-            arrangedSubviews: [imageView, vStack, acceptButton, rejectButton]
-        )
-        hStack.axis = .horizontal
-        hStack.alignment = .center
-        hStack.spacing = 10
-        hStack.translatesAutoresizingMaskIntoConstraints = false
-
-        cell.addSubview(hStack)
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 60),
-            heightConstraint,
-
-            acceptButton.widthAnchor.constraint(equalToConstant: 40),
-            acceptButton.heightAnchor.constraint(equalToConstant: 40),
-
-            rejectButton.widthAnchor.constraint(equalToConstant: 40),
-            rejectButton.heightAnchor.constraint(equalToConstant: 40),
-
-            hStack.topAnchor.constraint(equalTo: cell.topAnchor, 
-                                        constant: 10),
-            hStack.leadingAnchor.constraint(equalTo: cell.leadingAnchor, 
-                                            constant: 10),
-            hStack.trailingAnchor.constraint(equalTo: cell.trailingAnchor,
-                                             constant: -10),
-            hStack.bottomAnchor.constraint(equalTo: cell.bottomAnchor, 
-                                           constant: -10)
-        ])
-        
-        cell.backgroundColor = .systemGray6
-                        
-        return cell
-    }
     
     private func updateSegmentView() {
         if segmentedControl.selectedSegmentIndex == 0 {

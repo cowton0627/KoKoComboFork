@@ -11,16 +11,17 @@ import Foundation
 class UserViewModel {
 
     // Output
-    @Boxed var userName: String = ""
-    @Boxed var kokoID: String = ""
-    @Boxed var isInvitationViewHidden: Bool = true
-    private var friendsList: [Friend] = []
+    @Boxed var userData: UserData?
+//    @Boxed var userName: String = ""
+//    @Boxed var kokoID: String = ""
+//    @Boxed var isInvitationViewHidden: Bool = true
+    var friendsList: [Friend] = []
     
     // Input
     private var selectedSegmentIndex: Int = 0
     
     init(scenario: Int?) {
-        self.isInvitationViewHidden = scenario != 3
+//        self.isInvitationViewHidden = scenario != 3
         retrieveUserData()
         fetchFriendsData()
     }
@@ -48,8 +49,10 @@ class UserViewModel {
                 print(resp)
 
                 if let userResp = resp.response?.first {
-                    userName = userResp.name
-                    kokoID = "KOKO ID：\(userResp.kokoid) 〉"
+//                    userName = userResp.name
+//                    kokoID = "KOKO ID：\(userResp.kokoid) 〉"
+                    
+                    userData = UserData(name: userResp.name, kokoid: "KOKO ID：\(userResp.kokoid) 〉")
                 }
                 
             } catch (let error) {
@@ -61,10 +64,8 @@ class UserViewModel {
     private func fetchFriendsData() {
         // static data
         friendsList = [
-            Friend(name: "彭安亭", status: 1, isTop: "0", 
-                   fid: "001", updateDate: "1983/06/27"),
-            Friend(name: "施君凌", status: 1, isTop: "0", 
-                   fid: "002", updateDate: "1983/06/27")
+            Friend(name: "彭安亭", status: 1, isTop: "0", fid: "001", updateDate: "1983/06/27"),
+            Friend(name: "施君凌", status: 1, isTop: "0", fid: "002", updateDate: "1983/06/27")
         ]
     }
 
