@@ -40,7 +40,7 @@
 		917E26C62CEB38FC000AACA4 /* CustomInvitingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */; };
 		917E26C82CEC18A1000AACA4 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */; };
 		917E26CB2CEC6337000AACA4 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CA2CEC6337000AACA4 /* UserViewModel.swift */; };
-		917E26CD2CEC8584000AACA4 /* InvitationCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CC2CEC8584000AACA4 /* InvitationCellView.swift */; };
+		917E26CD2CEC8584000AACA4 /* InvitationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CC2CEC8584000AACA4 /* InvitationListView.swift */; };
 		917E26D42CECCA5A000AACA4 /* CustomSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,7 +80,7 @@
 		917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInvitingButton.swift; sourceTree = "<group>"; };
 		917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		917E26CA2CEC6337000AACA4 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
-		917E26CC2CEC8584000AACA4 /* InvitationCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCellView.swift; sourceTree = "<group>"; };
+		917E26CC2CEC8584000AACA4 /* InvitationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationListView.swift; sourceTree = "<group>"; };
 		917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -216,7 +216,7 @@
 		917E26AD2CE628D8000AACA4 /* Customised */ = {
 			isa = PBXGroup;
 			children = (
-				917E26CC2CEC8584000AACA4 /* InvitationCellView.swift */,
+				917E26CC2CEC8584000AACA4 /* InvitationListView.swift */,
 				917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */,
 				917E26C92CEC1B4C000AACA4 /* TabBar */,
 				917E26C22CEB2FC1000AACA4 /* Button */,
@@ -357,7 +357,7 @@
 				917E26882CDA09EC000AACA4 /* CustomTabBar.swift in Sources */,
 				917E26AF2CE62957000AACA4 /* CustomGradientButton.swift in Sources */,
 				917E26A02CE331B7000AACA4 /* HTTPRequest.swift in Sources */,
-				917E26CD2CEC8584000AACA4 /* InvitationCellView.swift in Sources */,
+				917E26CD2CEC8584000AACA4 /* InvitationListView.swift in Sources */,
 				917E26972CDDEF94000AACA4 /* FriendsViewController.swift in Sources */,
 				917E26A22CE331D4000AACA4 /* HTTPBody.swift in Sources */,
 				917E26782CDA0594000AACA4 /* ViewController.swift in Sources */,
