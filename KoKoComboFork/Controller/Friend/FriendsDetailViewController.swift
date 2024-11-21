@@ -21,6 +21,9 @@ class FriendsDetailViewController: UIViewController {
     private let linkedLabelText = "幫助好友更快找到你？設定 KOKO ID"
     private let linkedText = "設定 KOKO ID"
     
+    private let viewModel = FriendsViewModel()
+    private let refreshControl = UIRefreshControl()
+    
     // MARK: - IBOutlet
     @IBOutlet var labelCollection: [UILabel]!
     
@@ -32,8 +35,6 @@ class FriendsDetailViewController: UIViewController {
     
     @IBOutlet weak var friendSearchBar: UISearchBar!
     @IBOutlet weak var addFriendsImgView: UIImageView!
-
-    private let viewModel = FriendsViewModel()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -61,6 +62,9 @@ class FriendsDetailViewController: UIViewController {
         viewModel.$filteredItems.bind { _ in
             self.reloadTableView()
         }
+        
+        // 設置下拉刷新
+        setupRefreshControl()
     
      }
     
@@ -71,6 +75,13 @@ class FriendsDetailViewController: UIViewController {
     
     
     // MARK: - Private Func
+    private func setupRefreshControl() {
+        refreshControl.attributedTitle = NSAttributedString(string: "載入中...")
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        friendsTableView.refreshControl = refreshControl
+    }
+
+    
     private func reloadTableView() {
         DispatchQueue.main.async {
             self.friendsTableView.reloadData()
@@ -132,6 +143,18 @@ class FriendsDetailViewController: UIViewController {
             print("Link Tapped")
         }
     }
+    
+    @objc private func handleRefresh() {
+        guard let scenario = scenario else { return }
+        
+        // 重新請求數據
+        viewModel.retrieveCellItems(completion: { [weak self] in
+            DispatchQueue.main.async {
+                self?.refreshControl.endRefreshing()
+            }
+        }, scenario: scenario)
+    }
+
     
 }
 
