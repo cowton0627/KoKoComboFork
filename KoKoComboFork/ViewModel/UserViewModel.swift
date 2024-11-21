@@ -68,5 +68,14 @@ class UserViewModel {
             Friend(name: "施君凌", status: 1, isTop: "0", fid: "002", updateDate: "1983/06/27")
         ]
     }
+    
+    func numberOfItems() -> Int {
+        return friendsList.count
+    }
+    
+    func itemAt(_ index: Int) -> Friend {
+        return friendsList[index]
+    }
 
 }
+

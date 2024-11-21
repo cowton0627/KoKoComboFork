@@ -12,6 +12,9 @@ class FriendsViewController: UIViewController {
     
     // MARK: - Properties
     var scenario: Int?
+    
+    private var isInvitationListExpanded: Bool = false
+    private var invitationListHeight: CGFloat = 0.0
 
     private let goodFriends = "好友"
     private let chatChat = "聊天"
@@ -31,6 +34,7 @@ class FriendsViewController: UIViewController {
     private var viewModel: UserViewModel!
     private var invitationListView: InvitationListView!
     private var customSegmentedView: CustomSegmentedView!
+    private var invitationTableView: UITableView!
     
     // MARK: - IBOutlet
     @IBOutlet weak var headerView: UIView!
@@ -62,7 +66,9 @@ class FriendsViewController: UIViewController {
         
         if let scenario = scenario,
             scenario == 3 {
-            setupInvitationList(with: viewModel)
+//            setupInvitationList(with: viewModel)
+            
+            setupInvitationTableView()
         }
         
         viewModel.$userData.bind { userData in
@@ -81,7 +87,8 @@ class FriendsViewController: UIViewController {
         
         if let scenario = scenario,
            scenario == 3 {
-            headerViewConstraint.constant = invitationListView.frame.height + 150
+//            headerViewConstraint.constant = invitationListView.frame.height + 150
+            headerViewConstraint.constant = invitationTableView.frame.height + 150
         }
 
     }
@@ -95,6 +102,27 @@ class FriendsViewController: UIViewController {
     // MARK: - Private Func
     private func setupViewModel() {
         viewModel = UserViewModel(scenario: scenario)
+    }
+    
+    private func setupInvitationTableView() {
+        invitationTableView = UITableView()
+        invitationTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(invitationTableView)
+        
+        NSLayoutConstraint.activate([
+            invitationTableView.topAnchor.constraint(
+                equalTo: kokoIDLabel.bottomAnchor, constant: 20),
+            invitationTableView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor, constant: 20),
+            invitationTableView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor, constant: -20),
+            invitationTableView.heightAnchor.constraint(equalToConstant: 140) // 给定高度
+        ])
+        
+        invitationTableView.dataSource = self
+        invitationTableView.delegate = self
+        
+        invitationTableView.registerNibCell(InvitationListTableViewCell.self)
     }
     
     private func setupInvitationList(with viewModel: UserViewModel) {
@@ -114,9 +142,45 @@ class FriendsViewController: UIViewController {
             invitationListView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor, constant: 20),
             invitationListView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor, constant: -20),
+                equalTo: view.trailingAnchor, constant: -20)
         ])
+        
+        invitationListHeight = invitationListView.bounds.height
+//        setupExpandCollapseGesture()
+
     }
+    
+    private func setupExpandCollapseGesture() {
+//        let tapGesture = UITapGestureRecognizer(
+//            target: self, action: #selector(toggleInvitationList)
+//        )
+//        invitationListView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func toggleInvitationList() {
+//        isInvitationListExpanded.toggle()
+//        updateInvitationListView()
+    }
+    
+    private func updateInvitationListView() {
+//        UIView.animate(withDuration: 0.3) {
+//            if self.isInvitationListExpanded {
+//                // 展開
+//                self.invitationListView.clipsToBounds = false
+//                self.invitationListView.heightAnchor.constraint(equalToConstant: self.invitationListHeight).isActive = true
+//                self.headerViewConstraint.constant = self.invitationListHeight + 150
+//            } else {
+//                // 堆疊
+//                self.invitationListView.clipsToBounds = true
+//                self.invitationListView.heightAnchor.constraint(equalToConstant: self.invitationListHeight / 2).isActive = true
+//                self.headerViewConstraint.constant = self.invitationListHeight / 2 + 150
+//            }
+//            self.view.layoutIfNeeded()
+//        }
+    }
+
+
+
     
     private func setupCustomSegmentedView() {
         
@@ -217,4 +281,37 @@ extension FriendsViewController {
         print("scanBtnTapped")
     }
 
+}
+
+extension FriendsViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return viewModel.friendsList.count
+    }
+    
+    func tableView(_ tableView: UITableView, 
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withClass: InvitationListTableViewCell.self, for: indexPath)
+        cell.configue(with: viewModel, at: indexPath.row)
+        
+        return cell
+    }
+    
+    
+}
+
+
+extension FriendsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, 
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
 }

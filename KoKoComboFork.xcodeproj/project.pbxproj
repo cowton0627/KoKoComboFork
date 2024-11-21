@@ -42,6 +42,8 @@
 		917E26CB2CEC6337000AACA4 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CA2CEC6337000AACA4 /* UserViewModel.swift */; };
 		917E26CD2CEC8584000AACA4 /* InvitationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CC2CEC8584000AACA4 /* InvitationListView.swift */; };
 		917E26D42CECCA5A000AACA4 /* CustomSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */; };
+		917E26FD2CEF20A1000AACA4 /* InvitationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */; };
+		917E26FE2CEF20A1000AACA4 /* InvitationListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,8 @@
 		917E26CA2CEC6337000AACA4 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		917E26CC2CEC8584000AACA4 /* InvitationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationListView.swift; sourceTree = "<group>"; };
 		917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedView.swift; sourceTree = "<group>"; };
+		917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationListTableViewCell.swift; sourceTree = "<group>"; };
+		917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationListTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +248,8 @@
 			isa = PBXGroup;
 			children = (
 				917E26B72CEB1160000AACA4 /* FriendsTableViewCell.swift */,
+				917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */,
+				917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
@@ -336,6 +342,7 @@
 				917E26B12CEAE12D000AACA4 /* Scenario.storyboard in Resources */,
 				917E26802CDA0596000AACA4 /* LaunchScreen.storyboard in Resources */,
 				917E267D2CDA0596000AACA4 /* Assets.xcassets in Resources */,
+				917E26FE2CEF20A1000AACA4 /* InvitationListTableViewCell.xib in Resources */,
 				917E267B2CDA0594000AACA4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,6 +384,7 @@
 				917E26A42CE3339E000AACA4 /* FriendsViewModel.swift in Sources */,
 				917E26B42CEAE15A000AACA4 /* ScenarioViewController.swift in Sources */,
 				917E26762CDA0594000AACA4 /* SceneDelegate.swift in Sources */,
+				917E26FD2CEF20A1000AACA4 /* InvitationListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
