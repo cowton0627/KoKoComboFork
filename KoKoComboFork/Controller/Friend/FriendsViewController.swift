@@ -35,10 +35,10 @@ class FriendsViewController: UIViewController {
     private let accept = UIImage(named: "btnFriendsAgree")
     private let reject = UIImage(named: "btnFriendsDelet")
     
-    private var invitationListView: InvitationListView!
-    
     private var viewModel: UserViewModel!
-
+    private var invitationListView: InvitationListView!
+    private var customSegmentedView: CustomSegmentedView!
+    
     private var leadingDistanceConstraint: NSLayoutConstraint!
     private var underlineWidthConstraint: NSLayoutConstraint!
     
@@ -124,8 +124,12 @@ class FriendsViewController: UIViewController {
 //        print(navigationController?.navigationBar.bounds) // 96
         
         setupNavigationBar()
-        setupSegmentedConstraint()
-        updateSegmentView()
+        
+        setupCustomSegmentedView()
+        handleSegmentSelectionChange(to: 0)
+        
+//        setupSegmentedConstraint()
+//        updateSegmentView()
                 
         setupViewModel()
         
@@ -147,8 +151,8 @@ class FriendsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateUnderlineWidth()
-        updateSegmentedUnderLinePosition()
+//        updateUnderlineWidth()
+//        updateSegmentedUnderLinePosition()
         
         if let scenario = scenario,
            scenario == 3 {
@@ -198,6 +202,40 @@ class FriendsViewController: UIViewController {
         } else {
             friendsContainerView.isHidden = true
             chatContainerView.isHidden = false
+        }
+    }
+    
+    private func setupCustomSegmentedView() {
+        
+        customSegmentedView = CustomSegmentedView()
+        customSegmentedView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(customSegmentedView)
+        
+        let safeLayoutGuide = self.view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            customSegmentedView.bottomAnchor.constraint(
+                equalTo: headerView.bottomAnchor, constant: 0),
+            customSegmentedView.leadingAnchor.constraint(
+                equalTo: safeLayoutGuide.leadingAnchor, constant: 20),
+            customSegmentedView.trailingAnchor.constraint(
+                equalTo: safeLayoutGuide.trailingAnchor, constant: -255)
+        ])
+        
+        customSegmentedView.onSelectionChanged = { [weak self] selectedIndex in
+            self?.handleSegmentSelectionChange(to: selectedIndex)
+        }
+    }
+    
+    private func handleSegmentSelectionChange(to selectedIndex: Int) {
+        switch selectedIndex {
+        case 0: // 好友
+            friendsContainerView.isHidden = false
+            chatContainerView.isHidden = true
+        case 1: // 聊天
+            friendsContainerView.isHidden = true
+            chatContainerView.isHidden = false
+        default:
+            break
         }
     }
     
