@@ -10,18 +10,11 @@ import UIKit
 /// 好友呈現主頁
 class FriendsViewController: UIViewController {
     
-    var scenario: Int?
-    
-    private enum Constants {
-//        static let segmentedControlHeight: CGFloat = 44
-        static let underlineViewHeight: CGFloat = 4
-        static let shadowOffset: CGSize = CGSize(width: 0, height: 2)
-    }
-    
     // MARK: - Properties
+    var scenario: Int?
+
     private let goodFriends = "好友"
     private let chatChat = "聊天"
-    
     private let hintText = "邀請你成為好友 : )"
     
     private let atmImage = UIImage(
@@ -159,43 +152,10 @@ class FriendsViewController: UIViewController {
         }
     }
     
-    private func createBarButton(image: UIImage?,
-                                 action: Selector) -> UIBarButtonItem {
-        let button = UIButton(type: .custom)
-//        button.setImage(image, for: .normal)
-
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.plain()
-            config.image = image
-            config.imagePadding = 0
-            config.contentInsets = 
-            NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-            button.configuration = config
-        }
-        
-        button.addTarget(self, action: action, for: .touchUpInside)
-
-        // 控制按鈕的點擊範圍
-        button.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
-            
-        return UIBarButtonItem(customView: button)
-    }
-    
-    // MARK: Objc Func
-    @objc
-    private func handleAcceptInvitation(_ sender: UIButton) {
-        print("Accepted invitation from \(sender.tag)")
-    }
-
-    @objc
-    private func handleRejectInvitation(_ sender: UIButton) {
-        print("Rejected invitation from \(sender.tag)")
-    }
-    
-
 }
 
 extension FriendsViewController {
+    
     private func setupNavigationBar() {
         // 左邊的第一個按鈕
         let atmButton = createBarButton(image: atmImage,
@@ -216,6 +176,28 @@ extension FriendsViewController {
         let scanButton = createBarButton(image: scanImage,
                                          action: #selector(scanBtnTapped))
         navigationItem.rightBarButtonItem = scanButton
+    }
+    
+    private func createBarButton(image: UIImage?,
+                                 action: Selector) -> UIBarButtonItem {
+        let button = UIButton(type: .custom)
+//        button.setImage(image, for: .normal)
+
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.image = image
+            config.imagePadding = 0
+            config.contentInsets =
+            NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+            button.configuration = config
+        }
+        
+        button.addTarget(self, action: action, for: .touchUpInside)
+
+        // 控制按鈕的點擊範圍
+        button.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+            
+        return UIBarButtonItem(customView: button)
     }
     
     @objc
