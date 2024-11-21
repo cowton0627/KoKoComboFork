@@ -39,66 +39,6 @@ class FriendsViewController: UIViewController {
     private var invitationListView: InvitationListView!
     private var customSegmentedView: CustomSegmentedView!
     
-    private var leadingDistanceConstraint: NSLayoutConstraint!
-    private var underlineWidthConstraint: NSLayoutConstraint!
-    
-    // MARK: - Closure Properties
-    // Container view of the segmented control
-    private lazy var segmentedControlContainerView: UIView = {
-        let containerView = UIView()
-        containerView.backgroundColor = .systemGray6
-        containerView.tintColor = .clear
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        return containerView
-    }()
-    
-    // Customised segmented control
-    private lazy var segmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl()
-
-        // Remove background and divider colors
-        segmentedControl.backgroundColor = .clear
-        segmentedControl.tintColor = .clear
-        segmentedControl.selectedSegmentTintColor = .clear
-        
-//        segmentedControl.layer.borderWidth = 0
-//        segmentedControl.layer.borderColor = UIColor.clear.cgColor
-//        segmentedControl.layer.masksToBounds = true
-
-        // Append segments
-        segmentedControl.insertSegment(withTitle: goodFriends, at: 0, animated: true)
-        segmentedControl.insertSegment(withTitle: chatChat, at: 1, animated: true)
-
-        // Select first segment by default
-        segmentedControl.selectedSegmentIndex = 0
-
-        segmentedControl.setTitleTextAttributes(
-            [.foregroundColor: UIColor.systemGray,
-             .font: UIFont.systemFont(ofSize: 16, weight: .regular)],
-            for: .normal
-        )
-        segmentedControl.setTitleTextAttributes(
-            [.foregroundColor: UIColor.black,
-             .font: UIFont.systemFont(ofSize: 16, weight: .bold)],
-            for: .selected
-        )
-
-        segmentedControl.addTarget(self,
-                                   action: #selector(segmentedControlValueChanged),
-                                   for: .valueChanged)
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        
-        return segmentedControl
-    }()
-    
-    // The underline view below the segmented control
-    private lazy var bottomUnderlineView: UIView = {
-        let underlineView = UIView()
-        underlineView.backgroundColor = UIColor.mainPeach
-        underlineView.translatesAutoresizingMaskIntoConstraints = false
-        return underlineView
-    }()
-    
     // MARK: - IBOutlet
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -119,17 +59,11 @@ class FriendsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-//        print("Status Bar Height: \(statusBarHeight)")  // 54
-//        print(navigationController?.navigationBar.bounds) // 96
         
         setupNavigationBar()
         
         setupCustomSegmentedView()
-        handleSegmentSelectionChange(to: 0)
-        
-//        setupSegmentedConstraint()
-//        updateSegmentView()
+        handleSegmentSelectionChanged(to: 0)
                 
         setupViewModel()
         
@@ -151,12 +85,9 @@ class FriendsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        updateUnderlineWidth()
-//        updateSegmentedUnderLinePosition()
         
         if let scenario = scenario,
            scenario == 3 {
-//            headerViewConstraint.constant = invitationView.frame.height + 150
             headerViewConstraint.constant = invitationListView.frame.height + 150
         }
 
@@ -194,17 +125,6 @@ class FriendsViewController: UIViewController {
         ])
     }
     
-    
-    private func updateSegmentView() {
-        if segmentedControl.selectedSegmentIndex == 0 {
-            friendsContainerView.isHidden = false
-            chatContainerView.isHidden = true
-        } else {
-            friendsContainerView.isHidden = true
-            chatContainerView.isHidden = false
-        }
-    }
-    
     private func setupCustomSegmentedView() {
         
         customSegmentedView = CustomSegmentedView()
@@ -222,11 +142,11 @@ class FriendsViewController: UIViewController {
         ])
         
         customSegmentedView.onSelectionChanged = { [weak self] selectedIndex in
-            self?.handleSegmentSelectionChange(to: selectedIndex)
+            self?.handleSegmentSelectionChanged(to: selectedIndex)
         }
     }
     
-    private func handleSegmentSelectionChange(to selectedIndex: Int) {
+    private func handleSegmentSelectionChanged(to selectedIndex: Int) {
         switch selectedIndex {
         case 0: // 好友
             friendsContainerView.isHidden = false
@@ -237,71 +157,6 @@ class FriendsViewController: UIViewController {
         default:
             break
         }
-    }
-    
-    private func setupSegmentedConstraint() {
-        // Add subviews to the view hierarchy
-        view.addSubview(segmentedControlContainerView)
-        segmentedControlContainerView.addSubview(segmentedControl)
-        segmentedControlContainerView.addSubview(bottomUnderlineView)
-
-        // Constrain the container view to the view controller
-        let safeLayoutGuide = self.view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            segmentedControlContainerView.bottomAnchor.constraint(
-                equalTo: headerView.bottomAnchor, constant: 0),
-            segmentedControlContainerView.leadingAnchor.constraint(
-                equalTo: safeLayoutGuide.leadingAnchor, constant: 20),
-            segmentedControlContainerView.trailingAnchor.constraint(
-                equalTo: safeLayoutGuide.trailingAnchor, constant: -255)
-        ])
-
-        // Constrain the segmented control to the container view
-        NSLayoutConstraint.activate([
-            segmentedControl.topAnchor.constraint(
-                equalTo: segmentedControlContainerView.topAnchor),
-            segmentedControl.leadingAnchor.constraint(
-                equalTo: segmentedControlContainerView.leadingAnchor),
-            segmentedControl.centerXAnchor.constraint(
-                equalTo: segmentedControlContainerView.centerXAnchor),
-            segmentedControl.centerYAnchor.constraint(
-                equalTo: segmentedControlContainerView.centerYAnchor)
-        ])
-
-        leadingDistanceConstraint = bottomUnderlineView.leadingAnchor.constraint(
-            equalTo: segmentedControl.leadingAnchor)
-        underlineWidthConstraint = bottomUnderlineView.widthAnchor.constraint(
-            equalToConstant: segmentedControl.frame.width / 4)
-
-        // Constrain the underline view relative to the segmented control
-        NSLayoutConstraint.activate([
-            bottomUnderlineView.bottomAnchor.constraint(
-                equalTo: segmentedControl.bottomAnchor, constant: 5),
-            bottomUnderlineView.heightAnchor.constraint(
-                equalToConstant: Constants.underlineViewHeight),
-            leadingDistanceConstraint,
-            underlineWidthConstraint
-        ])
-    }
-    
-    private func updateUnderlineWidth() {
-        guard segmentedControl.numberOfSegments > 0 else { return }
-        // 計算 UISegmentedControl 的 1/4 寬度
-        let segmentWidth = segmentedControl.frame.width / 4
-        underlineWidthConstraint.constant = segmentWidth
-    }
-    
-    // Change position of the underline
-    private func updateSegmentedUnderLinePosition() {
-        let padding = segmentedControl.frame.width / 8
-
-        let segmentWidth = segmentedControl.frame.width / CGFloat(segmentedControl.numberOfSegments)
-        let leadingDistance = segmentWidth * CGFloat(segmentedControl.selectedSegmentIndex) + padding
-
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.leadingDistanceConstraint.constant = leadingDistance
-//            self?.layoutIfNeeded()
-        })
     }
     
     private func createBarButton(image: UIImage?,
@@ -327,12 +182,6 @@ class FriendsViewController: UIViewController {
     }
     
     // MARK: Objc Func
-    @objc 
-    private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        updateSegmentedUnderLinePosition()
-        updateSegmentView()
-    }
-    
     @objc
     private func handleAcceptInvitation(_ sender: UIButton) {
         print("Accepted invitation from \(sender.tag)")
