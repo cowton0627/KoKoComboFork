@@ -23,6 +23,7 @@ class FriendsDetailViewController: UIViewController {
     
     // MARK: - IBOutlet
     @IBOutlet var labelCollection: [UILabel]!
+    
     @IBOutlet weak var kokoFriendsImgView: UIImageView!
     @IBOutlet weak var addFriendsButton: CustomGradientButton!
     @IBOutlet weak var linkedLabel: UILabel!

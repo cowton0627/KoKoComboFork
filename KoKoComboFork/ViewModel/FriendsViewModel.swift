@@ -77,7 +77,7 @@ class FriendsViewModel {
         let combinedList = list1 + list2
         for friend in combinedList {
             if let existingFriend = friendMap[friend.fid] {
-                // 比較 updateDate，保留最新的資料
+                // 比較 updateDate, 保留最新的資料
                 if isDateNewer(friend.updateDate, existingFriend.updateDate) {
                     friendMap[friend.fid] = friend
                 }

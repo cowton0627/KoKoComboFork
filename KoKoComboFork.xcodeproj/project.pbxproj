@@ -216,8 +216,8 @@
 		917E26AD2CE628D8000AACA4 /* Customised */ = {
 			isa = PBXGroup;
 			children = (
-				917E26CC2CEC8584000AACA4 /* InvitationListView.swift */,
 				917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */,
+				917E26CC2CEC8584000AACA4 /* InvitationListView.swift */,
 				917E26C92CEC1B4C000AACA4 /* TabBar */,
 				917E26C22CEB2FC1000AACA4 /* Button */,
 			);
