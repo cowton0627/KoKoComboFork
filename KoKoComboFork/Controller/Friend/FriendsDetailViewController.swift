@@ -77,7 +77,9 @@ class FriendsDetailViewController: UIViewController {
     // MARK: - Private Func
     private func setupRefreshControl() {
         refreshControl.attributedTitle = NSAttributedString(string: "載入中...")
-        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        refreshControl.addTarget(self, 
+                                 action: #selector(handleRefresh),
+                                 for: .valueChanged)
         friendsTableView.refreshControl = refreshControl
     }
 

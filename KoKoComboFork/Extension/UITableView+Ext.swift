@@ -30,3 +30,10 @@ extension UITableView {
         return cell
     }
 }
+
+extension UITableView {
+    func registerNibCell<T: UITableViewCell>(_: T.Type) {
+        let nib = UINib(nibName: T.identifier, bundle: nil)
+        self.register(nib, forCellReuseIdentifier: T.identifier)
+    }
+}
