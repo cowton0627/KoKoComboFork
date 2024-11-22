@@ -32,9 +32,9 @@ class FriendsViewController: UIViewController {
     private let reject = UIImage(named: "btnFriendsDelet")
     
     private var viewModel: UserViewModel!
-    private var invitationListView: InvitationListView!
-    private var customSegmentedView: CustomSegmentedView!
+//    private var invitationListView: InvitationListView!
     private var invitationTableView: UITableView!
+    private var customSegmentedView: CustomSegmentedView!
     
     // MARK: - IBOutlet
     @IBOutlet weak var headerView: UIView!
@@ -67,7 +67,6 @@ class FriendsViewController: UIViewController {
         if let scenario = scenario,
             scenario == 3 {
 //            setupInvitationList(with: viewModel)
-            
             setupInvitationTableView()
         }
         
@@ -116,71 +115,18 @@ class FriendsViewController: UIViewController {
                 equalTo: view.leadingAnchor, constant: 20),
             invitationTableView.trailingAnchor.constraint(
                 equalTo: view.trailingAnchor, constant: -20),
-            invitationTableView.heightAnchor.constraint(equalToConstant: 140) // 给定高度
+            // 给定高度, 兩倍 Cell
+            invitationTableView.heightAnchor.constraint(equalToConstant: 140)
         ])
         
         invitationTableView.dataSource = self
         invitationTableView.delegate = self
         
         invitationTableView.registerNibCell(InvitationListTableViewCell.self)
-    }
-    
-    private func setupInvitationList(with viewModel: UserViewModel) {
-        invitationListView = InvitationListView(
-            friends: viewModel.friendsList,
-            avatar: avatar,
-            acceptImage: accept,
-            rejectImage: reject
-        )
-
-        invitationListView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(invitationListView)
-
-        NSLayoutConstraint.activate([
-            invitationListView.topAnchor.constraint(
-                equalTo: kokoIDLabel.bottomAnchor, constant: 20),
-            invitationListView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor, constant: 20),
-            invitationListView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor, constant: -20)
-        ])
-        
-        invitationListHeight = invitationListView.bounds.height
-//        setupExpandCollapseGesture()
+                
+        invitationTableView.layer.cornerRadius = 10
 
     }
-    
-    private func setupExpandCollapseGesture() {
-//        let tapGesture = UITapGestureRecognizer(
-//            target: self, action: #selector(toggleInvitationList)
-//        )
-//        invitationListView.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func toggleInvitationList() {
-//        isInvitationListExpanded.toggle()
-//        updateInvitationListView()
-    }
-    
-    private func updateInvitationListView() {
-//        UIView.animate(withDuration: 0.3) {
-//            if self.isInvitationListExpanded {
-//                // 展開
-//                self.invitationListView.clipsToBounds = false
-//                self.invitationListView.heightAnchor.constraint(equalToConstant: self.invitationListHeight).isActive = true
-//                self.headerViewConstraint.constant = self.invitationListHeight + 150
-//            } else {
-//                // 堆疊
-//                self.invitationListView.clipsToBounds = true
-//                self.invitationListView.heightAnchor.constraint(equalToConstant: self.invitationListHeight / 2).isActive = true
-//                self.headerViewConstraint.constant = self.invitationListHeight / 2 + 150
-//            }
-//            self.view.layoutIfNeeded()
-//        }
-    }
-
-
-
     
     private func setupCustomSegmentedView() {
         
@@ -216,6 +162,40 @@ class FriendsViewController: UIViewController {
         }
     }
     
+}
+
+// MARK: - UITableViewDataSource
+extension FriendsViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return viewModel.friendsList.count
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withClass: InvitationListTableViewCell.self, for: indexPath)
+        cell.configue(with: viewModel, at: indexPath.row)
+        
+        return cell
+    }
+    
+    
+}
+
+// MARK: - UITableViewDelegate
+extension FriendsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
 }
 
 extension FriendsViewController {
@@ -283,35 +263,3 @@ extension FriendsViewController {
 
 }
 
-extension FriendsViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int {
-        return viewModel.friendsList.count
-    }
-    
-    func tableView(_ tableView: UITableView, 
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withClass: InvitationListTableViewCell.self, for: indexPath)
-        cell.configue(with: viewModel, at: indexPath.row)
-        
-        return cell
-    }
-    
-    
-}
-
-
-extension FriendsViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, 
-                   heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
-    }
-}
