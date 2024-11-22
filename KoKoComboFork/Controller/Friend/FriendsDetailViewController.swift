@@ -7,14 +7,15 @@
 
 import UIKit
 
-//protocol FriendsDetailViewControllerDelegate: AnyObject {
-//    
-//}
+protocol FriendsDetailViewControllerDelegate: AnyObject {
+    func didStartSearching()
+    func didEndSearching()
+}
 
 /// 好友呈現詳細頁
 class FriendsDetailViewController: UIViewController {
     
-//    weak var delegate: FriendsDetailViewControllerDelegate?
+    weak var delegate: FriendsDetailViewControllerDelegate?
     var scenario: Int?
     
     // MARK: - Properties
@@ -39,6 +40,8 @@ class FriendsDetailViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboardWhenTappedAround()
+        
         setupLabel()
         setupDelegation()
         hideHaveFriendsView()
@@ -191,6 +194,15 @@ extension FriendsDetailViewController: UITableViewDelegate {
 // MARK: - UISearchBarDelegate
 extension FriendsDetailViewController: UISearchBarDelegate {
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.becomeFirstResponder() // 確保焦點已正確進入
+        delegate?.didStartSearching()
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        delegate?.didEndSearching()
+    }
+    
     func searchBar(_ searchBar: UISearchBar,
                    textDidChange searchText: String) {
         viewModel.filterItems(with: searchText)
@@ -201,4 +213,6 @@ extension FriendsDetailViewController: UISearchBarDelegate {
         viewModel.filterItems(with: "")
         searchBar.resignFirstResponder()
     }
+    
 }
+
