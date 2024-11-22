@@ -14,6 +14,8 @@ class FriendsViewController: UIViewController {
     var scenario: Int?
     
     private var isInvitationListExpanded: Bool = false
+    private var invitationTableViewHeightConstraint: NSLayoutConstraint!
+
     private var invitationListHeight: CGFloat = 0.0
 
     private let goodFriends = "好友"
@@ -68,6 +70,8 @@ class FriendsViewController: UIViewController {
             scenario == 3 {
 //            setupInvitationList(with: viewModel)
             setupInvitationTableView()
+            addExpandCollapseGesture()
+
         }
         
         viewModel.$userData.bind { userData in
@@ -108,6 +112,12 @@ class FriendsViewController: UIViewController {
         invitationTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(invitationTableView)
         
+        invitationTableView.dataSource = self
+        invitationTableView.delegate = self
+        invitationTableView.registerNibCell(InvitationListTableViewCell.self)
+        
+        invitationTableView.layer.cornerRadius = 10
+        
         NSLayoutConstraint.activate([
             invitationTableView.topAnchor.constraint(
                 equalTo: kokoIDLabel.bottomAnchor, constant: 20),
@@ -115,16 +125,14 @@ class FriendsViewController: UIViewController {
                 equalTo: view.leadingAnchor, constant: 20),
             invitationTableView.trailingAnchor.constraint(
                 equalTo: view.trailingAnchor, constant: -20),
-            // 给定高度, 兩倍 Cell
-            invitationTableView.heightAnchor.constraint(equalToConstant: 140)
+//            // 给定高度, 兩倍 Cell
+//            invitationTableView.heightAnchor.constraint(equalToConstant: 140)
         ])
         
-        invitationTableView.dataSource = self
-        invitationTableView.delegate = self
-        
-        invitationTableView.registerNibCell(InvitationListTableViewCell.self)
-                
-        invitationTableView.layer.cornerRadius = 10
+        // 高度約束，默認為兩個 Cell 的高度
+        invitationTableViewHeightConstraint =
+        invitationTableView.heightAnchor.constraint(equalToConstant: 140)
+        invitationTableViewHeightConstraint.isActive = true
 
     }
     
@@ -146,6 +154,25 @@ class FriendsViewController: UIViewController {
         
         customSegmentedView.onSelectionChanged = { [weak self] selectedIndex in
             self?.handleSegmentSelectionChanged(to: selectedIndex)
+        }
+    }
+    
+    
+    // 添加手勢
+    private func addExpandCollapseGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toggleInvitationList))
+        invitationTableView.addGestureRecognizer(tapGesture)
+    }
+
+    // 展開/收合切換
+    @objc private func toggleInvitationList() {
+        isInvitationListExpanded.toggle()
+
+        // 更新高度約束
+        invitationTableViewHeightConstraint.constant = isInvitationListExpanded ? CGFloat(70) : 140
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
         }
     }
     
