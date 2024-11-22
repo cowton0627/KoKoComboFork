@@ -51,6 +51,7 @@ class FriendsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let childVC = segue.destination as? FriendsDetailViewController {
             childVC.scenario = scenario
+            childVC.delegate = self
         }
     }
     
@@ -68,8 +69,6 @@ class FriendsViewController: UIViewController {
             scenario == 3 {
 //            setupInvitationList(with: viewModel)
             setupInvitationTableView()
-            addExpandCollapseGesture()
-
         }
         
         viewModel.$userData.bind { userData in
@@ -276,5 +275,26 @@ extension FriendsViewController {
         print("scanBtnTapped")
     }
 
+}
+
+extension FriendsViewController: FriendsDetailViewControllerDelegate {
+    
+    func didStartSearching() {
+        // 點選 searchbar, 畫面上推
+        UIView.animate(withDuration: 0.3) {
+            self.headerViewConstraint.constant = 0
+            self.view.layoutIfNeeded()
+            self.customSegmentedView.isHidden = true
+        }
+    }
+
+    func didEndSearching() {
+        // 停止搜尋, 畫面恢復
+        UIView.animate(withDuration: 0.3) {
+            self.headerViewConstraint.constant = 150
+            self.view.layoutIfNeeded()
+            self.customSegmentedView.isHidden = false
+        }
+    }
 }
 
