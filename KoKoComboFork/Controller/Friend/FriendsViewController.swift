@@ -16,8 +16,6 @@ class FriendsViewController: UIViewController {
     private var isInvitationListExpanded: Bool = false
     private var invitationTableViewHeightConstraint: NSLayoutConstraint!
 
-    private var invitationListHeight: CGFloat = 0.0
-
     private let goodFriends = "好友"
     private let chatChat = "聊天"
     private let hintText = "邀請你成為好友 : )"
@@ -129,7 +127,6 @@ class FriendsViewController: UIViewController {
 //            invitationTableView.heightAnchor.constraint(equalToConstant: 140)
         ])
         
-        // 高度約束，默認為兩個 Cell 的高度
         invitationTableViewHeightConstraint =
         invitationTableView.heightAnchor.constraint(equalToConstant: 140)
         invitationTableViewHeightConstraint.isActive = true
@@ -154,25 +151,6 @@ class FriendsViewController: UIViewController {
         
         customSegmentedView.onSelectionChanged = { [weak self] selectedIndex in
             self?.handleSegmentSelectionChanged(to: selectedIndex)
-        }
-    }
-    
-    
-    // 添加手勢
-    private func addExpandCollapseGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toggleInvitationList))
-        invitationTableView.addGestureRecognizer(tapGesture)
-    }
-
-    // 展開/收合切換
-    @objc private func toggleInvitationList() {
-        isInvitationListExpanded.toggle()
-
-        // 更新高度約束
-        invitationTableViewHeightConstraint.constant = isInvitationListExpanded ? CGFloat(70) : 140
-
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
         }
     }
     
@@ -217,6 +195,16 @@ extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        isInvitationListExpanded.toggle()
+
+        invitationTableViewHeightConstraint.constant = isInvitationListExpanded
+            ? CGFloat(70) : 140
+
+        UIView.animate(withDuration: 0.3) {
+            tableView.reloadData()
+            self.view.layoutIfNeeded()
+        }
     }
     
     func tableView(_ tableView: UITableView,
