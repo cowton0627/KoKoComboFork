@@ -23,6 +23,11 @@
                             <constraint firstAttribute="width" constant="40" id="1cL-z6-UE7"/>
                             <constraint firstAttribute="height" constant="40" id="MPC-Vd-Gq5"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="15"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="國國國" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXC-vI-QBC">
                         <rect key="frame" x="71" y="14" width="49" height="20"/>
