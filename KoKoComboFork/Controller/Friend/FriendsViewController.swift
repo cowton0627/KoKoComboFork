@@ -282,9 +282,14 @@ extension FriendsViewController: FriendsDetailViewControllerDelegate {
     func didStartSearching() {
         // 點選 searchbar, 畫面上推
         UIView.animate(withDuration: 0.3) {
+            if self.scenario == 3 {
+                self.invitationTableViewHeightConstraint.constant = 0
+//                self.invitationTableView.isHidden = true
+            }
             self.headerViewConstraint.constant = 0
-            self.view.layoutIfNeeded()
             self.customSegmentedView.isHidden = true
+            self.view.layoutIfNeeded()
+
         }
     }
 
@@ -292,8 +297,12 @@ extension FriendsViewController: FriendsDetailViewControllerDelegate {
         // 停止搜尋, 畫面恢復
         UIView.animate(withDuration: 0.3) {
             self.headerViewConstraint.constant = 150
-            self.view.layoutIfNeeded()
+            if self.scenario == 3 {
+                self.invitationTableViewHeightConstraint.constant = 140
+//                self.invitationTableView.isHidden = false
+            }
             self.customSegmentedView.isHidden = false
+            self.view.layoutIfNeeded()
         }
     }
 }
