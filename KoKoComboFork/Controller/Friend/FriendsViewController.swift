@@ -87,8 +87,8 @@ class FriendsViewController: UIViewController {
         
         if let scenario = scenario,
            scenario == 3 {
-//            headerViewConstraint.constant = invitationListView.frame.height + 150
-            headerViewConstraint.constant = invitationTableView.frame.height + 150
+//            headerViewConstraint.constant = invitationListView.frame.height + 120
+            headerViewConstraint.constant = invitationTableView.frame.height + 120
         }
 
     }
@@ -296,7 +296,7 @@ extension FriendsViewController: FriendsDetailViewControllerDelegate {
     func didEndSearching() {
         // 停止搜尋, 畫面恢復
         UIView.animate(withDuration: 0.3) {
-            self.headerViewConstraint.constant = 150
+            self.headerViewConstraint.constant = 120
             if self.scenario == 3 {
                 self.invitationTableViewHeightConstraint.constant = 140
 //                self.invitationTableView.isHidden = false
