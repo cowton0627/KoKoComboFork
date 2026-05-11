@@ -2,6 +2,15 @@
 
 KoKoComboFork 是一個以 UIKit 實作的 KOKO 好友頁展示專案，提供不同好友狀態情境，展示好友清單、好友邀請、搜尋與空狀態畫面。
 
+## Screenshots
+
+<p>
+  <img src="Screenshots/scenario-selection.png" width="220" alt="展示情境選擇頁">
+  <img src="Screenshots/friends-empty.png" width="220" alt="無好友畫面">
+  <img src="Screenshots/friends-list.png" width="220" alt="只有好友列表">
+  <img src="Screenshots/friends-invites.png" width="220" alt="好友列表含邀請">
+</p>
+
 ## 專案簡介
 
 這個 App 以 KOKO 好友頁為主軸，啟動後會先進入展示情境選擇頁，使用者可以切換不同資料狀態，快速查看好友頁在不同情境下的 UI 呈現。
