@@ -13,7 +13,6 @@ class FriendsViewController: UIViewController {
     // MARK: - Properties
     var scenario: Int?
     
-    private var isInvitationListExpanded: Bool = false
     private var invitationTableViewHeightConstraint: NSLayoutConstraint!
 
     private let goodFriends = "好友"
@@ -71,25 +70,21 @@ class FriendsViewController: UIViewController {
             setupInvitationTableView()
         }
         
-        viewModel.$userData.bind { userData in
+        viewModel.$userData.bind { [weak self] userData in
             DispatchQueue.main.async {
+                guard let self = self else { return }
                 self.userNameLabel.text = userData?.name
                 self.kokoIDLabel.text = userData?.kokoid
                 self.remindImgView.isHidden = true
             }
         }
         
-
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if let scenario = scenario,
-           scenario == 3 {
-//            headerViewConstraint.constant = invitationListView.frame.height + 120
-            headerViewConstraint.constant = invitationTableView.frame.height + 120
+        viewModel.$state.bind { [weak self] state in
+            DispatchQueue.main.async {
+                self?.apply(state)
+            }
         }
+        
 
     }
     
@@ -102,6 +97,15 @@ class FriendsViewController: UIViewController {
     // MARK: - Private Func
     private func setupViewModel() {
         viewModel = UserViewModel(scenario: scenario)
+    }
+    
+    private func apply(_ state: FriendsOverviewState) {
+        headerViewConstraint.constant = CGFloat(state.headerHeight)
+        customSegmentedView.isHidden = state.isSegmentedControlHidden
+        
+        if invitationTableViewHeightConstraint != nil {
+            invitationTableViewHeightConstraint.constant = CGFloat(state.invitationListHeight)
+        }
     }
     
     private func setupInvitationTableView() {
@@ -194,11 +198,7 @@ extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        isInvitationListExpanded.toggle()
-
-        invitationTableViewHeightConstraint.constant = isInvitationListExpanded
-            ? CGFloat(70) : 140
+        viewModel.toggleInvitationList()
 
         UIView.animate(withDuration: 0.3) {
             tableView.reloadData()
@@ -281,13 +281,8 @@ extension FriendsViewController: FriendsDetailViewControllerDelegate {
     
     func didStartSearching() {
         // 點選 searchbar, 畫面上推
+        viewModel.startSearching()
         UIView.animate(withDuration: 0.3) {
-            if self.scenario == 3 {
-                self.invitationTableViewHeightConstraint.constant = 0
-//                self.invitationTableView.isHidden = true
-            }
-            self.headerViewConstraint.constant = 0
-            self.customSegmentedView.isHidden = true
             self.view.layoutIfNeeded()
 
         }
@@ -295,15 +290,9 @@ extension FriendsViewController: FriendsDetailViewControllerDelegate {
 
     func didEndSearching() {
         // 停止搜尋, 畫面恢復
+        viewModel.endSearching()
         UIView.animate(withDuration: 0.3) {
-            self.headerViewConstraint.constant = 120
-            if self.scenario == 3 {
-                self.invitationTableViewHeightConstraint.constant = 140
-//                self.invitationTableView.isHidden = false
-            }
-            self.customSegmentedView.isHidden = false
             self.view.layoutIfNeeded()
         }
     }
 }
-

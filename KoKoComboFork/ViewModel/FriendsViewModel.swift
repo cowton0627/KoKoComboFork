@@ -7,6 +7,20 @@
 
 import Foundation
 
+struct FriendCellViewModel {
+    let name: String
+    let isTop: Bool
+    let showsInvitingButton: Bool
+    let showsDetailButton: Bool
+    
+    init(friend: Friend) {
+        name = friend.name
+        isTop = friend.isTop == "1"
+        showsInvitingButton = friend.status == 1
+        showsDetailButton = friend.status != 1
+    }
+}
+
 //enum APIRequestType {
 //    case noFriends
 //    case friendsList
@@ -117,5 +131,9 @@ class FriendsViewModel {
     func itemAt(_ index: Int) -> Friend {
 //        return cellItems[index]
         return filteredItems[index]
+    }
+    
+    func cellViewModel(at index: Int) -> FriendCellViewModel {
+        FriendCellViewModel(friend: itemAt(index))
     }
 }

@@ -97,18 +97,93 @@ final class FriendsViewModelTests: XCTestCase {
     
 }
 
+final class UserViewModelTests: XCTestCase {
+    
+    func testDefaultStateWithoutInvitations() {
+        let viewModel = UserViewModel(
+            scenario: 4,
+            userService: MockUserService()
+        )
+        
+        XCTAssertEqual(viewModel.state.headerHeight, 120.0)
+        XCTAssertEqual(viewModel.state.invitationListHeight, 0.0)
+        XCTAssertFalse(viewModel.state.isSegmentedControlHidden)
+    }
+    
+    func testInvitationScenarioStateTogglesInvitationList() {
+        let viewModel = UserViewModel(
+            scenario: 3,
+            userService: MockUserService()
+        )
+        
+        XCTAssertEqual(viewModel.state.headerHeight, 260.0)
+        XCTAssertEqual(viewModel.state.invitationListHeight, 140.0)
+        
+        viewModel.toggleInvitationList()
+        
+        XCTAssertEqual(viewModel.state.headerHeight, 190.0)
+        XCTAssertEqual(viewModel.state.invitationListHeight, 70.0)
+    }
+    
+    func testSearchStateCollapsesHeaderAndRestoresIdleState() {
+        let viewModel = UserViewModel(
+            scenario: 3,
+            userService: MockUserService()
+        )
+        
+        viewModel.startSearching()
+        
+        XCTAssertEqual(viewModel.state.headerHeight, 0.0)
+        XCTAssertEqual(viewModel.state.invitationListHeight, 0.0)
+        XCTAssertTrue(viewModel.state.isSegmentedControlHidden)
+        
+        viewModel.endSearching()
+        
+        XCTAssertEqual(viewModel.state.headerHeight, 260.0)
+        XCTAssertEqual(viewModel.state.invitationListHeight, 140.0)
+        XCTAssertFalse(viewModel.state.isSegmentedControlHidden)
+    }
+    
+    func testInjectedUserServiceUpdatesUserData() {
+        let service = MockUserService(
+            userResponse: GetUserDataResponse(response: [
+                UserData(name: "Injected User", kokoid: "tester")
+            ])
+        )
+        let viewModel = UserViewModel(
+            scenario: 4,
+            userService: service
+        )
+        let expectation = XCTestExpectation(description: "User data loaded")
+        
+        viewModel.$userData.bind { userData in
+            if userData?.name == "Injected User" {
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(viewModel.userData?.kokoid, "KOKO ID：tester 〉")
+    }
+}
+
 private final class MockUserService: UserServicing {
     
+    private let userResponse: GetUserDataResponse
     private let friendsResponses: [Int: GetFriendsResponse]
     
-    init(friendsResponses: [Int: GetFriendsResponse]) {
+    init(
+        userResponse: GetUserDataResponse = GetUserDataResponse(response: [
+            UserData(name: "Mock User", kokoid: "mockid")
+        ]),
+        friendsResponses: [Int: GetFriendsResponse] = [:]
+    ) {
+        self.userResponse = userResponse
         self.friendsResponses = friendsResponses
     }
     
     func getUserData(token: String?) async throws -> GetUserDataResponse {
-        GetUserDataResponse(response: [
-            UserData(name: "Mock User", kokoid: "mockid")
-        ])
+        userResponse
     }
     
     func getFriendsData(token: String?, scenario: Int) async throws -> GetFriendsResponse {

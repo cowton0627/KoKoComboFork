@@ -42,6 +42,18 @@ KoKoComboFork 是一個以 UIKit 實作的 KOKO 好友頁展示專案，提供�
 - 自訂 View、Button、Segmented Control、Tab Bar
 - XCTest 單元測試
 
+## Architecture
+
+專案採用 UIKit + MVVM 的分層方向：
+
+- `Controller`：負責 UIKit lifecycle、navigation、binding ViewModel output、套用畫面狀態
+- `ViewModel`：負責資料請求、好友資料合併、搜尋篩選、cell display model、部分畫面狀態
+- `Network`：封裝 API endpoint、request、response decode 與 service protocol
+- `Model`：放置 API response 與 domain model
+- `View`：放置 storyboard、xib、custom view 與 table view cell
+
+目前 ViewModel 透過 `UserServicing` 注入資料服務，方便使用 mock service 撰寫單元測試。好友列表 cell 也改由 `FriendCellViewModel` 提供顯示資料，降低 cell 對 domain model 與上層 ViewModel 的耦合。
+
 ## 資料來源
 
 專案使用公開 JSON 作為展示資料：

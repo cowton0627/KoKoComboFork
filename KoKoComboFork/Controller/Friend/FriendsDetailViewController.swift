@@ -54,7 +54,8 @@ class FriendsDetailViewController: UIViewController {
         }
         
         // 當初次 Item 改變時, 調整呈現的 View
-        viewModel.$cellItems.bind { _ in
+        viewModel.$cellItems.bind { [weak self] _ in
+            guard let self = self else { return }
             let item = self.viewModel.cellItems            
             self.setupViews(isEmpty: item.isEmpty)
             
@@ -62,8 +63,8 @@ class FriendsDetailViewController: UIViewController {
         }
         
         // 當篩選 Item 改變時, 重整 Table View
-        viewModel.$filteredItems.bind { _ in
-            self.reloadTableView()
+        viewModel.$filteredItems.bind { [weak self] _ in
+            self?.reloadTableView()
         }
         
         // 設置下拉刷新
@@ -174,7 +175,7 @@ extension FriendsDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, 
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withClass: FriendsTableViewCell.self, for: indexPath)
-        cell.configure(with: viewModel, at: indexPath.row)
+        cell.configure(with: viewModel.cellViewModel(at: indexPath.row))
         
         return cell
     }
@@ -215,4 +216,3 @@ extension FriendsDetailViewController: UISearchBarDelegate {
     }
     
 }
-

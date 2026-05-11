@@ -7,11 +7,29 @@
 
 import Foundation
 
+struct FriendsOverviewState {
+    let headerHeight: Double
+    let invitationListHeight: Double
+    let isSegmentedControlHidden: Bool
+}
 
 class UserViewModel {
+    
+    private let userService: UserServicing
+    private let hasInvitations: Bool
+    private var isInvitationListExpanded = false
+    
+    private let expandedInvitationListHeight = 140.0
+    private let collapsedInvitationListHeight = 70.0
+    private let baseHeaderHeight = 120.0
 
     // Output
     @Boxed var userData: UserData?
+    @Boxed var state = FriendsOverviewState(
+        headerHeight: 120.0,
+        invitationListHeight: 0.0,
+        isSegmentedControlHidden: false
+    )
 //    @Boxed var userName: String = ""
 //    @Boxed var kokoID: String = ""
 //    @Boxed var isInvitationViewHidden: Bool = true
@@ -20,8 +38,12 @@ class UserViewModel {
     // Input
     private var selectedSegmentIndex: Int = 0
     
-    init(scenario: Int?) {
+    init(scenario: Int?,
+         userService: UserServicing = UserService.shared) {
+        self.userService = userService
+        self.hasInvitations = scenario == 3
 //        self.isInvitationViewHidden = scenario != 3
+        updateStateForIdleMode()
         retrieveUserData()
         fetchFriendsData()
     }
@@ -45,7 +67,7 @@ class UserViewModel {
     private func retrieveUserData() {
         Task {
             do {
-                let resp = try await UserService.shared.getUserData()
+                let resp = try await userService.getUserData()
                 print(resp)
 
                 if let userResp = resp.response?.first {
@@ -76,6 +98,35 @@ class UserViewModel {
     func itemAt(_ index: Int) -> Friend {
         return friendsList[index]
     }
+    
+    func toggleInvitationList() {
+        guard hasInvitations else { return }
+        isInvitationListExpanded.toggle()
+        updateStateForIdleMode()
+    }
+    
+    func startSearching() {
+        state = FriendsOverviewState(
+            headerHeight: 0.0,
+            invitationListHeight: 0.0,
+            isSegmentedControlHidden: true
+        )
+    }
+    
+    func endSearching() {
+        updateStateForIdleMode()
+    }
+    
+    private func updateStateForIdleMode() {
+        let invitationHeight = hasInvitations
+            ? (isInvitationListExpanded ? collapsedInvitationListHeight : expandedInvitationListHeight)
+            : 0.0
+        
+        state = FriendsOverviewState(
+            headerHeight: baseHeaderHeight + invitationHeight,
+            invitationListHeight: invitationHeight,
+            isSegmentedControlHidden: false
+        )
+    }
 
 }
-

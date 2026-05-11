@@ -20,39 +20,12 @@ class FriendsTableViewCell: UITableViewCell {
     @IBOutlet weak var invitingButton: CustomInvitingButton!
     @IBOutlet weak var detailButton: UIButton!
     
-    func configure(with viewModel: FriendsViewModel, at index: Int) {
-        let item = viewModel.itemAt(index)
-        
-        
-        switch item.isTop {
-        case "0":
-            isTopImgView.image = UIImage()
-        case "1":
-            isTopImgView.image = icFriendsStar
-        default:
-            isTopImgView.image = UIImage()
-        }
-        
+    func configure(with viewModel: FriendCellViewModel) {
+        isTopImgView.image = viewModel.isTop ? icFriendsStar : nil
         avatarImgView.image = imgFriendsList
-        nameLabel.text = item.name
-        
-        let doneBool: Bool?
-        switch item.status {
-        case 0:
-            doneBool = false
-        case 1:
-            doneBool = true
-        case 2:
-            doneBool = false
-        default:
-            doneBool = false
-        }
-        
-        if let doneBool = doneBool {
-            invitingButton.isHidden = !doneBool
-            detailButton.isHidden = doneBool
-        }
-
+        nameLabel.text = viewModel.name
+        invitingButton.isHidden = !viewModel.showsInvitingButton
+        detailButton.isHidden = !viewModel.showsDetailButton
     }
     
     override func awakeFromNib() {
