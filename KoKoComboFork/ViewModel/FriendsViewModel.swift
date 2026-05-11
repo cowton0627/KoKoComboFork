@@ -15,23 +15,27 @@ import Foundation
 
 class FriendsViewModel {
     
+    private let userService: UserServicing
     
     @Boxed var cellItems: [Friend] = []
     @Boxed var filteredItems: [Friend] = [] // 篩選後資料
 
+    init(userService: UserServicing = UserService.shared) {
+        self.userService = userService
+    }
     
     func retrieveCellItems(completion: @escaping () -> Void, scenario: Int) {
         if scenario == 1 {
             Task {
                 do {
-                    let resp1 = try await UserService.shared.getFriendsData(scenario: 1)
-                    let resp2 = try await UserService.shared.getFriendsData(scenario: 2)
+                    let resp1 = try await userService.getFriendsData(scenario: 1)
+                    let resp2 = try await userService.getFriendsData(scenario: 2)
                     
                     print(resp1)
                     print(resp2)
                     
                     let mergedItems =
-                    self.mergeRedundant(resp1.response ?? [], resp1.response ?? [])
+                    self.mergeRedundant(resp1.response ?? [], resp2.response ?? [])
 
                     cellItems = mergedItems
                     filteredItems = mergedItems // 初始化為完整數據
@@ -43,7 +47,7 @@ class FriendsViewModel {
         } else {
             Task {
                 do {
-                    let resp = try await UserService.shared.getFriendsData(scenario: scenario)
+                    let resp = try await userService.getFriendsData(scenario: scenario)
                     
                     print(resp)
 
@@ -115,4 +119,3 @@ class FriendsViewModel {
         return filteredItems[index]
     }
 }
-

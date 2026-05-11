@@ -28,7 +28,7 @@ class APIService {
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         
         if let token = token {
-            urlRequest.addValue("Bearer \(token)", forHTTPHeaderField: "Authorzation")
+            urlRequest.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
         let encoder = JSONEncoder()

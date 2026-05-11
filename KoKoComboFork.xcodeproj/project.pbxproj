@@ -44,7 +44,18 @@
 		917E26D42CECCA5A000AACA4 /* CustomSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */; };
 		917E26FD2CEF20A1000AACA4 /* InvitationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */; };
 		917E26FE2CEF20A1000AACA4 /* InvitationListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */; };
+		917E270A2CF03A74000AACA4 /* KoKoComboForkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E27092CF03A74000AACA4 /* KoKoComboForkTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		917E270B2CF03A74000AACA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 917E26682CDA0594000AACA4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 917E266F2CDA0594000AACA4;
+			remoteInfo = KoKoComboFork;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		917E26702CDA0594000AACA4 /* KoKoComboFork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoKoComboFork.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,10 +97,19 @@
 		917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedView.swift; sourceTree = "<group>"; };
 		917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationListTableViewCell.swift; sourceTree = "<group>"; };
 		917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationListTableViewCell.xib; sourceTree = "<group>"; };
+		917E27072CF03A74000AACA4 /* KoKoComboForkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoKoComboForkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		917E27092CF03A74000AACA4 /* KoKoComboForkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoKoComboForkTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		917E266D2CDA0594000AACA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		917E27042CF03A74000AACA4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -103,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				917E26722CDA0594000AACA4 /* KoKoComboFork */,
+				917E27082CF03A74000AACA4 /* KoKoComboForkTests */,
 				917E26712CDA0594000AACA4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -111,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				917E26702CDA0594000AACA4 /* KoKoComboFork.app */,
+				917E27072CF03A74000AACA4 /* KoKoComboForkTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -280,6 +302,14 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		917E27082CF03A74000AACA4 /* KoKoComboForkTests */ = {
+			isa = PBXGroup;
+			children = (
+				917E27092CF03A74000AACA4 /* KoKoComboForkTests.swift */,
+			);
+			path = KoKoComboForkTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -300,6 +330,24 @@
 			productReference = 917E26702CDA0594000AACA4 /* KoKoComboFork.app */;
 			productType = "com.apple.product-type.application";
 		};
+		917E27062CF03A74000AACA4 /* KoKoComboForkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 917E270D2CF03A74000AACA4 /* Build configuration list for PBXNativeTarget "KoKoComboForkTests" */;
+			buildPhases = (
+				917E27032CF03A74000AACA4 /* Sources */,
+				917E27042CF03A74000AACA4 /* Frameworks */,
+				917E27052CF03A74000AACA4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				917E270C2CF03A74000AACA4 /* PBXTargetDependency */,
+			);
+			name = KoKoComboForkTests;
+			productName = KoKoComboForkTests;
+			productReference = 917E27072CF03A74000AACA4 /* KoKoComboForkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -312,6 +360,10 @@
 				TargetAttributes = {
 					917E266F2CDA0594000AACA4 = {
 						CreatedOnToolsVersion = 15.2;
+					};
+					917E27062CF03A74000AACA4 = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = 917E266F2CDA0594000AACA4;
 					};
 				};
 			};
@@ -329,6 +381,7 @@
 			projectRoot = "";
 			targets = (
 				917E266F2CDA0594000AACA4 /* KoKoComboFork */,
+				917E27062CF03A74000AACA4 /* KoKoComboForkTests */,
 			);
 		};
 /* End PBXProject section */
@@ -344,6 +397,13 @@
 				917E267D2CDA0596000AACA4 /* Assets.xcassets in Resources */,
 				917E26FE2CEF20A1000AACA4 /* InvitationListTableViewCell.xib in Resources */,
 				917E267B2CDA0594000AACA4 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		917E27052CF03A74000AACA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +448,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		917E27032CF03A74000AACA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				917E270A2CF03A74000AACA4 /* KoKoComboForkTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		917E270C2CF03A74000AACA4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 917E266F2CDA0594000AACA4 /* KoKoComboFork */;
+			targetProxy = 917E270B2CF03A74000AACA4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		917E26792CDA0594000AACA4 /* Main.storyboard */ = {
@@ -587,6 +663,44 @@
 			};
 			name = Release;
 		};
+		917E270E2CF03A74000AACA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.KoKoComboForkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoKoComboFork.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KoKoComboFork";
+			};
+			name = Debug;
+		};
+		917E270F2CF03A74000AACA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.KoKoComboForkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoKoComboFork.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KoKoComboFork";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -604,6 +718,15 @@
 			buildConfigurations = (
 				917E26852CDA0596000AACA4 /* Debug */,
 				917E26862CDA0596000AACA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		917E270D2CF03A74000AACA4 /* Build configuration list for PBXNativeTarget "KoKoComboForkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				917E270E2CF03A74000AACA4 /* Debug */,
+				917E270F2CF03A74000AACA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

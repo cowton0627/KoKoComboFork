@@ -30,9 +30,12 @@ class CustomTabBarController: UITabBarController {
     private let setting = "設定"
     
     var scenario: Int?
+    private var returnButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()        
+        delegate = self
+        
         // 未選的文字顏色
         UITabBarItem.appearance().setTitleTextAttributes(
             [.foregroundColor: UIColor.gray],
@@ -88,6 +91,7 @@ class CustomTabBarController: UITabBarController {
         self.viewControllers = [mainVC, navC, homeVC, manageVC, settingsVC]
         
         self.selectedIndex = 1
+        setupReturnButton()
     }
     
     private func createViewController(message: String,
@@ -107,4 +111,82 @@ class CustomTabBarController: UITabBarController {
         
         return vc
     }
+    
+    private func setupReturnButton() {
+        returnButton = UIButton(type: .system)
+        returnButton.translatesAutoresizingMaskIntoConstraints = false
+        returnButton.addTarget(self,
+                               action: #selector(returnButtonTapped),
+                               for: .touchUpInside)
+        
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.tinted()
+            config.baseForegroundColor = .mainPeach
+            config.baseBackgroundColor = .white
+            config.cornerStyle = .capsule
+            config.image = UIImage(systemName: "chevron.left")
+            config.imagePadding = 6
+            config.title = "返回情境"
+            config.contentInsets = NSDirectionalEdgeInsets(
+                top: 8,
+                leading: 12,
+                bottom: 8,
+                trailing: 14
+            )
+            returnButton.configuration = config
+        } else {
+            returnButton.setTitle("返回情境", for: .normal)
+            returnButton.setTitleColor(.mainPeach, for: .normal)
+            returnButton.backgroundColor = .white
+            returnButton.layer.cornerRadius = 18
+            returnButton.contentEdgeInsets = UIEdgeInsets(
+                top: 8,
+                left: 12,
+                bottom: 8,
+                right: 14
+            )
+        }
+        
+        returnButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
+        returnButton.layer.shadowColor = UIColor.black.cgColor
+        returnButton.layer.shadowOpacity = 0.12
+        returnButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        returnButton.layer.shadowRadius = 8
+        
+        view.addSubview(returnButton)
+        
+        NSLayoutConstraint.activate([
+            returnButton.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            returnButton.bottomAnchor.constraint(
+                equalTo: tabBar.topAnchor, constant: -12)
+        ])
+    }
+    
+    @objc
+    private func returnButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+extension CustomTabBarController: UITabBarControllerDelegate {
+    
+    func tabBarController(_ tabBarController: UITabBarController,
+                          shouldSelect viewController: UIViewController) -> Bool {
+        guard selectedViewController !== viewController else { return false }
+        
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        let animationsWereEnabled = UIView.areAnimationsEnabled
+        UIView.setAnimationsEnabled(false)
+        UIView.performWithoutAnimation {
+            selectedViewController = viewController
+            tabBar.layoutIfNeeded()
+        }
+        UIView.setAnimationsEnabled(animationsWereEnabled)
+        CATransaction.commit()
+        
+        return false
+    }
+    
 }

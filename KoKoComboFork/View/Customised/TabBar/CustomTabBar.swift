@@ -23,6 +23,7 @@ class CustomTabBar: UITabBar {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        normalizeTabBarButtons()
     }
             
     override func draw(_ rect: CGRect) {
@@ -43,6 +44,31 @@ class CustomTabBar: UITabBar {
         }
 
         self.shapeLayer = shapeLayer
+    }
+    
+    private func normalizeTabBarButtons() {
+        let tabBarButtons = subviews
+            .compactMap { $0 as? UIControl }
+            .sorted { $0.frame.minX < $1.frame.minX }
+        
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        
+        tabBarButtons.enumerated().forEach { index, button in
+            button.layer.removeAllAnimations()
+            button.backgroundColor = .clear
+            
+            button.subviews.forEach {
+                $0.layer.removeAllAnimations()
+                $0.backgroundColor = .clear
+            }
+            
+            if index == tabBarButtons.count / 2 {
+                button.isUserInteractionEnabled = false
+            }
+        }
+        
+        CATransaction.commit()
     }
 
     // 描出特殊 Tab Bar 形狀
@@ -91,4 +117,3 @@ class CustomTabBar: UITabBar {
 //        return super.hitTest(point, with: event)
 //    }
 }
-

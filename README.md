@@ -1,0 +1,108 @@
+# KoKoComboFork
+
+KoKoComboFork 是一個以 UIKit 實作的 KOKO 好友頁展示專案，提供不同好友狀態情境，展示好友清單、好友邀請、搜尋與空狀態畫面。
+
+## 專案簡介
+
+這個 App 以 KOKO 好友頁為主軸，啟動後會先進入展示情境選擇頁，使用者可以切換不同資料狀態，快速查看好友頁在不同情境下的 UI 呈現。
+
+目前支援三種展示情境：
+
+- 無好友畫面
+- 只有好友列表
+- 好友列表含邀請
+
+## 主要功能
+
+- 展示情境選擇頁
+- KOKO 好友主頁 UI
+- 好友列表與空狀態切換
+- 好友邀請列表顯示與收合
+- 好友搜尋與即時篩選
+- 下拉重新整理好友資料
+- 自訂 Tab Bar 外觀
+- 情境頁與主頁之間可返回切換，方便展示
+
+## 技術內容
+
+- Swift 5
+- UIKit
+- Storyboard / XIB
+- MVVM 基本分層
+- URLSession async/await API 請求
+- 自訂 View、Button、Segmented Control、Tab Bar
+- XCTest 單元測試
+
+## 資料來源
+
+專案使用公開 JSON 作為展示資料：
+
+- `man.json`
+- `friend1.json`
+- `friend2.json`
+- `friend3.json`
+- `friend4.json`
+
+API root endpoint：
+
+```text
+https://dimanyen.github.io/
+```
+
+## 專案結構
+
+```text
+KoKoComboFork/
+├── Controller/
+│   ├── Friend/
+│   ├── Main/
+│   ├── MainTabBarController/
+│   └── Scenario/
+├── Model/
+├── Network/
+├── View/
+│   ├── Customised/
+│   └── TableViewCell/
+├── ViewModel/
+├── Extension/
+└── Assets.xcassets/
+```
+
+## 執行環境
+
+- Xcode 16 或以上
+- iOS 16.0 或以上
+- Swift 5
+
+## 如何執行
+
+1. 開啟 `KoKoComboFork.xcodeproj`
+2. 選擇 iOS Simulator
+3. 執行 `KoKoComboFork` scheme
+
+建議使用較新的 iPhone Simulator，例如：
+
+```text
+iPhone 17 Pro Max
+```
+
+## 測試
+
+可以透過 Xcode Test，或使用指令執行：
+
+```bash
+xcodebuild test \
+  -project KoKoComboFork.xcodeproj \
+  -scheme KoKoComboFork \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,OS=26.4.1'
+```
+
+目前測試涵蓋：
+
+- 好友清單情境資料載入
+- 好友資料合併邏輯
+- 搜尋篩選邏輯
+
+## 備註
+
+此專案主要作為 UI 與資料狀態展示用途，並非完整金融服務 App。畫面、資料與操作流程皆以展示 KOKO 好友頁情境為主。
