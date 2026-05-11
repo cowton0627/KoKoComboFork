@@ -139,6 +139,10 @@ xcodebuild test \
 - 展示資料 (`man.json`、`friend1~4.json`) 來自公開的面試題測資 `https://dimanyen.github.io/`，並非真實使用者資料。
 - 若任何權利人認為內容有侵權疑慮，請來信告知，我會立即下架對應內容。
 
+## Privacy
+
+本 App 不會蒐集任何個人資料、不接觸任何雲端服務、不整合任何分析 SDK，僅在執行期間讀取公開的展示用 JSON。完整說明請見 [PRIVACY.md](./PRIVACY.md)。
+
 ## License
 
-本專案以 [MIT License](./LICENSE) 釋出。
+本專案以 [MIT License](./LICENSE) 釋出。第三方相依與授權彙整請見 [THIRD_PARTY_LICENSES.md](./THIRD_PARTY_LICENSES.md)（目前無第三方相依）。
