@@ -86,6 +86,7 @@ KoKoComboFork/
 │   └── TableViewCell/
 ├── ViewModel/
 ├── Extension/
+├── Helper/
 └── Assets.xcassets/
 ```
 
@@ -133,7 +134,7 @@ xcodebuild test \
 - 「KOKO」為國泰世華商業銀行旗下品牌，本專案與其官方並無任何關聯，也非該品牌之官方產品。
 - 專案中的 UI 佈局、icon、配色僅為仿照原 App 介面進行 UI 練習，所有商標、品牌名稱與設計版權皆屬原權利人所有。
 - 展示資料 (`man.json`、`friend1~4.json`) 來自公開的面試題測資 `https://dimanyen.github.io/`，並非真實使用者資料。
-- 若任何權利人認為內容有侵權疑慮，請來信告知，我會立即下架對應內容。
+- 若任何權利人認為內容有侵權疑慮，請透過此 repo 的 [issues](https://github.com/cowton0627/KoKoComboFork/issues) 反映，我會立即下架對應內容。
 
 ## Privacy
 
