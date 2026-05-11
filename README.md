@@ -107,6 +107,8 @@ KoKoComboFork/
 iPhone 17 Pro Max
 ```
 
+> Signing 設定：專案的 `DEVELOPMENT_TEAM` 預設為空、bundle identifier 使用中性的 `com.example.*`，方便 clone 後直接在 Simulator 跑。如果要跑真機，請到 **Signing & Capabilities** 選擇自己的 Apple Developer team，並視需要改 bundle identifier。
+
 ## 測試
 
 可以透過 Xcode Test，或使用指令執行：
