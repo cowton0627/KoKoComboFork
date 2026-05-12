@@ -22,7 +22,7 @@ class APIService {
                               body: APIBody? = nil,
                               token: String? = nil) async throws -> T {
         
-        var urlRequest = URLRequest(url: URL(string: "\(request.url)")!)
+        var urlRequest = URLRequest(url: request.url)
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -51,7 +51,7 @@ class APIService {
 //    func send<T: APIResponse>(request: APIRequest, 
 //                              token: String? = nil) async throws -> T {
 //        
-//        var urlRequest = URLRequest(url: URL(string: "\(request.url)")!)
+//        var urlRequest = URLRequest(url: request.url)
 //        urlRequest.httpMethod = request.method.rawValue
 //        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
 //        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")

@@ -83,7 +83,7 @@ class FriendsViewModel {
         if searchText.isEmpty {
             filteredItems = cellItems   // 顯示所有數據
         } else {
-            filteredItems = cellItems.filter { $0.name.contains(searchText) }
+            filteredItems = cellItems.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
     
