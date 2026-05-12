@@ -94,7 +94,29 @@ final class FriendsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.filteredItems.count, 1)
         XCTAssertEqual(viewModel.filteredItems.first?.name, "Alice")
     }
-    
+
+    func testFilterItemsIsCaseInsensitive() {
+        let service = MockUserService(
+            friendsResponses: [
+                2: GetFriendsResponse(response: [
+                    Friend(name: "Alice", status: 1, isTop: "0", fid: "001", updateDate: "2023/01/01"),
+                    Friend(name: "Bob", status: 1, isTop: "0", fid: "002", updateDate: "2023/01/01")
+                ])
+            ]
+        )
+        let viewModel = FriendsViewModel(userService: service)
+        let expectation = XCTestExpectation(description: "Retrieve friends list")
+        viewModel.retrieveCellItems(completion: {
+            expectation.fulfill()
+        }, scenario: 2)
+        wait(for: [expectation], timeout: 1.0)
+
+        viewModel.filterItems(with: "alice")
+
+        XCTAssertEqual(viewModel.filteredItems.count, 1)
+        XCTAssertEqual(viewModel.filteredItems.first?.name, "Alice")
+    }
+
 }
 
 final class UserViewModelTests: XCTestCase {
@@ -189,5 +211,114 @@ private final class MockUserService: UserServicing {
     func getFriendsData(token: String?, scenario: Int) async throws -> GetFriendsResponse {
         friendsResponses[scenario] ?? GetFriendsResponse(response: [])
     }
-    
+
+}
+
+// MARK: - FriendCellViewModel
+
+final class FriendCellViewModelTests: XCTestCase {
+
+    func testStatusOneShowsInvitingButtonNotDetail() {
+        let friend = Friend(name: "X", status: 1, isTop: "0", fid: "1", updateDate: "")
+        let cellViewModel = FriendCellViewModel(friend: friend)
+
+        XCTAssertTrue(cellViewModel.showsInvitingButton)
+        XCTAssertFalse(cellViewModel.showsDetailButton)
+    }
+
+    func testStatusOtherShowsDetailButtonNotInviting() {
+        let friend = Friend(name: "X", status: 2, isTop: "0", fid: "1", updateDate: "")
+        let cellViewModel = FriendCellViewModel(friend: friend)
+
+        XCTAssertFalse(cellViewModel.showsInvitingButton)
+        XCTAssertTrue(cellViewModel.showsDetailButton)
+    }
+
+    func testIsTopStringOneMapsToTrue() {
+        let friend = Friend(name: "X", status: 1, isTop: "1", fid: "1", updateDate: "")
+        let cellViewModel = FriendCellViewModel(friend: friend)
+
+        XCTAssertTrue(cellViewModel.isTop)
+    }
+
+    func testIsTopStringZeroMapsToFalse() {
+        let friend = Friend(name: "X", status: 1, isTop: "0", fid: "1", updateDate: "")
+        let cellViewModel = FriendCellViewModel(friend: friend)
+
+        XCTAssertFalse(cellViewModel.isTop)
+    }
+
+    func testNamePassesThrough() {
+        let friend = Friend(name: "Alice", status: 1, isTop: "0", fid: "1", updateDate: "")
+        let cellViewModel = FriendCellViewModel(friend: friend)
+
+        XCTAssertEqual(cellViewModel.name, "Alice")
+    }
+
+}
+
+// MARK: - Boxed<T>
+
+final class BoxedTests: XCTestCase {
+
+    private final class Container {
+        @Boxed var value: Int = 0
+    }
+
+    func testBindReceivesCurrentValueImmediately() {
+        let container = Container()
+        container.value = 5
+        var received: Int?
+
+        container.$value.bind { received = $0 }
+
+        XCTAssertEqual(received, 5)
+    }
+
+    func testDidSetNotifiesAllListeners() {
+        let container = Container()
+        var listenerA: Int?
+        var listenerB: Int?
+        container.$value.bind { listenerA = $0 }
+        container.$value.bind { listenerB = $0 }
+
+        container.value = 42
+
+        XCTAssertEqual(listenerA, 42)
+        XCTAssertEqual(listenerB, 42)
+    }
+
+    func testEveryUpdatePropagatesToListener() {
+        let container = Container()
+        var received: [Int] = []
+        container.$value.bind { received.append($0) }
+
+        container.value = 1
+        container.value = 2
+        container.value = 3
+
+        // bind 訂閱時先收 0，再依序收 1、2、3
+        XCTAssertEqual(received, [0, 1, 2, 3])
+    }
+
+}
+
+// MARK: - KoKoAPI.Endpoint
+
+final class KoKoAPIEndpointTests: XCTestCase {
+
+    func testGetUserDataURL() {
+        XCTAssertEqual(
+            KoKoAPI.Endpoint.getUserData.urlString,
+            "https://dimanyen.github.io/man.json"
+        )
+    }
+
+    func testGetFriendsDataURLEmbedsScenarioNumber() {
+        XCTAssertEqual(
+            KoKoAPI.Endpoint.getFriendsData(scenario: 3).urlString,
+            "https://dimanyen.github.io/friend3.json"
+        )
+    }
+
 }
