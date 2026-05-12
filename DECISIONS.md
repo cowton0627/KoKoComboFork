@@ -100,3 +100,37 @@ Production 端用 default 拿單例、測試端傳入 `MockUserService`。
 
 - Storyboard 的 segue / `customClass` 是 magic string，不像純 code UI 能編譯期防錯。
 - Multi-developer 同時編輯 storyboard 容易產生難 merge 的 XML 衝突；單人專案不是問題。
+
+---
+
+## Known Limitations
+
+以下是專案目前**已知但尚未處理**的缺陷與限制。記在這裡是為了誠實揭露現狀，並標示未來迭代時優先處理的方向。
+
+### UX / 功能面
+
+- **沒有使用者可見的 error UI**。`APIService` 失敗時只 `print(error)`，畫面不會出 alert / toast，使用者只會看到永久的等待狀態。最低限度應該補一個 `UIAlertController` 彈窗 + 「重試」按鈕。
+- **沒有 loading indicator**。fetch 期間畫面靜止無回饋，使用者無法判斷是斷網還是還在跑。
+- **主好友頁（`FriendsViewController`）沒有 pull-to-refresh**。`UIRefreshControl` 目前只接在 `FriendsDetailViewController`，README 宣稱有的「下拉重新整理」在主畫面其實沒做。
+- **`UserViewModel.fetchFriendsData()` 是 hardcoded 假資料**（寫死兩筆假人名），沒有實際呼叫 service。是下方「程式碼結構」議題的一部分。
+
+### 程式碼結構
+
+- **兩個 ViewModel 對「friend list」職責切分不清**。`FriendsViewModel` 透過 `UserServicing` 真的 fetch；`UserViewModel` 自己 hardcode 一份。應該整併或明確分工（例如 `UserViewModel` 只管畫面狀態與使用者資料、`FriendsViewModel` 管列表資料）。
+- **約 200+ 行注解掉的 dead code 散落多處**（`View/Customised/InvitationListView.swift`、`View/Customised/CustomSegmentedView.swift`、`Network/APIService.swift` 的 alternate `send` 實作、`ViewModel/UserViewModel.swift` 早期版本等）。屬迭代過程留下的痕跡，應該清掉。
+- **~30 處 debug `print()`** 散在 ViewModel / Controller / APIService。沒走 `OSLog` 或統一 logger，release build 也會印。
+
+### 工程實踐
+
+- **沒有 CI**。`.github/workflows/` 不存在，PR 不會自動跑 `xcodebuild test`，全靠手動執行。
+- **沒有 SwiftLint / SwiftFormat 設定**。風格一致性目前只靠人眼。
+- **沒做 Dark Mode 適配**。沒有任何 `traitCollection` / `overrideUserInterfaceStyle` 處理，深色模式下顏色可能不正確。
+- **沒有 accessibility 標籤**。`accessibilityLabel` / `accessibilityIdentifier` 0 hits，VoiceOver 體驗差。
+
+### 部署 / Signing
+
+- **`DEVELOPMENT_TEAM` 仍寫在 `project.pbxproj`**（目前為空字串）。若未來在 Xcode 內選了開發者 team，Xcode 會把 team ID 寫回 pbxproj，再次 commit 就可能洩漏到公開 history。**未來會做的**：把 signing 設定拉出至 gitignored 的 `Config/Signing.local.xcconfig`，pbxproj 永遠不持 team / bundle id。
+
+### Reactive binding
+
+- 搜尋 debounce 與未來潛在的 Combine 遷移，理由與權衡記於上方「用自製 `Boxed<T>` 取代 RxSwift / Combine」段。
