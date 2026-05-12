@@ -54,6 +54,12 @@ KoKoComboFork 是一個以 UIKit 實作的 KOKO 好友頁展示專案，提供�
 
 目前 ViewModel 透過 `UserServicing` 注入資料服務，方便使用 mock service 撰寫單元測試。好友列表 cell 也改由 `FriendCellViewModel` 提供顯示資料，降低 cell 對 domain model 與上層 ViewModel 的耦合。
 
+畫面綁定採用自製的 `Boxed<T>` property wrapper（`Helper/Boxed.swift`，約 25 行的 minimal observable），刻意不引入 RxSwift 或 Combine，維持零第三方相依。Controller 端使用 `viewModel.$state.bind { ... }` 訂閱變化。
+
+會一起變化的多個 UI 屬性（如 header 高度、邀請列表高度、segmented 顯隱）統一用 `FriendsOverviewState` struct 包成單一 state，透過一個 `@Boxed` 發射，避免欄位之間出現暫態不同步。
+
+設計選擇的完整理由請見 [DECISIONS.md](./DECISIONS.md)。
+
 ## 資料來源
 
 專案使用公開 JSON 作為展示資料：
