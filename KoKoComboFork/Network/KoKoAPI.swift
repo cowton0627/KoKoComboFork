@@ -9,7 +9,7 @@ import Foundation
 
 struct KoKoAPI {
     
-    static var rootEndpoint: String { "https://dimanyen.github.io/" }
+    static var rootEndpoint: String { "https://cowton-apis.github.io/koko/" }
     
     /// Senario
     /// - 1：好友列表一，status 有 0、1、2

@@ -310,14 +310,14 @@ final class KoKoAPIEndpointTests: XCTestCase {
     func testGetUserDataURL() {
         XCTAssertEqual(
             KoKoAPI.Endpoint.getUserData.urlString,
-            "https://dimanyen.github.io/man.json"
+            "https://cowton-apis.github.io/koko/man.json"
         )
     }
 
     func testGetFriendsDataURLEmbedsScenarioNumber() {
         XCTAssertEqual(
             KoKoAPI.Endpoint.getFriendsData(scenario: 3).urlString,
-            "https://dimanyen.github.io/friend3.json"
+            "https://cowton-apis.github.io/koko/friend3.json"
         )
     }
 
