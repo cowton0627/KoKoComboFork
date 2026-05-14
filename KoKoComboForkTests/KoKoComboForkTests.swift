@@ -276,12 +276,12 @@ final class FriendCellViewModelTests: XCTestCase {
         XCTAssertFalse(cellViewModel.showsInvitingButton)
     }
 
-    func testStatusTwoShowsOnlyInvitingButton() {
+    func testStatusTwoShowsTransferAndInvitingButtons() {
         let friend = Friend(name: "X", status: 2, isTop: "0", fid: "1", updateDate: "")
         let cellViewModel = FriendCellViewModel(friend: friend)
 
+        XCTAssertTrue(cellViewModel.showsTransferButton)
         XCTAssertTrue(cellViewModel.showsInvitingButton)
-        XCTAssertFalse(cellViewModel.showsTransferButton)
         XCTAssertFalse(cellViewModel.showsDetailButton)
     }
 

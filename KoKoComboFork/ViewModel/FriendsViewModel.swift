@@ -24,9 +24,10 @@ struct FriendCellViewModel {
     init(friend: Friend) {
         name = friend.name
         isTop = friend.isTop == "1"
-        // status 1: 好友 → 可轉帳 + ...
-        // status 2: 你邀請中 (待對方回應) → 只顯示「邀請中」
-        showsTransferButton = friend.status == 1
+        // status 1: 好友 → 轉帳 + ...
+        // status 2: 你邀請中 (待對方確認) → 轉帳 + 邀請中
+        // 對方確認後 status 2 → 1, 邀請中 自動消失
+        showsTransferButton = friend.status != 0
         showsInvitingButton = friend.status == 2
         showsDetailButton = friend.status == 1
     }
