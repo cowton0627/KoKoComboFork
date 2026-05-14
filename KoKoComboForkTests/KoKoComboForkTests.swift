@@ -342,6 +342,52 @@ final class BoxedTests: XCTestCase {
         XCTAssertEqual(received, [0, 1, 2, 3])
     }
 
+    func testCancelStopsFurtherNotifications() {
+        let container = Container()
+        var received: [Int] = []
+        let token = container.$value.bind { received.append($0) }
+
+        container.value = 1
+        token.cancel()
+        container.value = 2
+        container.value = 3
+
+        XCTAssertEqual(received, [0, 1])
+    }
+
+    func testCancelOnlyAffectsItsOwnListener() {
+        let container = Container()
+        var firstReceived: [Int] = []
+        var secondReceived: [Int] = []
+        let firstToken = container.$value.bind { firstReceived.append($0) }
+        container.$value.bind { secondReceived.append($0) }
+
+        firstToken.cancel()
+        container.value = 99
+
+        XCTAssertEqual(firstReceived, [0])
+        XCTAssertEqual(secondReceived, [0, 99])
+    }
+
+    func testBackgroundWriteDeliversListenerOnMainThread() {
+        let container = Container()
+        let expectation = XCTestExpectation(description: "Listener fired")
+        var listenerThreadWasMain = false
+
+        container.$value.bind { value in
+            guard value == 7 else { return }
+            listenerThreadWasMain = Thread.isMainThread
+            expectation.fulfill()
+        }
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            container.value = 7
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertTrue(listenerThreadWasMain)
+    }
+
 }
 
 // MARK: - KoKoAPI.Endpoint
