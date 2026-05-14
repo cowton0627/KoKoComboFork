@@ -130,33 +130,38 @@ final class FriendsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.cellItems.count, 3, "cellItems should keep the same size after accept")
     }
 
-    func testRejectInvitationRemovesFromCellItems() {
+    func testRejectInvitationOnlyHidesFromInvitationListNotMainList() {
         let viewModel = makeViewModelWithInvitations()
 
         viewModel.rejectInvitation(fid: "002")
 
-        XCTAssertEqual(viewModel.cellItems.map(\.fid), ["001", "003"])
-        XCTAssertEqual(viewModel.invitationItems.map(\.fid), ["001"])
+        XCTAssertEqual(viewModel.invitationItems.map(\.fid), ["001"],
+                       "Bob (002) should no longer appear in the invitation widget")
+        XCTAssertEqual(viewModel.cellItems.map(\.fid), ["001", "002", "003"],
+                       "Bob should still exist in cellItems (main list keeps him)")
+        XCTAssertEqual(viewModel.filteredItems.map(\.fid), ["001", "002", "003"],
+                       "Main list should still render Bob with 邀請中 status")
     }
 
-    func testFilteredItemsExcludesPendingInvitations() {
+    func testPendingInvitationsAppearInMainList() {
         let viewModel = makeViewModelWithInvitations()
 
-        XCTAssertEqual(viewModel.filteredItems.map(\.name), ["Carol"],
-                       "Status 0 entries should not appear in the main friends list")
+        XCTAssertEqual(viewModel.filteredItems.map(\.name), ["Alice", "Bob", "Carol"],
+                       "Status 0 entries should appear in the main list alongside confirmed friends")
     }
 
-    func testAcceptInvitationKeepsActiveSearchAndPromotesFriend() {
+    func testAcceptInvitationKeepsActiveSearchAndChangesStatus() {
         let viewModel = makeViewModelWithInvitations()
         viewModel.filterItems(with: "alice")
 
-        XCTAssertTrue(viewModel.filteredItems.isEmpty,
-                      "Alice is still an invitation, so the main list search yields nothing")
+        XCTAssertEqual(viewModel.filteredItems.map(\.name), ["Alice"],
+                       "Search should find Alice even while she's status 0")
 
         viewModel.acceptInvitation(fid: "001")
 
         XCTAssertEqual(viewModel.filteredItems.map(\.name), ["Alice"],
-                       "Once accepted, Alice should appear in the main list under the same search")
+                       "Active search filter should survive an accept action")
+        XCTAssertEqual(viewModel.cellItems.first { $0.fid == "001" }?.status, 1)
     }
 
     private func makeViewModelWithInvitations() -> FriendsViewModel {
@@ -266,6 +271,15 @@ private final class MockUserService: UserServicing {
 // MARK: - FriendCellViewModel
 
 final class FriendCellViewModelTests: XCTestCase {
+
+    func testStatusZeroShowsTransferAndInvitingButtons() {
+        let friend = Friend(name: "X", status: 0, isTop: "0", fid: "1", updateDate: "")
+        let cellViewModel = FriendCellViewModel(friend: friend)
+
+        XCTAssertTrue(cellViewModel.showsTransferButton)
+        XCTAssertTrue(cellViewModel.showsInvitingButton)
+        XCTAssertFalse(cellViewModel.showsDetailButton)
+    }
 
     func testStatusOneShowsTransferAndDetailButtons() {
         let friend = Friend(name: "X", status: 1, isTop: "0", fid: "1", updateDate: "")

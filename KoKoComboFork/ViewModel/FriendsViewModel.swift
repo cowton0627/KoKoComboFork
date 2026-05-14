@@ -24,11 +24,10 @@ struct FriendCellViewModel {
     init(friend: Friend) {
         name = friend.name
         isTop = friend.isTop == "1"
+        // status 0 / 2: pending → 轉帳 + 邀請中
         // status 1: 好友 → 轉帳 + ...
-        // status 2: 你邀請中 (待對方確認) → 轉帳 + 邀請中
-        // 對方確認後 status 2 → 1, 邀請中 自動消失
-        showsTransferButton = friend.status != 0
-        showsInvitingButton = friend.status == 2
+        showsTransferButton = true
+        showsInvitingButton = friend.status != 1
         showsDetailButton = friend.status == 1
     }
 }
@@ -43,8 +42,11 @@ class FriendsViewModel {
 
     @Boxed var cellItems: [Friend] = []
     @Boxed var filteredItems: [Friend] = [] // 篩選後資料
-    @Boxed var invitationItems: [Friend] = [] // 邀請者 (status == 0)
+    @Boxed var invitationItems: [Friend] = [] // 邀請列顯示 (status == 0 且尚未被打叉隱藏)
     @Boxed var loadState: LoadState = .idle
+
+    /// 已被使用者打叉隱藏的邀請 fid; 對方仍保留在主好友列, 只是不再出現於上方邀請列
+    private var dismissedInvitationFids: Set<String> = []
 
     init(userService: UserServicing = UserService.shared) {
         self.userService = userService
@@ -104,16 +106,21 @@ class FriendsViewModel {
 
     private func applyItems(_ items: [Friend]) {
         cellItems = items
-        invitationItems = items.filter { $0.status == 0 }
+        refreshInvitationItems()
         applyCurrentFilter()
     }
 
+    private func refreshInvitationItems() {
+        invitationItems = cellItems.filter {
+            $0.status == 0 && !dismissedInvitationFids.contains($0.fid)
+        }
+    }
+
     private func applyCurrentFilter() {
-        let confirmedOrPending = cellItems.filter { $0.status != 0 }
         if currentSearchText.isEmpty {
-            filteredItems = confirmedOrPending
+            filteredItems = cellItems
         } else {
-            filteredItems = confirmedOrPending.filter {
+            filteredItems = cellItems.filter {
                 $0.name.localizedCaseInsensitiveContains(currentSearchText)
             }
         }
@@ -130,11 +137,14 @@ class FriendsViewModel {
             fid: old.fid,
             updateDate: old.updateDate
         )
+        dismissedInvitationFids.remove(fid)
         applyItems(updated)
     }
 
+    /// 從邀請列移除這筆 (打叉), cellItems 不動, 主好友列仍會看到他.
     func rejectInvitation(fid: String) {
-        applyItems(cellItems.filter { $0.fid != fid })
+        dismissedInvitationFids.insert(fid)
+        refreshInvitationItems()
     }
 
     private func sortByTopAndFid(_ items: [Friend]) -> [Friend] {

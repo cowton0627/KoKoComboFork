@@ -150,16 +150,14 @@ class FriendsDetailViewController: UIViewController {
     }
 
     private func refreshEmptyState() {
-        let hasFriends = viewModel.cellItems.contains { $0.status != 0 }
-        setupViews(isEmpty: !hasFriends)
+        setupViews(isEmpty: viewModel.cellItems.isEmpty)
     }
 
     private func updateNoResultsVisibility() {
         let isSearching = !(friendSearchBar.text ?? "").isEmpty
-        let hasFriends = viewModel.cellItems.contains { $0.status != 0 }
         noResultsLabel.isHidden = !(isSearching
                                     && viewModel.filteredItems.isEmpty
-                                    && hasFriends)
+                                    && !viewModel.cellItems.isEmpty)
     }
 
     private func showErrorAlert(message: String) {
