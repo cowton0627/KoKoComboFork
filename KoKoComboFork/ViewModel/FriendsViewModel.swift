@@ -7,6 +7,13 @@
 
 import Foundation
 
+enum LoadState {
+    case idle
+    case loading
+    case loaded
+    case failed(String)
+}
+
 struct FriendCellViewModel {
     let name: String
     let isTop: Bool
@@ -34,41 +41,44 @@ class FriendsViewModel {
     @Boxed var cellItems: [Friend] = []
     @Boxed var filteredItems: [Friend] = [] // 篩選後資料
     @Boxed var invitationItems: [Friend] = [] // 邀請者 (status == 0)
+    @Boxed var loadState: LoadState = .idle
 
     init(userService: UserServicing = UserService.shared) {
         self.userService = userService
     }
 
     func retrieveCellItems(completion: @escaping () -> Void, scenario: Int) {
+        loadState = .loading
         if scenario == 1 {
             Task {
                 do {
                     let resp1 = try await userService.getFriendsData(scenario: 1)
                     let resp2 = try await userService.getFriendsData(scenario: 2)
 
-                    print(resp1)
-                    print(resp2)
-
                     let mergedItems =
                     self.mergeRedundant(resp1.response ?? [], resp2.response ?? [])
 
                     applyItems(mergedItems)
+                    loadState = .loaded
                     completion()
 
-                } catch (let error) { print(error.localizedDescription) }
+                } catch (let error) {
+                    loadState = .failed(error.localizedDescription)
+                    completion()
+                }
             }
         } else {
             Task {
                 do {
                     let resp = try await userService.getFriendsData(scenario: scenario)
 
-                    print(resp)
-
                     applyItems(sortByTopAndFid(resp.response ?? []))
+                    loadState = .loaded
                     completion()
 
                 } catch (let error) {
-                    print(error.localizedDescription)
+                    loadState = .failed(error.localizedDescription)
+                    completion()
                 }
             }
         }

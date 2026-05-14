@@ -68,9 +68,9 @@ class FriendsViewController: UIViewController {
 
         viewModel.$userData.bind { [weak self] userData in
             DispatchQueue.main.async {
-                guard let self = self else { return }
-                self.userNameLabel.text = userData?.name
-                self.kokoIDLabel.text = userData?.kokoid
+                guard let self = self, let userData = userData else { return }
+                self.userNameLabel.text = userData.name
+                self.kokoIDLabel.text = userData.kokoid
                 self.remindImgView.isHidden = true
             }
         }
