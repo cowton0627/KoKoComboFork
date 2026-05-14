@@ -127,9 +127,7 @@ class FriendsViewController: UIViewController {
             invitationTableView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor, constant: 20),
             invitationTableView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor, constant: -20),
-//            // 给定高度, 兩倍 Cell
-//            invitationTableView.heightAnchor.constraint(equalToConstant: 140)
+                equalTo: view.trailingAnchor, constant: -20)
         ])
         
         invitationTableViewHeightConstraint =
@@ -248,7 +246,6 @@ extension FriendsViewController {
     private func createBarButton(image: UIImage?,
                                  action: Selector) -> UIBarButtonItem {
         let button = UIButton(type: .custom)
-//        button.setImage(image, for: .normal)
 
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
@@ -271,7 +268,6 @@ extension FriendsViewController {
     private func atmBtnTapped() {
         print("atmBtnTapped")
         self.navigationController?.popToRootViewController(animated: true)
-//        self.navigationController?.viewControllers.remove(at: 0)
     }
     
     @objc

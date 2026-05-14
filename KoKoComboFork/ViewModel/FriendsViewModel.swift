@@ -28,12 +28,6 @@ struct FriendCellViewModel {
     }
 }
 
-//enum APIRequestType {
-//    case noFriends
-//    case friendsList
-//    case friendsWithInvites
-//}
-
 class FriendsViewModel {
 
     private let userService: UserServicing
@@ -171,12 +165,10 @@ class FriendsViewModel {
     }
     
     func numberOfItems() -> Int {
-//        return cellItems.count
         return filteredItems.count
     }
-    
+
     func itemAt(_ index: Int) -> Friend {
-//        return cellItems[index]
         return filteredItems[index]
     }
     

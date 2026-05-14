@@ -32,7 +32,6 @@
 		917E26B12CEAE12D000AACA4 /* Scenario.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 917E26B02CEAE12D000AACA4 /* Scenario.storyboard */; };
 		917E26B42CEAE15A000AACA4 /* ScenarioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26B32CEAE15A000AACA4 /* ScenarioViewController.swift */; };
 		917E26B82CEB1160000AACA4 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26B72CEB1160000AACA4 /* FriendsTableViewCell.swift */; };
-		917E26BA2CEB172E000AACA4 /* FriendsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26B92CEB172E000AACA4 /* FriendsItem.swift */; };
 		917E26BD2CEB1C5E000AACA4 /* Boxed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BC2CEB1C5E000AACA4 /* Boxed.swift */; };
 		917E26BF2CEB1DE5000AACA4 /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BE2CEB1DE5000AACA4 /* UITableView+Ext.swift */; };
 		917E26C12CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C02CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift */; };
@@ -40,7 +39,6 @@
 		917E26C62CEB38FC000AACA4 /* CustomInvitingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */; };
 		917E26C82CEC18A1000AACA4 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */; };
 		917E26CB2CEC6337000AACA4 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CA2CEC6337000AACA4 /* UserViewModel.swift */; };
-		917E26CD2CEC8584000AACA4 /* InvitationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26CC2CEC8584000AACA4 /* InvitationListView.swift */; };
 		917E26D42CECCA5A000AACA4 /* CustomSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */; };
 		917E26FD2CEF20A1000AACA4 /* InvitationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */; };
 		917E26FE2CEF20A1000AACA4 /* InvitationListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */; };
@@ -85,7 +83,6 @@
 		917E26B02CEAE12D000AACA4 /* Scenario.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scenario.storyboard; sourceTree = "<group>"; };
 		917E26B32CEAE15A000AACA4 /* ScenarioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioViewController.swift; sourceTree = "<group>"; };
 		917E26B72CEB1160000AACA4 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
-		917E26B92CEB172E000AACA4 /* FriendsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsItem.swift; sourceTree = "<group>"; };
 		917E26BC2CEB1C5E000AACA4 /* Boxed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boxed.swift; sourceTree = "<group>"; };
 		917E26BE2CEB1DE5000AACA4 /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
 		917E26C02CEB2129000AACA4 /* UITapGestureRecognizer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+Ext.swift"; sourceTree = "<group>"; };
@@ -93,7 +90,6 @@
 		917E26C52CEB38FC000AACA4 /* CustomInvitingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInvitingButton.swift; sourceTree = "<group>"; };
 		917E26C72CEC18A1000AACA4 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		917E26CA2CEC6337000AACA4 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
-		917E26CC2CEC8584000AACA4 /* InvitationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationListView.swift; sourceTree = "<group>"; };
 		917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedView.swift; sourceTree = "<group>"; };
 		917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationListTableViewCell.swift; sourceTree = "<group>"; };
 		917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationListTableViewCell.xib; sourceTree = "<group>"; };
@@ -162,7 +158,6 @@
 				917E269F2CE331B7000AACA4 /* HTTPRequest.swift */,
 				917E26A12CE331D4000AACA4 /* HTTPBody.swift */,
 				917E26942CDDED7B000AACA4 /* HTTPResponse.swift */,
-				917E26B92CEB172E000AACA4 /* FriendsItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -243,7 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				917E26D32CECCA5A000AACA4 /* CustomSegmentedView.swift */,
-				917E26CC2CEC8584000AACA4 /* InvitationListView.swift */,
 				917E26C92CEC1B4C000AACA4 /* TabBar */,
 				917E26C22CEB2FC1000AACA4 /* Button */,
 			);
@@ -424,7 +418,6 @@
 				917E26882CDA09EC000AACA4 /* CustomTabBar.swift in Sources */,
 				917E26AF2CE62957000AACA4 /* CustomGradientButton.swift in Sources */,
 				917E26A02CE331B7000AACA4 /* HTTPRequest.swift in Sources */,
-				917E26CD2CEC8584000AACA4 /* InvitationListView.swift in Sources */,
 				917E26972CDDEF94000AACA4 /* FriendsViewController.swift in Sources */,
 				917E26A22CE331D4000AACA4 /* HTTPBody.swift in Sources */,
 				917E26782CDA0594000AACA4 /* ViewController.swift in Sources */,
@@ -439,7 +432,6 @@
 				917E26C62CEB38FC000AACA4 /* CustomInvitingButton.swift in Sources */,
 				917E269E2CE32F01000AACA4 /* APIService.swift in Sources */,
 				917E268A2CDA0A0D000AACA4 /* CustomTabBarController.swift in Sources */,
-				917E26BA2CEB172E000AACA4 /* FriendsItem.swift in Sources */,
 				917E26742CDA0594000AACA4 /* AppDelegate.swift in Sources */,
 				917E26A42CE3339E000AACA4 /* FriendsViewModel.swift in Sources */,
 				917E26B42CEAE15A000AACA4 /* ScenarioViewController.swift in Sources */,

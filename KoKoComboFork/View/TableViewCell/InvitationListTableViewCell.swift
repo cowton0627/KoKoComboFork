@@ -14,24 +14,12 @@ class InvitationListTableViewCell: UITableViewCell {
 
     @IBOutlet weak var avatatImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    
-//    override init(style: UITableViewCell.CellStyle, 
-//                  reuseIdentifier: String?) {
-//        super.init(style: style, 
-//                   reuseIdentifier: reuseIdentifier)
-//        setupCell()
-//    }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupCellStyle()
-//        fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-    
+
     @IBAction func acceptButtonTapped(_ sender: UIButton) {
         onAccept?()
     }
@@ -63,27 +51,3 @@ class InvitationListTableViewCell: UITableViewCell {
     }
 
 }
-
-extension UIView {
-    
-//    func roundCorners(view: UIView, corners: UIRectCorner, radius: CGFloat) {
-//        let path = UIBezierPath(roundedRect: view.bounds,
-//                                byRoundingCorners: corners,
-//                                cornerRadii: CGSize(width: radius, height: radius))
-//        let mask = CAShapeLayer()
-//        mask.path = path.cgPath
-//        view.layer.mask = mask
-//    }
-    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-        let path = UIBezierPath(
-            roundedRect: self.bounds,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        let mask = CAShapeLayer()
-        mask.path = path.cgPath
-        self.layer.mask = mask
-    }
-}
-
-

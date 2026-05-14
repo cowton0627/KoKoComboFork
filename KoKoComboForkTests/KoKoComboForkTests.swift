@@ -245,11 +245,11 @@ private final class MockUserService: UserServicing {
         self.friendsResponses = friendsResponses
     }
     
-    func getUserData(token: String?) async throws -> GetUserDataResponse {
+    func getUserData() async throws -> GetUserDataResponse {
         userResponse
     }
-    
-    func getFriendsData(token: String?, scenario: Int) async throws -> GetFriendsResponse {
+
+    func getFriendsData(scenario: Int) async throws -> GetFriendsResponse {
         friendsResponses[scenario] ?? GetFriendsResponse(response: [])
     }
 

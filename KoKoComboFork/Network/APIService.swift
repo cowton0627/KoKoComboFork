@@ -17,56 +17,28 @@ enum APIError: Error {
 }
 
 class APIService {
-    
-    func send<T: APIResponse>(request: APIRequest, 
-                              body: APIBody? = nil,
-                              token: String? = nil) async throws -> T {
-        
+
+    func send<T: APIResponse>(request: APIRequest,
+                              body: APIBody? = nil) async throws -> T {
+
         var urlRequest = URLRequest(url: request.url)
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        if let token = token {
-            urlRequest.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-        
+
         let encoder = JSONEncoder()
-        
+
         if let body = body {
             urlRequest.httpBody = try encoder.encode(body)
         }
-        
+
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
-        
+
         if let httpResponse = response as? HTTPURLResponse {
             print(httpResponse.statusCode)
         }
-        
+
         let decoder = JSONDecoder()
         return try decoder.decode(T.self, from: data)
     }
-    
-    
-//    func send<T: APIResponse>(request: APIRequest, 
-//                              token: String? = nil) async throws -> T {
-//        
-//        var urlRequest = URLRequest(url: request.url)
-//        urlRequest.httpMethod = request.method.rawValue
-//        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-//        
-//        if let token = token {
-//            urlRequest.addValue("Bearer \(token)", forHTTPHeaderField: "Authorzation")
-//        }
-//        
-//        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-//        
-//        if let httpResponse = response as? HTTPURLResponse {
-//            print(httpResponse.statusCode)
-//        }
-//        
-//        let decoder = JSONDecoder()
-//        return try decoder.decode(T.self, from: data)
-//    }
 }
