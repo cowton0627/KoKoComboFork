@@ -87,10 +87,11 @@ class FriendsViewModel {
     }
 
     private func applyCurrentFilter() {
+        let confirmedOrPending = cellItems.filter { $0.status != 0 }
         if currentSearchText.isEmpty {
-            filteredItems = cellItems
+            filteredItems = confirmedOrPending
         } else {
-            filteredItems = cellItems.filter {
+            filteredItems = confirmedOrPending.filter {
                 $0.name.localizedCaseInsensitiveContains(currentSearchText)
             }
         }

@@ -68,8 +68,8 @@ class FriendsDetailViewController: UIViewController {
         // 當初次 Item 改變時, 調整呈現的 View
         viewModel.$cellItems.bind { [weak self] _ in
             guard let self = self else { return }
-            let item = self.viewModel.cellItems
-            self.setupViews(isEmpty: item.isEmpty)
+            let hasFriends = self.viewModel.cellItems.contains { $0.status != 0 }
+            self.setupViews(isEmpty: !hasFriends)
 
             self.reloadTableView()
         }
@@ -150,9 +150,10 @@ class FriendsDetailViewController: UIViewController {
 
     private func updateNoResultsVisibility() {
         let isSearching = !(friendSearchBar.text ?? "").isEmpty
+        let hasFriends = viewModel.cellItems.contains { $0.status != 0 }
         noResultsLabel.isHidden = !(isSearching
                                     && viewModel.filteredItems.isEmpty
-                                    && !viewModel.cellItems.isEmpty)
+                                    && hasFriends)
     }
 
     private func showErrorAlert(message: String) {
