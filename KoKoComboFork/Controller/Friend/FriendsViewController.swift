@@ -186,7 +186,14 @@ extension FriendsViewController: UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withClass: InvitationListTableViewCell.self, for: indexPath)
-        cell.configue(with: friendsViewModel.invitationItems[indexPath.row])
+        let friend = friendsViewModel.invitationItems[indexPath.row]
+        cell.configue(with: friend)
+        cell.onAccept = { [weak self] in
+            self?.friendsViewModel.acceptInvitation(fid: friend.fid)
+        }
+        cell.onReject = { [weak self] in
+            self?.friendsViewModel.rejectInvitation(fid: friend.fid)
+        }
 
         return cell
     }

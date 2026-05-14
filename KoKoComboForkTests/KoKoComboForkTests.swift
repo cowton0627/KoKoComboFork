@@ -117,6 +117,57 @@ final class FriendsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.filteredItems.first?.name, "Alice")
     }
 
+    func testAcceptInvitationFlipsStatusAndRemovesFromInvitationList() {
+        let viewModel = makeViewModelWithInvitations()
+
+        XCTAssertEqual(viewModel.invitationItems.map(\.fid), ["001", "002"])
+
+        viewModel.acceptInvitation(fid: "001")
+
+        XCTAssertEqual(viewModel.invitationItems.map(\.fid), ["002"])
+        let accepted = viewModel.cellItems.first { $0.fid == "001" }
+        XCTAssertEqual(accepted?.status, 1)
+        XCTAssertEqual(viewModel.cellItems.count, 3, "cellItems should keep the same size after accept")
+    }
+
+    func testRejectInvitationRemovesFromCellItems() {
+        let viewModel = makeViewModelWithInvitations()
+
+        viewModel.rejectInvitation(fid: "002")
+
+        XCTAssertEqual(viewModel.cellItems.map(\.fid), ["001", "003"])
+        XCTAssertEqual(viewModel.invitationItems.map(\.fid), ["001"])
+    }
+
+    func testAcceptInvitationKeepsActiveSearchApplied() {
+        let viewModel = makeViewModelWithInvitations()
+        viewModel.filterItems(with: "alice")
+
+        XCTAssertEqual(viewModel.filteredItems.map(\.name), ["Alice"])
+
+        viewModel.acceptInvitation(fid: "001")
+
+        XCTAssertEqual(viewModel.filteredItems.map(\.name), ["Alice"],
+                       "Active search filter should survive an accept action")
+    }
+
+    private func makeViewModelWithInvitations() -> FriendsViewModel {
+        let service = MockUserService(
+            friendsResponses: [
+                3: GetFriendsResponse(response: [
+                    Friend(name: "Alice", status: 0, isTop: "0", fid: "001", updateDate: "2024/01/01"),
+                    Friend(name: "Bob",   status: 0, isTop: "0", fid: "002", updateDate: "2024/01/02"),
+                    Friend(name: "Carol", status: 1, isTop: "0", fid: "003", updateDate: "2024/01/03")
+                ])
+            ]
+        )
+        let viewModel = FriendsViewModel(userService: service)
+        let expectation = XCTestExpectation(description: "Initial fetch")
+        viewModel.retrieveCellItems(completion: { expectation.fulfill() }, scenario: 3)
+        wait(for: [expectation], timeout: 1.0)
+        return viewModel
+    }
+
 }
 
 final class UserViewModelTests: XCTestCase {

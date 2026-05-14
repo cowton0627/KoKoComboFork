@@ -35,9 +35,10 @@ struct FriendCellViewModel {
 //}
 
 class FriendsViewModel {
-    
+
     private let userService: UserServicing
-    
+    private var currentSearchText = ""
+
     @Boxed var cellItems: [Friend] = []
     @Boxed var filteredItems: [Friend] = [] // 篩選後資料
     @Boxed var invitationItems: [Friend] = [] // 邀請者 (status == 0)
@@ -87,8 +88,36 @@ class FriendsViewModel {
 
     private func applyItems(_ items: [Friend]) {
         cellItems = items
-        filteredItems = items
         invitationItems = items.filter { $0.status == 0 }
+        applyCurrentFilter()
+    }
+
+    private func applyCurrentFilter() {
+        if currentSearchText.isEmpty {
+            filteredItems = cellItems
+        } else {
+            filteredItems = cellItems.filter {
+                $0.name.localizedCaseInsensitiveContains(currentSearchText)
+            }
+        }
+    }
+
+    func acceptInvitation(fid: String) {
+        guard let idx = cellItems.firstIndex(where: { $0.fid == fid }) else { return }
+        let old = cellItems[idx]
+        var updated = cellItems
+        updated[idx] = Friend(
+            name: old.name,
+            status: 1,
+            isTop: old.isTop,
+            fid: old.fid,
+            updateDate: old.updateDate
+        )
+        applyItems(updated)
+    }
+
+    func rejectInvitation(fid: String) {
+        applyItems(cellItems.filter { $0.fid != fid })
     }
 
     private func sortByTopAndFid(_ items: [Friend]) -> [Friend] {
@@ -102,11 +131,8 @@ class FriendsViewModel {
     
     // 篩選方法
     func filterItems(with searchText: String) {
-        if searchText.isEmpty {
-            filteredItems = cellItems   // 顯示所有數據
-        } else {
-            filteredItems = cellItems.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
-        }
+        currentSearchText = searchText
+        applyCurrentFilter()
     }
     
     // fid 重複時的處理

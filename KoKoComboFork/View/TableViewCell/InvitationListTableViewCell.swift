@@ -8,14 +8,10 @@
 import UIKit
 
 class InvitationListTableViewCell: UITableViewCell {
-    
-//    private let hintText = "邀請你成為好友 : )"
-//    private let shadowOffset: CGSize = CGSize(width: 0, height: 2)
-//    private let invitationStackView = UIStackView()
-    
-//    var onAccept: ((Int) -> Void)?
-//    var onReject: ((Int) -> Void)?
-    
+
+    var onAccept: (() -> Void)?
+    var onReject: (() -> Void)?
+
     @IBOutlet weak var avatatImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -37,13 +33,19 @@ class InvitationListTableViewCell: UITableViewCell {
     }
     
     @IBAction func acceptButtonTapped(_ sender: UIButton) {
-        print("acceptButtonTapped")
+        onAccept?()
     }
-    
+
     @IBAction func rejectButtonTapped(_ sender: UIButton) {
-        print("rejectButtonTapped")
+        onReject?()
     }
-    
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        onAccept = nil
+        onReject = nil
+    }
+
     func configue(with friend: Friend) {
         nameLabel.text = friend.name
     }
