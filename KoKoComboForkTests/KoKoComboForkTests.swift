@@ -267,20 +267,22 @@ private final class MockUserService: UserServicing {
 
 final class FriendCellViewModelTests: XCTestCase {
 
-    func testStatusOneShowsInvitingButtonNotDetail() {
+    func testStatusOneShowsTransferAndDetailButtons() {
         let friend = Friend(name: "X", status: 1, isTop: "0", fid: "1", updateDate: "")
         let cellViewModel = FriendCellViewModel(friend: friend)
 
-        XCTAssertTrue(cellViewModel.showsInvitingButton)
-        XCTAssertFalse(cellViewModel.showsDetailButton)
+        XCTAssertTrue(cellViewModel.showsTransferButton)
+        XCTAssertTrue(cellViewModel.showsDetailButton)
+        XCTAssertFalse(cellViewModel.showsInvitingButton)
     }
 
-    func testStatusOtherShowsDetailButtonNotInviting() {
+    func testStatusTwoShowsOnlyInvitingButton() {
         let friend = Friend(name: "X", status: 2, isTop: "0", fid: "1", updateDate: "")
         let cellViewModel = FriendCellViewModel(friend: friend)
 
-        XCTAssertFalse(cellViewModel.showsInvitingButton)
-        XCTAssertTrue(cellViewModel.showsDetailButton)
+        XCTAssertTrue(cellViewModel.showsInvitingButton)
+        XCTAssertFalse(cellViewModel.showsTransferButton)
+        XCTAssertFalse(cellViewModel.showsDetailButton)
     }
 
     func testIsTopStringOneMapsToTrue() {

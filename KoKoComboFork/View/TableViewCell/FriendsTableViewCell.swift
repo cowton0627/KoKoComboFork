@@ -24,6 +24,7 @@ class FriendsTableViewCell: UITableViewCell {
         isTopImgView.image = viewModel.isTop ? icFriendsStar : nil
         avatarImgView.image = imgFriendsList
         nameLabel.text = viewModel.name
+        transferButton.isHidden = !viewModel.showsTransferButton
         invitingButton.isHidden = !viewModel.showsInvitingButton
         detailButton.isHidden = !viewModel.showsDetailButton
     }

@@ -17,14 +17,18 @@ enum LoadState {
 struct FriendCellViewModel {
     let name: String
     let isTop: Bool
+    let showsTransferButton: Bool
     let showsInvitingButton: Bool
     let showsDetailButton: Bool
-    
+
     init(friend: Friend) {
         name = friend.name
         isTop = friend.isTop == "1"
-        showsInvitingButton = friend.status == 1
-        showsDetailButton = friend.status != 1
+        // status 1: 好友 → 可轉帳 + ...
+        // status 2: 你邀請中 (待對方回應) → 只顯示「邀請中」
+        showsTransferButton = friend.status == 1
+        showsInvitingButton = friend.status == 2
+        showsDetailButton = friend.status == 1
     }
 }
 
