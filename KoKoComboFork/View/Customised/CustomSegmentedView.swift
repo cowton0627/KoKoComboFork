@@ -45,14 +45,15 @@ class CustomSegmentedView: UIView {
         segmentedControl = UISegmentedControl()
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
 
-        // iOS 13+ UISegmentedControl 預設帶有白色 track / capsule, 必須清掉
-        // background / divider 圖, 否則容器的灰底會被內層白色蓋過.
-        let blank = UIImage()
-        segmentedControl.setBackgroundImage(blank, for: .normal, barMetrics: .default)
-        segmentedControl.setBackgroundImage(blank, for: .selected, barMetrics: .default)
-        segmentedControl.setBackgroundImage(blank, for: .highlighted, barMetrics: .default)
+        // iOS 13+ UISegmentedControl 預設帶有白色 track / capsule. 必須用 1x1
+        // 透明 image (而非 UIImage()) 才能清掉, 用空 UIImage 會讓 intrinsic
+        // height 被撐成 0, 連 segment 標題都跟著看不見.
+        let clearPixel = CustomSegmentedView.transparentPixel()
+        segmentedControl.setBackgroundImage(clearPixel, for: .normal, barMetrics: .default)
+        segmentedControl.setBackgroundImage(clearPixel, for: .selected, barMetrics: .default)
+        segmentedControl.setBackgroundImage(clearPixel, for: .highlighted, barMetrics: .default)
         segmentedControl.setDividerImage(
-            blank,
+            clearPixel,
             forLeftSegmentState: .normal,
             rightSegmentState: .normal,
             barMetrics: .default
@@ -131,6 +132,14 @@ class CustomSegmentedView: UIView {
     private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         updateUnderLinePosition()
         onSelectionChanged?(segmentedControl.selectedSegmentIndex)
+    }
+
+    private static func transparentPixel() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1, height: 1))
+        return renderer.image { ctx in
+            UIColor.clear.setFill()
+            ctx.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
+        }
     }
 
     private func updateUnderLinePosition() {
