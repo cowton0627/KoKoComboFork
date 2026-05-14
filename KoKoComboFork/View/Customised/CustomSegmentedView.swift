@@ -41,15 +41,25 @@ class CustomSegmentedView: UIView {
     /// setup SegmentedControl and Underline view
     private func setupViews() {
         backgroundColor = .systemGray6
-        tintColor = .clear
-        
+
         segmentedControl = UISegmentedControl()
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        
+
+        // iOS 13+ UISegmentedControl 預設帶有白色 track / capsule, 必須清掉
+        // background / divider 圖, 否則容器的灰底會被內層白色蓋過.
+        let blank = UIImage()
+        segmentedControl.setBackgroundImage(blank, for: .normal, barMetrics: .default)
+        segmentedControl.setBackgroundImage(blank, for: .selected, barMetrics: .default)
+        segmentedControl.setBackgroundImage(blank, for: .highlighted, barMetrics: .default)
+        segmentedControl.setDividerImage(
+            blank,
+            forLeftSegmentState: .normal,
+            rightSegmentState: .normal,
+            barMetrics: .default
+        )
         segmentedControl.backgroundColor = .clear
-        segmentedControl.tintColor = .clear
         segmentedControl.selectedSegmentTintColor = .clear
-        
+
         segmentedControl.insertSegment(withTitle: goodFriends, at: 0, animated: true)
         segmentedControl.insertSegment(withTitle: chatChat, at: 1, animated: true)
         
