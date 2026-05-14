@@ -52,7 +52,8 @@ class CustomSegmentedView: UIView {
     // MARK: - Setup
 
     private func setupViews() {
-        backgroundColor = .systemGray6
+        // 跟外圍 headerView 同色 (systemGray5), 才不會看起來像浮在上面
+        backgroundColor = .systemGray5
 
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
