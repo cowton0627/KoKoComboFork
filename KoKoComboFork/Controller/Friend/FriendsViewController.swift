@@ -34,6 +34,7 @@ class FriendsViewController: UIViewController {
     private let friendsViewModel = FriendsViewModel()
     private var invitationTableView: UITableView!
     private var customSegmentedView: CustomSegmentedView!
+    private var lastInvitationItems: [Friend] = []
     
     // MARK: - IBOutlet
     @IBOutlet weak var headerView: UIView!
@@ -85,8 +86,33 @@ class FriendsViewController: UIViewController {
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.viewModel.setHasInvitations(!items.isEmpty)
-                self.invitationTableView?.reloadData()
+                self.applyInvitationUpdate(items)
             }
+        }
+    }
+
+    private func applyInvitationUpdate(_ newItems: [Friend]) {
+        let old = lastInvitationItems
+        lastInvitationItems = newItems
+
+        guard let tableView = invitationTableView else { return }
+
+        let newFids = Set(newItems.map(\.fid))
+        let removedIndexPaths = old.enumerated().compactMap { offset, friend -> IndexPath? in
+            newFids.contains(friend.fid) ? nil : IndexPath(row: offset, section: 0)
+        }
+
+        let isPureRemoval =
+            !removedIndexPaths.isEmpty
+            && old.count - removedIndexPaths.count == newItems.count
+            && old.filter { newFids.contains($0.fid) }.map(\.fid) == newItems.map(\.fid)
+
+        if isPureRemoval {
+            tableView.performBatchUpdates {
+                tableView.deleteRows(at: removedIndexPaths, with: .fade)
+            }
+        } else {
+            tableView.reloadData()
         }
     }
     

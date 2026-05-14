@@ -33,6 +33,9 @@ class FriendsViewModel {
     private let userService: UserServicing
     private var currentSearchText = ""
 
+    private let fetchLock = NSLock()
+    private var isFetching = false
+
     @Boxed var cellItems: [Friend] = []
     @Boxed var filteredItems: [Friend] = [] // 篩選後資料
     @Boxed var invitationItems: [Friend] = [] // 邀請者 (status == 0)
@@ -43,6 +46,10 @@ class FriendsViewModel {
     }
 
     func retrieveCellItems(completion: @escaping () -> Void, scenario: Int) {
+        guard claimFetch() else {
+            completion()
+            return
+        }
         loadState = .loading
         if scenario == 1 {
             Task {
@@ -55,12 +62,11 @@ class FriendsViewModel {
 
                     applyItems(mergedItems)
                     loadState = .loaded
-                    completion()
-
                 } catch (let error) {
                     loadState = .failed(error.localizedDescription)
-                    completion()
                 }
+                releaseFetch()
+                completion()
             }
         } else {
             Task {
@@ -69,15 +75,26 @@ class FriendsViewModel {
 
                     applyItems(sortByTopAndFid(resp.response ?? []))
                     loadState = .loaded
-                    completion()
-
                 } catch (let error) {
                     loadState = .failed(error.localizedDescription)
-                    completion()
                 }
+                releaseFetch()
+                completion()
             }
         }
 
+    }
+
+    private func claimFetch() -> Bool {
+        fetchLock.lock(); defer { fetchLock.unlock() }
+        guard !isFetching else { return false }
+        isFetching = true
+        return true
+    }
+
+    private func releaseFetch() {
+        fetchLock.lock(); defer { fetchLock.unlock() }
+        isFetching = false
     }
 
     private func applyItems(_ items: [Friend]) {

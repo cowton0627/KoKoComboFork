@@ -56,7 +56,7 @@ class FriendsDetailViewController: UIViewController {
         setupDelegation()
         setupLoadingIndicator()
         setupNoResultsLabel()
-        hideHaveFriendsView()
+        hideAllContentViews()
 
         // 取回要呈現的 Item
         if let scenario = scenario {
@@ -68,10 +68,10 @@ class FriendsDetailViewController: UIViewController {
         // 當初次 Item 改變時, 調整呈現的 View
         viewModel.$cellItems.bind { [weak self] _ in
             guard let self = self else { return }
-            let hasFriends = self.viewModel.cellItems.contains { $0.status != 0 }
-            self.setupViews(isEmpty: !hasFriends)
-
             self.reloadTableView()
+            if case .loaded = self.viewModel.loadState {
+                self.refreshEmptyState()
+            }
         }
 
         // 當篩選 Item 改變時, 重整 Table View 並更新無結果提示
@@ -140,12 +140,18 @@ class FriendsDetailViewController: UIViewController {
         case .loaded:
             loadingIndicator.stopAnimating()
             refreshControl.endRefreshing()
+            refreshEmptyState()
             updateNoResultsVisibility()
         case .failed(let message):
             loadingIndicator.stopAnimating()
             refreshControl.endRefreshing()
             showErrorAlert(message: message)
         }
+    }
+
+    private func refreshEmptyState() {
+        let hasFriends = viewModel.cellItems.contains { $0.status != 0 }
+        setupViews(isEmpty: !hasFriends)
     }
 
     private func updateNoResultsVisibility() {
@@ -196,10 +202,13 @@ class FriendsDetailViewController: UIViewController {
         friendSearchBar.delegate = self
     }
     
-    private func hideHaveFriendsView() {
+    private func hideAllContentViews() {
         friendSearchBar.isHidden = true
         addFriendsImgView.isHidden = true
         friendsTableView.isHidden = true
+        kokoFriendsImgView.isHidden = true
+        labelCollection.forEach { $0.isHidden = true }
+        addFriendsButton.isHidden = true
     }
     
     private func setupLabel() {
