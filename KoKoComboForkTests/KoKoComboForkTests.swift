@@ -122,60 +122,50 @@ final class FriendsViewModelTests: XCTestCase {
 final class UserViewModelTests: XCTestCase {
     
     func testDefaultStateWithoutInvitations() {
-        let viewModel = UserViewModel(
-            scenario: 4,
-            userService: MockUserService()
-        )
-        
+        let viewModel = UserViewModel(userService: MockUserService())
+
         XCTAssertEqual(viewModel.state.headerHeight, 120.0)
         XCTAssertEqual(viewModel.state.invitationListHeight, 0.0)
         XCTAssertFalse(viewModel.state.isSegmentedControlHidden)
     }
-    
+
     func testInvitationScenarioStateTogglesInvitationList() {
-        let viewModel = UserViewModel(
-            scenario: 3,
-            userService: MockUserService()
-        )
-        
+        let viewModel = UserViewModel(userService: MockUserService())
+        viewModel.setHasInvitations(true)
+
         XCTAssertEqual(viewModel.state.headerHeight, 260.0)
         XCTAssertEqual(viewModel.state.invitationListHeight, 140.0)
-        
+
         viewModel.toggleInvitationList()
-        
+
         XCTAssertEqual(viewModel.state.headerHeight, 190.0)
         XCTAssertEqual(viewModel.state.invitationListHeight, 70.0)
     }
-    
+
     func testSearchStateCollapsesHeaderAndRestoresIdleState() {
-        let viewModel = UserViewModel(
-            scenario: 3,
-            userService: MockUserService()
-        )
-        
+        let viewModel = UserViewModel(userService: MockUserService())
+        viewModel.setHasInvitations(true)
+
         viewModel.startSearching()
-        
+
         XCTAssertEqual(viewModel.state.headerHeight, 0.0)
         XCTAssertEqual(viewModel.state.invitationListHeight, 0.0)
         XCTAssertTrue(viewModel.state.isSegmentedControlHidden)
-        
+
         viewModel.endSearching()
-        
+
         XCTAssertEqual(viewModel.state.headerHeight, 260.0)
         XCTAssertEqual(viewModel.state.invitationListHeight, 140.0)
         XCTAssertFalse(viewModel.state.isSegmentedControlHidden)
     }
-    
+
     func testInjectedUserServiceUpdatesUserData() {
         let service = MockUserService(
             userResponse: GetUserDataResponse(response: [
                 UserData(name: "Injected User", kokoid: "tester")
             ])
         )
-        let viewModel = UserViewModel(
-            scenario: 4,
-            userService: service
-        )
+        let viewModel = UserViewModel(userService: service)
         let expectation = XCTestExpectation(description: "User data loaded")
         
         viewModel.$userData.bind { userData in

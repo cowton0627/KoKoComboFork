@@ -31,7 +31,7 @@ class FriendsViewController: UIViewController {
     private let reject = UIImage(named: "btnFriendsDelet")
     
     private var viewModel: UserViewModel!
-//    private var invitationListView: InvitationListView!
+    private let friendsViewModel = FriendsViewModel()
     private var invitationTableView: UITableView!
     private var customSegmentedView: CustomSegmentedView!
     
@@ -51,25 +51,21 @@ class FriendsViewController: UIViewController {
         if let childVC = segue.destination as? FriendsDetailViewController {
             childVC.scenario = scenario
             childVC.delegate = self
+            childVC.viewModel = friendsViewModel
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupNavigationBar()
-        
+
         setupCustomSegmentedView()
         handleSegmentSelectionChanged(to: 0)
-                
+
         setupViewModel()
-        
-        if let scenario = scenario,
-            scenario == 3 {
-//            setupInvitationList(with: viewModel)
-            setupInvitationTableView()
-        }
-        
+        setupInvitationTableView()
+
         viewModel.$userData.bind { [weak self] userData in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -78,14 +74,20 @@ class FriendsViewController: UIViewController {
                 self.remindImgView.isHidden = true
             }
         }
-        
+
         viewModel.$state.bind { [weak self] state in
             DispatchQueue.main.async {
                 self?.apply(state)
             }
         }
-        
 
+        friendsViewModel.$invitationItems.bind { [weak self] items in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.viewModel.setHasInvitations(!items.isEmpty)
+                self.invitationTableView?.reloadData()
+            }
+        }
     }
     
     // MARK: - IBAction
@@ -96,7 +98,7 @@ class FriendsViewController: UIViewController {
     
     // MARK: - Private Func
     private func setupViewModel() {
-        viewModel = UserViewModel(scenario: scenario)
+        viewModel = UserViewModel()
     }
     
     private func apply(_ state: FriendsOverviewState) {
@@ -131,7 +133,7 @@ class FriendsViewController: UIViewController {
         ])
         
         invitationTableViewHeightConstraint =
-        invitationTableView.heightAnchor.constraint(equalToConstant: 140)
+        invitationTableView.heightAnchor.constraint(equalToConstant: 0)
         invitationTableViewHeightConstraint.isActive = true
 
     }
@@ -177,15 +179,15 @@ extension FriendsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return viewModel.friendsList.count
+        return friendsViewModel.invitationItems.count
     }
-    
+
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let cell = tableView.dequeueReusableCell(withClass: InvitationListTableViewCell.self, for: indexPath)
-        cell.configue(with: viewModel, at: indexPath.row)
-        
+        cell.configue(with: friendsViewModel.invitationItems[indexPath.row])
+
         return cell
     }
     

@@ -22,7 +22,7 @@ class FriendsDetailViewController: UIViewController {
     private let linkedLabelText = "幫助好友更快找到你？設定 KOKO ID"
     private let linkedText = "設定 KOKO ID"
     
-    private let viewModel = FriendsViewModel()
+    var viewModel: FriendsViewModel!
     private let refreshControl = UIRefreshControl()
     
     // MARK: - IBOutlet

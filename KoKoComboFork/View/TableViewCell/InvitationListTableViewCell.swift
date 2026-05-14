@@ -44,10 +44,8 @@ class InvitationListTableViewCell: UITableViewCell {
         print("rejectButtonTapped")
     }
     
-    func configue(with viewModel: UserViewModel, at index: Int) {
-        let friend = viewModel.itemAt(index)
+    func configue(with friend: Friend) {
         nameLabel.text = friend.name
-
     }
     
     private func setupCellStyle() {

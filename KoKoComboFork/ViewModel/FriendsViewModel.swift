@@ -33,41 +33,38 @@ class FriendsViewModel {
     
     @Boxed var cellItems: [Friend] = []
     @Boxed var filteredItems: [Friend] = [] // 篩選後資料
+    @Boxed var invitationItems: [Friend] = [] // 邀請者 (status == 0)
 
     init(userService: UserServicing = UserService.shared) {
         self.userService = userService
     }
-    
+
     func retrieveCellItems(completion: @escaping () -> Void, scenario: Int) {
         if scenario == 1 {
             Task {
                 do {
                     let resp1 = try await userService.getFriendsData(scenario: 1)
                     let resp2 = try await userService.getFriendsData(scenario: 2)
-                    
+
                     print(resp1)
                     print(resp2)
-                    
+
                     let mergedItems =
                     self.mergeRedundant(resp1.response ?? [], resp2.response ?? [])
 
-                    cellItems = mergedItems
-                    filteredItems = mergedItems // 初始化為完整數據
-                    
+                    applyItems(mergedItems)
                     completion()
-                    
+
                 } catch (let error) { print(error.localizedDescription) }
             }
         } else {
             Task {
                 do {
                     let resp = try await userService.getFriendsData(scenario: scenario)
-                    
+
                     print(resp)
 
-                    cellItems = resp.response ?? []
-                    filteredItems = self.cellItems // 初始化為完整數據
-
+                    applyItems(sortByTopAndFid(resp.response ?? []))
                     completion()
 
                 } catch (let error) {
@@ -75,7 +72,22 @@ class FriendsViewModel {
                 }
             }
         }
-        
+
+    }
+
+    private func applyItems(_ items: [Friend]) {
+        cellItems = items
+        filteredItems = items
+        invitationItems = items.filter { $0.status == 0 }
+    }
+
+    private func sortByTopAndFid(_ items: [Friend]) -> [Friend] {
+        items.sorted {
+            if ($0.isTop == "1") != ($1.isTop == "1") {
+                return $0.isTop == "1"
+            }
+            return $0.fid < $1.fid
+        }
     }
     
     // 篩選方法
@@ -104,9 +116,8 @@ class FriendsViewModel {
             }
         }
         
-        // 以 fid 重新排序
-        return Array(friendMap.values).sorted { $0.fid < $1.fid }
-//        return Array(friendMap.values)
+        // 置頂優先, 其餘以 fid 排序
+        return sortByTopAndFid(Array(friendMap.values))
     }
     
     // 比較不同格式的日期
