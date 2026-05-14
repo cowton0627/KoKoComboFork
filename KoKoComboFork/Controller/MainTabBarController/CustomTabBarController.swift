@@ -126,7 +126,7 @@ class CustomTabBarController: UITabBarController {
             config.cornerStyle = .capsule
             config.image = UIImage(systemName: "chevron.left")
             config.imagePadding = 6
-            config.title = "返回情境"
+            config.title = "返回"
             config.contentInsets = NSDirectionalEdgeInsets(
                 top: 8,
                 leading: 12,
@@ -135,7 +135,7 @@ class CustomTabBarController: UITabBarController {
             )
             returnButton.configuration = config
         } else {
-            returnButton.setTitle("返回情境", for: .normal)
+            returnButton.setTitle("返回", for: .normal)
             returnButton.setTitleColor(.mainPeach, for: .normal)
             returnButton.backgroundColor = .white
             returnButton.layer.cornerRadius = 18
