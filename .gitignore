@@ -38,6 +38,7 @@ fastlane/test_output
 .env
 .env.*
 !.env.example
+Config/Signing.local.xcconfig
 *.p12
 *.mobileprovision
 *.cer

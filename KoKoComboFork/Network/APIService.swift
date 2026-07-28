@@ -7,16 +7,39 @@
 
 import Foundation
 
-enum APIError: Error {
+enum APIError: LocalizedError {
     case invalidUrl
     case encodingError
     case decodingError
-    case severError(Int)
+    case serverError(Int)
     case networkError(Error)
     case unknownError
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidUrl:
+            return "網址格式錯誤。"
+        case .encodingError:
+            return "無法建立請求資料。"
+        case .decodingError:
+            return "伺服器回傳了無法辨識的資料。"
+        case .serverError(let statusCode):
+            return "伺服器暫時無法處理請求（HTTP \(statusCode)）。"
+        case .networkError:
+            return "網路連線失敗，請確認連線後重試。"
+        case .unknownError:
+            return "發生未知錯誤，請稍後再試。"
+        }
+    }
 }
 
 class APIService {
+
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
 
     func send<T: APIResponse>(request: APIRequest,
                               body: APIBody? = nil) async throws -> T {
@@ -26,19 +49,34 @@ class APIService {
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
 
-        let encoder = JSONEncoder()
-
-        if let body = body {
-            urlRequest.httpBody = try encoder.encode(body)
+        if let body {
+            do {
+                urlRequest.httpBody = try JSONEncoder().encode(body)
+            } catch {
+                throw APIError.encodingError
+            }
         }
 
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        let data: Data
+        let response: URLResponse
 
-        if let httpResponse = response as? HTTPURLResponse {
-            print(httpResponse.statusCode)
+        do {
+            (data, response) = try await session.data(for: urlRequest)
+        } catch {
+            throw APIError.networkError(error)
         }
 
-        let decoder = JSONDecoder()
-        return try decoder.decode(T.self, from: data)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.unknownError
+        }
+        guard 200..<300 ~= httpResponse.statusCode else {
+            throw APIError.serverError(httpResponse.statusCode)
+        }
+
+        do {
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            throw APIError.decodingError
+        }
     }
 }

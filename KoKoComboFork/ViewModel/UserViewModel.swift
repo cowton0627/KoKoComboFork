@@ -11,24 +11,35 @@ struct FriendsOverviewState {
     let headerHeight: Double
     let invitationListHeight: Double
     let isSegmentedControlHidden: Bool
+    let invitationCount: Int
+    let remainingInvitationCount: Int
+    let isInvitationListExpanded: Bool
+    let isInvitationToggleHidden: Bool
 }
 
-class UserViewModel {
+@MainActor
+final class UserViewModel {
 
     private let userService: UserServicing
-    private var hasInvitations: Bool = false
+    private var invitationCount = 0
     private var isInvitationListExpanded = true
 
-    private let expandedInvitationListHeight = 140.0
-    private let collapsedInvitationListHeight = 70.0
+    private let invitationRowHeight = 70.0
+    private let maximumVisibleInvitationCount = 2
     private let baseHeaderHeight = 120.0
+    private let invitationTitleHeight = 32.0
+    private let invitationRemainderHeight = 20.0
 
     // Output
     @Boxed var userData: UserData?
     @Boxed var state = FriendsOverviewState(
         headerHeight: 120.0,
         invitationListHeight: 0.0,
-        isSegmentedControlHidden: false
+        isSegmentedControlHidden: false,
+        invitationCount: 0,
+        remainingInvitationCount: 0,
+        isInvitationListExpanded: true,
+        isInvitationToggleHidden: true
     )
 
     init(userService: UserServicing = UserService.shared) {
@@ -41,29 +52,28 @@ class UserViewModel {
         Task {
             do {
                 let resp = try await userService.getUserData()
-                print(resp)
-
                 if let userResp = resp.response?.first {
                     userData = UserData(name: userResp.name, kokoid: "KOKO ID：\(userResp.kokoid) 〉")
                 }
 
-            } catch (let error) {
-                print(error)
+            } catch {
+                // The friends screen remains usable when profile data is unavailable.
             }
         }
     }
 
-    func setHasInvitations(_ value: Bool) {
-        guard hasInvitations != value else { return }
-        hasInvitations = value
-        if !value {
+    func updateInvitationCount(_ count: Int) {
+        let normalizedCount = max(0, count)
+        guard invitationCount != normalizedCount else { return }
+        invitationCount = normalizedCount
+        if normalizedCount == 0 {
             isInvitationListExpanded = true // 重置, 下次有邀請時恢復展開
         }
         updateStateForIdleMode()
     }
 
     func toggleInvitationList() {
-        guard hasInvitations else { return }
+        guard invitationCount > 1 else { return }
         isInvitationListExpanded.toggle()
         updateStateForIdleMode()
     }
@@ -72,7 +82,11 @@ class UserViewModel {
         state = FriendsOverviewState(
             headerHeight: 0.0,
             invitationListHeight: 0.0,
-            isSegmentedControlHidden: true
+            isSegmentedControlHidden: true,
+            invitationCount: invitationCount,
+            remainingInvitationCount: 0,
+            isInvitationListExpanded: isInvitationListExpanded,
+            isInvitationToggleHidden: invitationCount <= 1
         )
     }
 
@@ -81,14 +95,32 @@ class UserViewModel {
     }
 
     private func updateStateForIdleMode() {
-        let invitationHeight = hasInvitations
-            ? (isInvitationListExpanded ? expandedInvitationListHeight : collapsedInvitationListHeight)
-            : 0.0
+        let visibleInvitationCount: Int
+        if invitationCount == 0 {
+            visibleInvitationCount = 0
+        } else if isInvitationListExpanded {
+            visibleInvitationCount = min(invitationCount, maximumVisibleInvitationCount)
+        } else {
+            visibleInvitationCount = 1
+        }
+        let invitationHeight = Double(visibleInvitationCount) * invitationRowHeight
+        let remainingInvitationCount = max(0, invitationCount - visibleInvitationCount)
+        let invitationChromeHeight = invitationCount > 0 ? invitationTitleHeight : 0
+        let remainderHeight = remainingInvitationCount > 0
+            ? invitationRemainderHeight
+            : 0
 
         state = FriendsOverviewState(
-            headerHeight: baseHeaderHeight + invitationHeight,
+            headerHeight: baseHeaderHeight
+                + invitationHeight
+                + invitationChromeHeight
+                + remainderHeight,
             invitationListHeight: invitationHeight,
-            isSegmentedControlHidden: false
+            isSegmentedControlHidden: false,
+            invitationCount: invitationCount,
+            remainingInvitationCount: remainingInvitationCount,
+            isInvitationListExpanded: isInvitationListExpanded,
+            isInvitationToggleHidden: invitationCount <= 1
         )
     }
 

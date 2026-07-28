@@ -13,10 +13,12 @@ protocol UserServicing {
 }
 
 /// 使用者服務
-class UserService: APIService, UserServicing {
+final class UserService: APIService, UserServicing {
 
     static let shared = UserService()
-    private override init() {}
+    private init() {
+        super.init()
+    }
 
     /// 取回使用者資料
     func getUserData() async throws -> GetUserDataResponse {
@@ -27,7 +29,8 @@ class UserService: APIService, UserServicing {
 
         let request = APIRequest(url: url, method: .get)
 
-        return try await self.send(request: request)
+        let dto: GetUserDataResponseDTO = try await self.send(request: request)
+        return GetUserDataResponse(response: dto.response?.map { $0.toDomain() })
     }
 
     /// 取回好友資料
@@ -37,7 +40,8 @@ class UserService: APIService, UserServicing {
 
         let request = APIRequest(url: url, method: .get)
 
-        return try await self.send(request: request)
+        let dto: GetFriendsResponseDTO = try await self.send(request: request)
+        return GetFriendsResponse(response: dto.response?.map { $0.toDomain() })
     }
 
 }

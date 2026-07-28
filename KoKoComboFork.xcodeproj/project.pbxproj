@@ -43,10 +43,18 @@
 		917E26FD2CEF20A1000AACA4 /* InvitationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26FB2CEF20A1000AACA4 /* InvitationListTableViewCell.swift */; };
 		917E26FE2CEF20A1000AACA4 /* InvitationListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */; };
 		917E270A2CF03A74000AACA4 /* KoKoComboForkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E27092CF03A74000AACA4 /* KoKoComboForkTests.swift */; };
+		A10000012D00000000000001 /* KoKoComboForkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000022D00000000000002 /* KoKoComboForkUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		917E270B2CF03A74000AACA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 917E26682CDA0594000AACA4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 917E266F2CDA0594000AACA4;
+			remoteInfo = KoKoComboFork;
+		};
+		A10000092D00000000000009 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 917E26682CDA0594000AACA4 /* Project object */;
 			proxyType = 1;
@@ -95,6 +103,10 @@
 		917E26FC2CEF20A1000AACA4 /* InvitationListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationListTableViewCell.xib; sourceTree = "<group>"; };
 		917E27072CF03A74000AACA4 /* KoKoComboForkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoKoComboForkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		917E27092CF03A74000AACA4 /* KoKoComboForkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoKoComboForkTests.swift; sourceTree = "<group>"; };
+		A10000022D00000000000002 /* KoKoComboForkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoKoComboForkUITests.swift; sourceTree = "<group>"; };
+		A10000032D00000000000003 /* KoKoComboForkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoKoComboForkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C10000012D00000000000001 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
+		C10000022D00000000000002 /* Signing.local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.local.xcconfig.example; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +124,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A10000072D00000000000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -120,6 +139,8 @@
 			children = (
 				917E26722CDA0594000AACA4 /* KoKoComboFork */,
 				917E27082CF03A74000AACA4 /* KoKoComboForkTests */,
+				A10000042D00000000000004 /* KoKoComboForkUITests */,
+				C10000032D00000000000003 /* Config */,
 				917E26712CDA0594000AACA4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -129,6 +150,7 @@
 			children = (
 				917E26702CDA0594000AACA4 /* KoKoComboFork.app */,
 				917E27072CF03A74000AACA4 /* KoKoComboForkTests.xctest */,
+				A10000032D00000000000003 /* KoKoComboForkUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -304,6 +326,23 @@
 			path = KoKoComboForkTests;
 			sourceTree = "<group>";
 		};
+		A10000042D00000000000004 /* KoKoComboForkUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A10000022D00000000000002 /* KoKoComboForkUITests.swift */,
+			);
+			path = KoKoComboForkUITests;
+			sourceTree = "<group>";
+		};
+		C10000032D00000000000003 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				C10000012D00000000000001 /* Signing.xcconfig */,
+				C10000022D00000000000002 /* Signing.local.xcconfig.example */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -342,6 +381,24 @@
 			productReference = 917E27072CF03A74000AACA4 /* KoKoComboForkTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A10000052D00000000000005 /* KoKoComboForkUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A100000D2D0000000000000D /* Build configuration list for PBXNativeTarget "KoKoComboForkUITests" */;
+			buildPhases = (
+				A10000062D00000000000006 /* Sources */,
+				A10000072D00000000000007 /* Frameworks */,
+				A10000082D00000000000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A100000A2D0000000000000A /* PBXTargetDependency */,
+			);
+			name = KoKoComboForkUITests;
+			productName = KoKoComboForkUITests;
+			productReference = A10000032D00000000000003 /* KoKoComboForkUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -357,6 +414,10 @@
 					};
 					917E27062CF03A74000AACA4 = {
 						CreatedOnToolsVersion = 15.2;
+						TestTargetID = 917E266F2CDA0594000AACA4;
+					};
+					A10000052D00000000000005 = {
+						CreatedOnToolsVersion = 26.4;
 						TestTargetID = 917E266F2CDA0594000AACA4;
 					};
 				};
@@ -376,6 +437,7 @@
 			targets = (
 				917E266F2CDA0594000AACA4 /* KoKoComboFork */,
 				917E27062CF03A74000AACA4 /* KoKoComboForkTests */,
+				A10000052D00000000000005 /* KoKoComboForkUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -395,6 +457,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		917E27052CF03A74000AACA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000082D00000000000008 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -448,6 +517,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A10000062D00000000000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000012D00000000000001 /* KoKoComboForkUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -455,6 +532,11 @@
 			isa = PBXTargetDependency;
 			target = 917E266F2CDA0594000AACA4 /* KoKoComboFork */;
 			targetProxy = 917E270B2CF03A74000AACA4 /* PBXContainerItemProxy */;
+		};
+		A100000A2D0000000000000A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 917E266F2CDA0594000AACA4 /* KoKoComboFork */;
+			targetProxy = A10000092D00000000000009 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -599,12 +681,12 @@
 		};
 		917E26852CDA0596000AACA4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C10000012D00000000000001 /* Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = KoKoComboFork/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -628,12 +710,12 @@
 		};
 		917E26862CDA0596000AACA4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C10000012D00000000000001 /* Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = KoKoComboFork/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -693,6 +775,42 @@
 			};
 			name = Release;
 		};
+		A100000B2D0000000000000B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.KoKoComboForkUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = KoKoComboFork;
+			};
+			name = Debug;
+		};
+		A100000C2D0000000000000C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.KoKoComboForkUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = KoKoComboFork;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -719,6 +837,15 @@
 			buildConfigurations = (
 				917E270E2CF03A74000AACA4 /* Debug */,
 				917E270F2CF03A74000AACA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A100000D2D0000000000000D /* Build configuration list for PBXNativeTarget "KoKoComboForkUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A100000B2D0000000000000B /* Debug */,
+				A100000C2D0000000000000C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

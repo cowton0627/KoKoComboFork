@@ -14,6 +14,8 @@ class InvitationListTableViewCell: UITableViewCell {
 
     @IBOutlet weak var avatatImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var acceptButton: UIButton!
+    @IBOutlet weak var rejectButton: UIButton!
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -28,6 +30,12 @@ class InvitationListTableViewCell: UITableViewCell {
         onReject?()
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        nameLabel.font = .preferredFont(forTextStyle: .body)
+        nameLabel.adjustsFontForContentSizeCategory = true
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         onAccept = nil
@@ -36,9 +44,16 @@ class InvitationListTableViewCell: UITableViewCell {
 
     func configue(with friend: Friend) {
         nameLabel.text = friend.name
+        nameLabel.accessibilityLabel = "\(friend.name)，邀請你成為好友"
+        acceptButton.accessibilityLabel = "接受 \(friend.name) 的好友邀請"
+        rejectButton.accessibilityLabel = "拒絕 \(friend.name) 的好友邀請"
+        acceptButton.accessibilityIdentifier = "invitation.accept.\(friend.fid)"
+        rejectButton.accessibilityIdentifier = "invitation.reject.\(friend.fid)"
+        accessibilityIdentifier = "invitation.cell.\(friend.fid)"
     }
     
     private func setupCellStyle() {
+        isAccessibilityElement = false
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 8
 
@@ -47,7 +62,7 @@ class InvitationListTableViewCell: UITableViewCell {
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowRadius = 4
         layer.masksToBounds = false
-        
+
     }
 
 }

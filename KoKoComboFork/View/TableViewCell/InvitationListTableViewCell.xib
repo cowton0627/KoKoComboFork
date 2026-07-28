@@ -83,8 +83,10 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="acceptButton" destination="j2i-Bm-mCe" id="lBx-a11y-accept"/>
                 <outlet property="avatatImageView" destination="46U-Pv-DeN" id="bbS-AY-vs7"/>
                 <outlet property="nameLabel" destination="mXC-vI-QBC" id="EeI-lp-ohP"/>
+                <outlet property="rejectButton" destination="QQb-tl-bjx" id="lBx-a11y-reject"/>
             </connections>
             <point key="canvasLocation" x="68.702290076335871" y="20.422535211267608"/>
         </tableViewCell>

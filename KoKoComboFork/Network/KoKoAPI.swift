@@ -16,7 +16,7 @@ struct KoKoAPI {
     /// - 2：好友列表二，status 僅有 1
     /// - 3：好友列表三，status 有 0、1、2
     /// - 4：好友列表四，空
-//    static var scenario = 1
+    /// - 5：大量好友邀請
     
     enum Endpoint {
         case getUserData

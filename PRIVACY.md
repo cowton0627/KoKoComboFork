@@ -12,7 +12,7 @@ KoKoComboFork 是個人 iOS 練習作品，僅作為 UI / 資料狀態展示用�
 
 App 在執行期間僅會對下列公開端點發送 `GET` 請求，目的是讀取展示用的 JSON 假資料：
 
-- `https://dimanyen.github.io/`（公開的面試題測資來源）
+- `https://cowton-apis.github.io/koko/`（自行維護的 GitHub Pages mock API）
 
 請求不包含任何使用者識別資訊（無 token、無 user id、無 device id），且 App 不會將請求結果記錄成 log 或回傳給任何第三方。
 

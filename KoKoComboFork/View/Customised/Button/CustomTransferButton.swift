@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 @IBDesignable
 class CustomTransferButton: UIButton {
 
@@ -32,7 +30,6 @@ class CustomTransferButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        setupButton()
     }
     
     required init?(coder: NSCoder) {

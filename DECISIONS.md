@@ -43,6 +43,20 @@ MVVM 剛好把畫面狀態邏輯抽進 ViewModel，搭配 protocol 注入就能�
 
 ---
 
+## API DTO 與 Domain Model 分離
+
+GitHub Pages JSON 使用 `status: Int`、`isTop: String`，日期也同時存在
+`yyyyMMdd` 與 `yyyy/MM/dd`。Network 層先 decode 成 `FriendDTO`，再轉成
+App 內部的 `Friend`：
+
+- `status` → `FriendStatus`
+- `isTop` → `isPinned: Bool`
+- `updateDate` → `updatedAt: Date?`
+
+未知 status 會保留為 `.unknown(rawValue)`，方便診斷資料契約變化，而不是默默當成某個既有狀態。如此 magic number、格式解析與後端命名都不會散落到 ViewModel 或 View。
+
+---
+
 ## 用 `UserServicing` protocol 注入 service
 
 ViewModel 透過 protocol 收 service：
@@ -58,6 +72,22 @@ Production 端用 default 拿單例、測試端傳入 `MockUserService`。
 - Swift 沒有 reflection-based mocking 框架（OCMock 那種），protocol 注入是最自然的測試解法。
 - Default argument 讓 production 呼叫端不用每次手動傳。
 - `XCTest` 的 mock service 直接實作 protocol 就能控制不同情境回傳，不需要動到 production code。
+
+---
+
+## `URLSession` 由 `APIService` 注入
+
+Production 預設使用 `URLSession.shared`，測試則注入設定了自訂
+`URLProtocol` 的 ephemeral session。網路測試因此不會真的呼叫 GitHub Pages，
+也能精確模擬：
+
+- 200 response 與 JSON decode
+- 非 2xx HTTP status
+- 無效 JSON
+- transport failure
+
+ViewModel 測試透過 `UserServicing` mock 驗證商業邏輯，APIService 測試透過
+URLSession 注入驗證 HTTP 行為，兩層各自負責不同範圍。
 
 ---
 
@@ -86,6 +116,56 @@ Production 端用 default 拿單例、測試端傳入 `MockUserService`。
 
 ---
 
+## 好友頁使用單一 `FriendsScreenState`
+
+好友原始資料、搜尋結果、邀請列表與 loading/error 狀態放在同一個
+`FriendsScreenState`，Controller 只訂閱一次。
+
+**理由**
+
+- 一次資料更新只發出一份完整 state，避免 table 已更新但邀請高度仍是舊值。
+- 接受邀請時，主列表、搜尋結果與邀請列表會原子更新。
+- ViewModel 標記為 `@MainActor`，UI state 不再混用手動 lock 與 main queue dispatch。
+- 情境一的兩份好友 API 使用 `async let` 並行取得，合併規則仍集中在 ViewModel。
+
+---
+
+## 大量邀請最多顯示兩列
+
+邀請區不隨資料筆數無限增高。展開時最多顯示兩列，收合時顯示一列，
+其餘以「還有 N 位邀請」提示，並允許邀請區內捲動。
+
+展開／收合改由具名按鈕操作，不再以點擊邀請 cell 觸發，避免與選取好友
+或接受／拒絕操作產生語意衝突。邀請數降為一時隱藏切換按鈕，降為零時
+整個邀請區收起。
+
+---
+
+## 邀請操作在目前 App session 內維持一致
+
+GitHub Pages 展示 API 是唯讀靜態 JSON，無法真正寫回接受或拒絕結果。因此
+`FriendsViewModel` 會記錄本次 App session 已接受與已拒絕的 fid，重新整理取得
+原始資料後再套用使用者操作：
+
+- 已接受的邀請維持好友狀態，不會重新出現在邀請區。
+- 已拒絕的邀請維持隱藏，但仍保留在下方主列表。
+
+這避免 pull-to-refresh 讓剛完成的操作立即「復活」，同時不假裝 demo 已經具備
+後端寫入能力。App 完全關閉後狀態會重設，符合靜態資料展示的界線。
+
+---
+
+## Accessibility 使用動態操作名稱
+
+接受與拒絕按鈕的 VoiceOver 名稱包含好友姓名，例如「接受黃靖僑的好友邀請」，
+避免多個圖示按鈕都只被念成相同名稱。情境、搜尋、列表、邀請數量與展開按鈕
+也提供穩定的 accessibility identifier，供 UI test 使用。
+
+主要好友與邀請文字採用 Dynamic Type font，展開按鈕同時提供
+「已展開／已收合」value 與下一步操作 hint。
+
+---
+
 ## Storyboard 主畫面 + XIB cell
 
 主畫面（`Main.storyboard`、`Friend.storyboard`、`Scenario.storyboard`）用 Storyboard，可重用元件（如 cell）用 XIB。
@@ -109,27 +189,30 @@ Production 端用 default 拿單例、測試端傳入 `MockUserService`。
 
 ### UX / 功能面
 
-- **沒有使用者可見的 error UI**。`APIService` 失敗時只 `print(error)`，畫面不會出 alert / toast，使用者只會看到永久的等待狀態。最低限度應該補一個 `UIAlertController` 彈窗 + 「重試」按鈕。
-- **沒有 loading indicator**。fetch 期間畫面靜止無回饋，使用者無法判斷是斷網還是還在跑。
-- **主好友頁（`FriendsViewController`）沒有 pull-to-refresh**。`UIRefreshControl` 目前只接在 `FriendsDetailViewController`，README 宣稱有的「下拉重新整理」在主畫面其實沒做。
-- **`UserViewModel.fetchFriendsData()` 是 hardcoded 假資料**（寫死兩筆假人名），沒有實際呼叫 service。是下方「程式碼結構」議題的一部分。
+- **部分按鈕仍是展示用途**。轉帳、掃碼、設定 KOKO ID、新增好友與好友詳細
+  功能不在本 demo 範圍；點擊時會顯示「展示版尚未提供」提示，不會導向完整流程。
+- **邀請操作只保留於目前 App session**。展示 API 是唯讀 JSON，App 完全關閉
+  後會回到 API 原始狀態；正式產品應由後端保存。
+- **使用者資料載入失敗時沒有獨立錯誤提示**。好友列表已有 loading、錯誤提示與重試；頁首使用者資料失敗時則維持空白，避免同頁同時出現兩個錯誤彈窗。後續可將兩者整合成單一 screen state。
 
 ### 程式碼結構
 
-- **兩個 ViewModel 對「friend list」職責切分不清**。`FriendsViewModel` 透過 `UserServicing` 真的 fetch；`UserViewModel` 自己 hardcode 一份。應該整併或明確分工（例如 `UserViewModel` 只管畫面狀態與使用者資料、`FriendsViewModel` 管列表資料）。
-- **約 200+ 行注解掉的 dead code 散落多處**（`View/Customised/InvitationListView.swift`、`View/Customised/CustomSegmentedView.swift`、`Network/APIService.swift` 的 alternate `send` 實作、`ViewModel/UserViewModel.swift` 早期版本等）。屬迭代過程留下的痕跡，應該清掉。
-- **~30 處 debug `print()`** 散在 ViewModel / Controller / APIService。沒走 `OSLog` 或統一 logger，release build 也會印。
+- **畫面狀態分散在兩個 ViewModel**。`UserViewModel` 管理使用者資料與頁首狀態，`FriendsViewModel` 管理列表資料；兩者目前由 `FriendsViewController` 協調。若畫面持續擴張，可再引入統一的 screen-level state。
+- **尚未建立統一 logger**。目前 production code 不輸出 debug 訊息；若未來需要診斷資訊，應以隱私安全的 `OSLog` 分類記錄。
 
 ### 工程實踐
 
-- **沒有 CI**。`.github/workflows/` 不存在，PR 不會自動跑 `xcodebuild test`，全靠手動執行。
 - **沒有 SwiftLint / SwiftFormat 設定**。風格一致性目前只靠人眼。
-- **沒做 Dark Mode 適配**。沒有任何 `traitCollection` / `overrideUserInterfaceStyle` 處理，深色模式下顏色可能不正確。
-- **沒有 accessibility 標籤**。`accessibilityLabel` / `accessibilityIdentifier` 0 hits，VoiceOver 體驗差。
+- **Dark Mode 尚未完成全流程人工稽核**。自訂卡片、分頁與 Tab Bar 已改用語意色，
+  情境選擇頁也已在深色 Simulator 實際檢查；各好友情境與最大字級組合仍需逐頁檢查。
+- **尚未完成全 App 的 Accessibility audit**。好友與邀請主要流程已有動態 VoiceOver label、identifier 與部分 Dynamic Type；自訂 Tab Bar、最大字級版面及完整 VoiceOver 焦點順序仍需實機檢查。
 
 ### 部署 / Signing
 
-- **`DEVELOPMENT_TEAM` 仍寫在 `project.pbxproj`**（目前為空字串）。若未來在 Xcode 內選了開發者 team，Xcode 會把 team ID 寫回 pbxproj，再次 commit 就可能洩漏到公開 history。**未來會做的**：把 signing 設定拉出至 gitignored 的 `Config/Signing.local.xcconfig`，pbxproj 永遠不持 team / bundle id。
+- `project.pbxproj` 不保存個人 Team ID。App target 的 Debug／Release configuration
+  共同讀取 `Config/Signing.xcconfig`，再以 optional include 載入 gitignored 的
+  `Config/Signing.local.xcconfig`。本機真機簽署設定可持續保留，公開 repo 與
+  CI 則不會取得個人 Team ID。
 
 ### Reactive binding
 

@@ -24,4 +24,16 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+
+    func showDemoNotice(feature: String) {
+        guard presentedViewController == nil else { return }
+
+        let alert = UIAlertController(
+            title: feature,
+            message: "此流程不在目前作品集 Demo 的展示範圍。",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "了解", style: .default))
+        present(alert, animated: true)
+    }
 }

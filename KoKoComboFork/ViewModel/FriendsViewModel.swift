@@ -14,7 +14,15 @@ enum LoadState {
     case failed(String)
 }
 
+struct FriendsScreenState {
+    var loadState: LoadState = .idle
+    var cellItems: [Friend] = []
+    var filteredItems: [Friend] = []
+    var invitationItems: [Friend] = []
+}
+
 struct FriendCellViewModel {
+    let id: String
     let name: String
     let isTop: Bool
     let showsTransferButton: Bool
@@ -22,121 +30,136 @@ struct FriendCellViewModel {
     let showsDetailButton: Bool
 
     init(friend: Friend) {
+        id = friend.fid
         name = friend.name
-        isTop = friend.isTop == "1"
-        // status 0 / 2: pending → 轉帳 + 邀請中
-        // status 1: 好友 → 轉帳 + ...
+        isTop = friend.isPinned
         showsTransferButton = true
-        showsInvitingButton = friend.status != 1
-        showsDetailButton = friend.status == 1
+        showsInvitingButton = friend.status != .friend
+        showsDetailButton = friend.status == .friend
     }
 }
 
-class FriendsViewModel {
+@MainActor
+final class FriendsViewModel {
 
     private let userService: UserServicing
     private var currentSearchText = ""
 
-    private let fetchLock = NSLock()
     private var isFetching = false
 
-    @Boxed var cellItems: [Friend] = []
-    @Boxed var filteredItems: [Friend] = [] // 篩選後資料
-    @Boxed var invitationItems: [Friend] = [] // 邀請列顯示 (status == 0 且尚未被打叉隱藏)
-    @Boxed var loadState: LoadState = .idle
+    @Boxed private(set) var state = FriendsScreenState()
+
+    var cellItems: [Friend] { state.cellItems }
+    var filteredItems: [Friend] { state.filteredItems }
+    var invitationItems: [Friend] { state.invitationItems }
+    var loadState: LoadState { state.loadState }
 
     /// 已被使用者打叉隱藏的邀請 fid; 對方仍保留在主好友列, 只是不再出現於上方邀請列
     private var dismissedInvitationFids: Set<String> = []
+    /// 本次 App session 已接受的邀請；重新 fetch 後仍套用好友狀態。
+    private var acceptedInvitationFids: Set<String> = []
 
     init(userService: UserServicing = UserService.shared) {
         self.userService = userService
     }
 
     func retrieveCellItems(completion: @escaping () -> Void, scenario: Int) {
-        guard claimFetch() else {
+        guard !isFetching else {
             completion()
             return
         }
-        loadState = .loading
-        if scenario == 1 {
-            Task {
-                do {
-                    let resp1 = try await userService.getFriendsData(scenario: 1)
-                    let resp2 = try await userService.getFriendsData(scenario: 2)
+        isFetching = true
+        updateState { $0.loadState = .loading }
 
-                    let mergedItems =
-                    self.mergeRedundant(resp1.response ?? [], resp2.response ?? [])
-
-                    applyItems(mergedItems)
-                    loadState = .loaded
-                } catch (let error) {
-                    loadState = .failed(error.localizedDescription)
-                }
-                releaseFetch()
+        Task {
+            defer {
+                isFetching = false
                 completion()
             }
-        } else {
-            Task {
-                do {
-                    let resp = try await userService.getFriendsData(scenario: scenario)
 
+            do {
+                if scenario == 1 {
+                    async let firstResponse = userService.getFriendsData(scenario: 1)
+                    async let secondResponse = userService.getFriendsData(scenario: 2)
+                    let (first, second) = try await (firstResponse, secondResponse)
+                    applyItems(
+                        mergeRedundant(
+                            first.response ?? [],
+                            second.response ?? []
+                        )
+                    )
+                } else {
+                    let resp = try await userService.getFriendsData(scenario: scenario)
                     applyItems(sortByTopAndFid(resp.response ?? []))
-                    loadState = .loaded
-                } catch (let error) {
-                    loadState = .failed(error.localizedDescription)
                 }
-                releaseFetch()
-                completion()
+                updateState { $0.loadState = .loaded }
+            } catch {
+                updateState { $0.loadState = .failed(error.localizedDescription) }
             }
         }
-
-    }
-
-    private func claimFetch() -> Bool {
-        fetchLock.lock(); defer { fetchLock.unlock() }
-        guard !isFetching else { return false }
-        isFetching = true
-        return true
-    }
-
-    private func releaseFetch() {
-        fetchLock.lock(); defer { fetchLock.unlock() }
-        isFetching = false
     }
 
     private func applyItems(_ items: [Friend]) {
-        cellItems = items
-        refreshInvitationItems()
-        applyCurrentFilter()
-    }
-
-    private func refreshInvitationItems() {
-        invitationItems = cellItems.filter {
-            $0.status == 0 && !dismissedInvitationFids.contains($0.fid)
+        let reconciledItems = applySessionActions(to: items)
+        updateState {
+            $0.cellItems = reconciledItems
+            $0.invitationItems = invitationItems(from: reconciledItems)
+            $0.filteredItems = filteredItems(from: reconciledItems)
         }
     }
 
-    private func applyCurrentFilter() {
+    private func applySessionActions(to items: [Friend]) -> [Friend] {
+        items.map { friend in
+            guard acceptedInvitationFids.contains(friend.fid),
+                  friend.status == .incomingInvitation else {
+                return friend
+            }
+
+            return Friend(
+                name: friend.name,
+                status: .friend,
+                isPinned: friend.isPinned,
+                fid: friend.fid,
+                updatedAt: friend.updatedAt
+            )
+        }
+    }
+
+    private func refreshInvitationItems() {
+        updateState {
+            $0.invitationItems = invitationItems(from: $0.cellItems)
+        }
+    }
+
+    private func invitationItems(from items: [Friend]) -> [Friend] {
+        items.filter {
+            $0.status == .incomingInvitation
+                && !dismissedInvitationFids.contains($0.fid)
+        }
+    }
+
+    private func filteredItems(from items: [Friend]) -> [Friend] {
         if currentSearchText.isEmpty {
-            filteredItems = cellItems
+            return items
         } else {
-            filteredItems = cellItems.filter {
+            return items.filter {
                 $0.name.localizedCaseInsensitiveContains(currentSearchText)
             }
         }
     }
 
     func acceptInvitation(fid: String) {
-        guard let idx = cellItems.firstIndex(where: { $0.fid == fid }) else { return }
-        let old = cellItems[idx]
-        var updated = cellItems
+        guard let idx = state.cellItems.firstIndex(where: { $0.fid == fid }) else { return }
+        let old = state.cellItems[idx]
+        var updated = state.cellItems
         updated[idx] = Friend(
             name: old.name,
-            status: 1,
-            isTop: old.isTop,
+            status: .friend,
+            isPinned: old.isPinned,
             fid: old.fid,
-            updateDate: old.updateDate
+            updatedAt: old.updatedAt
         )
+        acceptedInvitationFids.insert(fid)
         dismissedInvitationFids.remove(fid)
         applyItems(updated)
     }
@@ -149,8 +172,8 @@ class FriendsViewModel {
 
     private func sortByTopAndFid(_ items: [Friend]) -> [Friend] {
         items.sorted {
-            if ($0.isTop == "1") != ($1.isTop == "1") {
-                return $0.isTop == "1"
+            if $0.isPinned != $1.isPinned {
+                return $0.isPinned
             }
             return $0.fid < $1.fid
         }
@@ -159,7 +182,9 @@ class FriendsViewModel {
     // 篩選方法
     func filterItems(with searchText: String) {
         currentSearchText = searchText
-        applyCurrentFilter()
+        updateState {
+            $0.filteredItems = filteredItems(from: $0.cellItems)
+        }
     }
     
     // fid 重複時的處理
@@ -171,7 +196,7 @@ class FriendsViewModel {
         for friend in combinedList {
             if let existingFriend = friendMap[friend.fid] {
                 // 比較 updateDate, 保留最新的資料
-                if isDateNewer(friend.updateDate, existingFriend.updateDate) {
+                if isDateNewer(friend.updatedAt, existingFriend.updatedAt) {
                     friendMap[friend.fid] = friend
                 }
             } else {
@@ -183,18 +208,9 @@ class FriendsViewModel {
         return sortByTopAndFid(Array(friendMap.values))
     }
     
-    // 比較不同格式的日期
-    private func isDateNewer(_ date1: String, _ date2: String) -> Bool {
-        let dateFormatter1 = DateFormatter()
-        dateFormatter1.dateFormat = "yyyyMMdd"
-        let dateFormatter2 = DateFormatter()
-        dateFormatter2.dateFormat = "yyyy/MM/dd"
-        
-        if let d1 = dateFormatter1.date(from: date1) ?? dateFormatter2.date(from: date1),
-           let d2 = dateFormatter1.date(from: date2) ?? dateFormatter2.date(from: date2) {
-            return d1 > d2
-        }
-        return false
+    private func isDateNewer(_ date1: Date?, _ date2: Date?) -> Bool {
+        guard let date1, let date2 else { return false }
+        return date1 > date2
     }
     
     func numberOfItems() -> Int {
@@ -207,5 +223,11 @@ class FriendsViewModel {
     
     func cellViewModel(at index: Int) -> FriendCellViewModel {
         FriendCellViewModel(friend: itemAt(index))
+    }
+
+    private func updateState(_ update: (inout FriendsScreenState) -> Void) {
+        var newState = state
+        update(&newState)
+        state = newState
     }
 }

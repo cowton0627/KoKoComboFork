@@ -30,11 +30,24 @@ class CustomTabBar: UITabBar {
         self.addShape()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else {
+            return
+        }
+        setNeedsDisplay()
+    }
+
     private func addShape() {
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = createPath()
-        shapeLayer.strokeColor = UIColor.gray.cgColor
-        shapeLayer.fillColor = UIColor.white.cgColor
+        shapeLayer.strokeColor = UIColor.separator.resolvedColor(
+            with: traitCollection
+        ).cgColor
+        shapeLayer.fillColor = UIColor.systemBackground.resolvedColor(
+            with: traitCollection
+        ).cgColor
         shapeLayer.lineWidth = 1.5
 
         if let oldShapeLayer = self.shapeLayer {
@@ -103,17 +116,4 @@ class CustomTabBar: UITabBar {
 
         return path.cgPath
     }
-    
-//    override func sizeThatFits(_ size: CGSize) -> CGSize {
-//        var newSize = super.sizeThatFits(size)
-//        newSize.height = 80
-//        return newSize
-//    }
-//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//        let convertedPoint = centerButton.convert(point, from: self)
-//        if centerButton.bounds.contains(convertedPoint) {
-//            return centerButton
-//        }
-//        return super.hitTest(point, with: event)
-//    }
 }

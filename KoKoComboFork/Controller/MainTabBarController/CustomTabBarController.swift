@@ -10,13 +10,6 @@ import UIKit
 /// 登入後主畫面 Tab Bar Controller
 class CustomTabBarController: UITabBarController {
     
-//    private let icTabbarProductsOff = "icTabbarProductsOff"
-//    private let icTabbarFriendsOn = "icTabbarFriendsOn"
-//    private let icTabbarHomeOff = "icTabbarHomeOff"
-//    private let icTabbarManageOff = "icTabbarManageOff"
-//    private let icTabbarSettingOff = "icTabbarSettingOff"
-    
-    
     private let productsOffImgae = UIImage(named: "icTabbarProductsOff")?.withRenderingMode(.alwaysOriginal)
     private let friendsOnImgae = UIImage(named: "icTabbarFriendsOn")?.withRenderingMode(.alwaysOriginal)
     private let homeOffImgae = UIImage(named: "icTabbarHomeOff")?.withRenderingMode(.alwaysOriginal)
@@ -48,10 +41,6 @@ class CustomTabBarController: UITabBarController {
             for: .selected
         )
         
-//        self.tabBar.tintColor = UIColor.mainPeach // 選中時的顏色
-//        self.tabBar.unselectedItemTintColor = UIColor.gray // 未選中時的顏色
-
-        
         let customTabBar = CustomTabBar()
         self.setValue(customTabBar, forKey: "tabBar")
         
@@ -68,10 +57,6 @@ class CustomTabBarController: UITabBarController {
         let settingsVC = createViewController(message: setting,
                                               image: settingOffImgae,
                                               selectedImage: nil)
-        
-//        let friendsVC = UIViewController()
-//        friendsVC.view.backgroundColor = .cyan
-//        friendsVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
         
         let navC = ThemeNavigationController()
         let storyboard = UIStoryboard(name: .Friend)
@@ -122,7 +107,7 @@ class CustomTabBarController: UITabBarController {
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.tinted()
             config.baseForegroundColor = .mainPeach
-            config.baseBackgroundColor = .white
+            config.baseBackgroundColor = .secondarySystemBackground
             config.cornerStyle = .capsule
             config.image = UIImage(systemName: "chevron.left")
             config.imagePadding = 6
@@ -137,7 +122,7 @@ class CustomTabBarController: UITabBarController {
         } else {
             returnButton.setTitle("返回", for: .normal)
             returnButton.setTitleColor(.mainPeach, for: .normal)
-            returnButton.backgroundColor = .white
+            returnButton.backgroundColor = .secondarySystemBackground
             returnButton.layer.cornerRadius = 18
             returnButton.contentEdgeInsets = UIEdgeInsets(
                 top: 8,

@@ -106,7 +106,7 @@ class CustomSegmentedView: UIView {
     private func refreshTitles() {
         for (index, button) in buttons.enumerated() {
             let isSelected = index == selectedIndex
-            button.setTitleColor(isSelected ? .black : .systemGray, for: .normal)
+            button.setTitleColor(isSelected ? .label : .secondaryLabel, for: .normal)
             button.titleLabel?.font = .systemFont(
                 ofSize: titleFontSize,
                 weight: isSelected ? .bold : .regular

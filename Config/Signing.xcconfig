@@ -1,0 +1,2 @@
+// Shared signing entry point. Personal values belong in the ignored local file.
+#include? "Signing.local.xcconfig"

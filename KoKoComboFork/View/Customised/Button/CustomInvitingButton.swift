@@ -30,7 +30,6 @@ class CustomInvitingButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        setupButton()
     }
     
     required init?(coder: NSCoder) {
@@ -49,4 +48,3 @@ class CustomInvitingButton: UIButton {
         self.backgroundColor = .clear
     }
 }
-

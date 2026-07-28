@@ -7,7 +7,7 @@
 
 import UIKit
 
-/// 三種 scenario 導向 VC
+/// 展示情境選擇頁
 class ScenarioViewController: UIViewController {
     
     private let optionButtonHeight: CGFloat = 64
@@ -27,9 +27,6 @@ class ScenarioViewController: UIViewController {
         let storyboard = UIStoryboard(name: .Scenario)
         let tabBarC = storyboard.instantiateVC(withClass: CustomTabBarController.self)
         
-//        let tabBarC = CustomTabBarController()
-//        tabBarC.modalPresentationStyle = .fullScreen
-        
         // 選擇情境, 將情境傳遞至 CustomTabBarController
         switch sender.tag {
         case 0:
@@ -38,12 +35,13 @@ class ScenarioViewController: UIViewController {
             tabBarC.scenario = 1
         case 2:
             tabBarC.scenario = 3
+        case 3:
+            tabBarC.scenario = 5
         default:
             tabBarC.scenario = -1
         }
         
         self.navigationController?.pushViewController(tabBarC, animated: true)
-//        self.present(tabBarC, animated: true)
     }
     
     private func setupNavigationBar() {
@@ -98,9 +96,10 @@ class ScenarioViewController: UIViewController {
         stackView.alignment = .center
         stackView.spacing = 22
         
-        let scenarioButtons = [0, 1, 2].map { tag -> UIButton in
+        let scenarioButtons = [0, 1, 2, 3].map { tag -> UIButton in
             let button = UIButton(type: .system)
             button.tag = tag
+            button.accessibilityIdentifier = "scenario.\(tag)"
             button.addTarget(self,
                              action: #selector(scenarioButtonTapped(_:)),
                              for: .touchUpInside)
@@ -144,14 +143,20 @@ class ScenarioViewController: UIViewController {
         case 2:
             title = "好友列表含邀請"
             subtitle = "顯示邀請卡片與好友列表"
+        case 3:
+            title = "大量好友邀請"
+            subtitle = "展示邀請數量、展開收合與動態更新"
         default:
             title = button.currentTitle ?? "展示情境"
             subtitle = ""
         }
+
+        button.accessibilityLabel = title
+        button.accessibilityHint = subtitle
         
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.filled()
-            config.baseBackgroundColor = .white
+            config.baseBackgroundColor = .secondarySystemBackground
             config.baseForegroundColor = .label
             config.cornerStyle = .medium
             config.titleAlignment = .leading
@@ -180,7 +185,7 @@ class ScenarioViewController: UIViewController {
             button.setTitle(title, for: .normal)
             button.setTitleColor(.label, for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 20, weight: .semibold)
-            button.backgroundColor = .white
+            button.backgroundColor = .secondarySystemBackground
             button.contentHorizontalAlignment = .left
             button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 18, bottom: 10, right: 18)
         }

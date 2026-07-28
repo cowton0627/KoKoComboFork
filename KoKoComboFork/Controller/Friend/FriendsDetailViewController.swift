@@ -60,32 +60,11 @@ class FriendsDetailViewController: UIViewController {
 
         // 取回要呈現的 Item
         if let scenario = scenario {
-            viewModel.retrieveCellItems(completion: { [self] in
-                print(self.scenario ?? -1)
-            }, scenario: scenario)
+            viewModel.retrieveCellItems(completion: {}, scenario: scenario)
         }
 
-        // 當初次 Item 改變時, 調整呈現的 View
-        viewModel.$cellItems.bind { [weak self] _ in
-            guard let self = self else { return }
-            self.reloadTableView()
-            if case .loaded = self.viewModel.loadState {
-                self.refreshEmptyState()
-            }
-        }
-
-        // 當篩選 Item 改變時, 重整 Table View 並更新無結果提示
-        viewModel.$filteredItems.bind { [weak self] _ in
-            guard let self = self else { return }
-            self.reloadTableView()
-            self.updateNoResultsVisibility()
-        }
-
-        // 載入 / 錯誤狀態
-        viewModel.$loadState.bind { [weak self] state in
-            DispatchQueue.main.async {
-                self?.apply(state)
-            }
+        viewModel.$state.bind { [weak self] state in
+            self?.render(state)
         }
 
         // 設置下拉刷新
@@ -95,7 +74,7 @@ class FriendsDetailViewController: UIViewController {
     
     // MARK: - IBAction
     @IBAction func addFriendsButtonTapped(_ sender: CustomGradientButton) {
-        print("addFriendsButtonTapped")
+        showDemoNotice(feature: "新增好友")
     }
     
     
@@ -128,8 +107,10 @@ class FriendsDetailViewController: UIViewController {
         ])
     }
 
-    private func apply(_ state: LoadState) {
-        switch state {
+    private func render(_ state: FriendsScreenState) {
+        friendsTableView.reloadData()
+
+        switch state.loadState {
         case .idle:
             break
         case .loading:
@@ -140,8 +121,8 @@ class FriendsDetailViewController: UIViewController {
         case .loaded:
             loadingIndicator.stopAnimating()
             refreshControl.endRefreshing()
-            refreshEmptyState()
-            updateNoResultsVisibility()
+            setupViews(isEmpty: state.cellItems.isEmpty)
+            updateNoResultsVisibility(for: state)
         case .failed(let message):
             loadingIndicator.stopAnimating()
             refreshControl.endRefreshing()
@@ -149,15 +130,11 @@ class FriendsDetailViewController: UIViewController {
         }
     }
 
-    private func refreshEmptyState() {
-        setupViews(isEmpty: viewModel.cellItems.isEmpty)
-    }
-
-    private func updateNoResultsVisibility() {
+    private func updateNoResultsVisibility(for state: FriendsScreenState) {
         let isSearching = !(friendSearchBar.text ?? "").isEmpty
         noResultsLabel.isHidden = !(isSearching
-                                    && viewModel.filteredItems.isEmpty
-                                    && !viewModel.cellItems.isEmpty)
+                                    && state.filteredItems.isEmpty
+                                    && !state.cellItems.isEmpty)
     }
 
     private func showErrorAlert(message: String) {
@@ -175,29 +152,26 @@ class FriendsDetailViewController: UIViewController {
     }
 
     
-    private func reloadTableView() {
-        DispatchQueue.main.async {
-            self.friendsTableView.reloadData()
-        }
-    }
-    
     private func setupViews(isEmpty: Bool) {
-        DispatchQueue.main.async {
-            self.friendSearchBar.isHidden = isEmpty
-            self.addFriendsImgView.isHidden = isEmpty
-            self.kokoFriendsImgView.isHidden = !isEmpty
-            self.labelCollection.forEach { label in
-                label.isHidden = !isEmpty
-            }
-            self.addFriendsButton.isHidden = !isEmpty
-            self.friendsTableView.isHidden = isEmpty
+        friendSearchBar.isHidden = isEmpty
+        addFriendsImgView.isHidden = isEmpty
+        kokoFriendsImgView.isHidden = !isEmpty
+        labelCollection.forEach { label in
+            label.isHidden = !isEmpty
         }
+        addFriendsButton.isHidden = !isEmpty
+        friendsTableView.isHidden = isEmpty
     }
     
     private func setupDelegation() {
         friendsTableView.dataSource = self
         friendsTableView.delegate = self
         friendSearchBar.delegate = self
+        friendsTableView.accessibilityIdentifier = "friends.list"
+        friendSearchBar.accessibilityIdentifier = "friends.search"
+        friendSearchBar.accessibilityLabel = "搜尋好友"
+        addFriendsButton.accessibilityIdentifier = "friends.add"
+        addFriendsButton.accessibilityLabel = "新增好友"
     }
     
     private func hideAllContentViews() {
@@ -236,7 +210,7 @@ class FriendsDetailViewController: UIViewController {
         
         if gesture.didTapAttributedTextInLabel(label: linkedLabel, 
                                                inRange: range) {
-            print("Link Tapped")
+            showDemoNotice(feature: "設定 KOKO ID")
         }
     }
     
@@ -266,6 +240,12 @@ extension FriendsDetailViewController: UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withClass: FriendsTableViewCell.self, for: indexPath)
         cell.configure(with: viewModel.cellViewModel(at: indexPath.row))
+        cell.onTransfer = { [weak self] in
+            self?.showDemoNotice(feature: "轉帳")
+        }
+        cell.onDetail = { [weak self] in
+            self?.showDemoNotice(feature: "好友詳細資料")
+        }
         
         return cell
     }

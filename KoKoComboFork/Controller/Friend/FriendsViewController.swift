@@ -33,6 +33,10 @@ class FriendsViewController: UIViewController {
     private var viewModel: UserViewModel!
     private let friendsViewModel = FriendsViewModel()
     private var invitationTableView: UITableView!
+    private var invitationHeaderView: UIStackView!
+    private var invitationCountLabel: UILabel!
+    private var invitationToggleButton: UIButton!
+    private var remainingInvitationsLabel: UILabel!
     private var customSegmentedView: CustomSegmentedView!
     private var lastInvitationItems: [Friend] = []
     
@@ -82,12 +86,11 @@ class FriendsViewController: UIViewController {
             }
         }
 
-        friendsViewModel.$invitationItems.bind { [weak self] items in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                self.viewModel.setHasInvitations(!items.isEmpty)
-                self.applyInvitationUpdate(items)
-            }
+        friendsViewModel.$state.bind { [weak self] state in
+            guard let self = self else { return }
+            let items = state.invitationItems
+            self.viewModel.updateInvitationCount(items.count)
+            self.applyInvitationUpdate(items)
         }
     }
 
@@ -118,7 +121,7 @@ class FriendsViewController: UIViewController {
     
     // MARK: - IBAction
     @IBAction func kokoIDLabelTapped(_ sender: UITapGestureRecognizer) {
-        print("kokoIDLabelTapped")
+        showDemoNotice(feature: "設定 KOKO ID")
     }
     
     
@@ -130,6 +133,25 @@ class FriendsViewController: UIViewController {
     private func apply(_ state: FriendsOverviewState) {
         headerViewConstraint.constant = CGFloat(state.headerHeight)
         customSegmentedView.isHidden = state.isSegmentedControlHidden
+        invitationHeaderView.isHidden = state.invitationCount == 0
+        invitationCountLabel.text = "好友邀請（\(state.invitationCount)）"
+        invitationCountLabel.accessibilityLabel = "好友邀請，共 \(state.invitationCount) 位"
+        invitationToggleButton.isHidden = state.isInvitationToggleHidden
+        invitationToggleButton.setTitle(
+            state.isInvitationListExpanded ? "收合" : "展開",
+            for: .normal
+        )
+        invitationToggleButton.accessibilityValue =
+            state.isInvitationListExpanded ? "已展開" : "已收合"
+        invitationToggleButton.accessibilityHint =
+            state.isInvitationListExpanded ? "點兩下收合邀請列表" : "點兩下展開邀請列表"
+        remainingInvitationsLabel.text = "還有 \(state.remainingInvitationCount) 位邀請"
+        remainingInvitationsLabel.accessibilityLabel =
+            "還有 \(state.remainingInvitationCount) 位邀請未顯示"
+        remainingInvitationsLabel.isHidden = state.remainingInvitationCount == 0
+        invitationTableView.isScrollEnabled = state.remainingInvitationCount > 0
+        invitationTableView.showsVerticalScrollIndicator =
+            state.remainingInvitationCount > 0
         
         if invitationTableViewHeightConstraint != nil {
             invitationTableViewHeightConstraint.constant = CGFloat(state.invitationListHeight)
@@ -137,29 +159,93 @@ class FriendsViewController: UIViewController {
     }
     
     private func setupInvitationTableView() {
+        invitationCountLabel = UILabel()
+        invitationCountLabel.font = UIFontMetrics(forTextStyle: .subheadline)
+            .scaledFont(for: .systemFont(ofSize: 14, weight: .semibold))
+        invitationCountLabel.adjustsFontForContentSizeCategory = true
+        invitationCountLabel.textColor = .label
+        invitationCountLabel.accessibilityIdentifier = "invitation.count"
+
+        invitationToggleButton = UIButton(type: .system)
+        invitationToggleButton.titleLabel?.font = UIFontMetrics(forTextStyle: .footnote)
+            .scaledFont(for: .systemFont(ofSize: 13, weight: .semibold))
+        invitationToggleButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        invitationToggleButton.tintColor = .mainPeach
+        invitationToggleButton.accessibilityIdentifier = "invitation.toggle"
+        invitationToggleButton.addTarget(
+            self,
+            action: #selector(invitationToggleButtonTapped),
+            for: .touchUpInside
+        )
+
+        invitationHeaderView = UIStackView(
+            arrangedSubviews: [invitationCountLabel, invitationToggleButton]
+        )
+        invitationHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        invitationHeaderView.axis = .horizontal
+        invitationHeaderView.alignment = .center
+        invitationHeaderView.distribution = .equalSpacing
+        view.addSubview(invitationHeaderView)
+
         invitationTableView = UITableView()
         invitationTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(invitationTableView)
+
+        remainingInvitationsLabel = UILabel()
+        remainingInvitationsLabel.translatesAutoresizingMaskIntoConstraints = false
+        remainingInvitationsLabel.font = .preferredFont(forTextStyle: .footnote)
+        remainingInvitationsLabel.adjustsFontForContentSizeCategory = true
+        remainingInvitationsLabel.textColor = .secondaryLabel
+        remainingInvitationsLabel.textAlignment = .center
+        remainingInvitationsLabel.accessibilityIdentifier = "invitation.remaining"
+        view.addSubview(remainingInvitationsLabel)
         
         invitationTableView.dataSource = self
         invitationTableView.delegate = self
         invitationTableView.registerNibCell(InvitationListTableViewCell.self)
+        invitationTableView.rowHeight = 70
+        invitationTableView.separatorStyle = .none
+        invitationTableView.accessibilityIdentifier = "invitation.list"
         
         invitationTableView.layer.cornerRadius = 10
         
         NSLayoutConstraint.activate([
+            invitationHeaderView.topAnchor.constraint(
+                equalTo: kokoIDLabel.bottomAnchor, constant: 8),
+            invitationHeaderView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor, constant: 20),
+            invitationHeaderView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor, constant: -20),
+            invitationHeaderView.heightAnchor.constraint(equalToConstant: 24),
+
             invitationTableView.topAnchor.constraint(
-                equalTo: kokoIDLabel.bottomAnchor, constant: 20),
+                equalTo: invitationHeaderView.bottomAnchor, constant: 8),
             invitationTableView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor, constant: 20),
             invitationTableView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor, constant: -20)
+                equalTo: view.trailingAnchor, constant: -20),
+
+            remainingInvitationsLabel.topAnchor.constraint(
+                equalTo: invitationTableView.bottomAnchor),
+            remainingInvitationsLabel.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor, constant: 20),
+            remainingInvitationsLabel.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor, constant: -20),
+            remainingInvitationsLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
         
         invitationTableViewHeightConstraint =
         invitationTableView.heightAnchor.constraint(equalToConstant: 0)
         invitationTableViewHeightConstraint.isActive = true
 
+    }
+
+    @objc private func invitationToggleButtonTapped() {
+        viewModel.toggleInvitationList()
+
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     private func setupCustomSegmentedView() {
@@ -231,12 +317,6 @@ extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.toggleInvitationList()
-
-        UIView.animate(withDuration: 0.3) {
-            tableView.reloadData()
-            self.view.layoutIfNeeded()
-        }
     }
     
     func tableView(_ tableView: UITableView,
@@ -292,18 +372,17 @@ extension FriendsViewController {
     
     @objc
     private func atmBtnTapped() {
-        print("atmBtnTapped")
         self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc
     private func withdrawBtnTapped() {
-        print("withdrawBtnTapped")
+        showDemoNotice(feature: "提款")
     }
     
     @objc
     private func scanBtnTapped() {
-        print("scanBtnTapped")
+        showDemoNotice(feature: "掃碼")
     }
 
 }
