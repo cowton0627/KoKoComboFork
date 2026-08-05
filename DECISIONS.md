@@ -213,6 +213,11 @@ GitHub Pages 展示 API 是唯讀靜態 JSON，無法真正寫回接受或拒絕
   共同讀取 `Config/Signing.xcconfig`，再以 optional include 載入 gitignored 的
   `Config/Signing.local.xcconfig`。本機真機簽署設定可持續保留，公開 repo 與
   CI 則不會取得個人 Team ID。
+- **踩坑**：在 Xcode 的 Signing & Capabilities 面板切換 Team，Xcode 會把
+  `DEVELOPMENT_TEAM` 直接寫回 `project.pbxproj`（target build settings 優先於
+  xcconfig），使個人 Team ID 重新出現在 tracked 檔案。要換 Team 時請直接編輯
+  `Config/Signing.local.xcconfig`，不要用 Xcode UI；若已被寫回，`git checkout --`
+  還原 pbxproj，並用 `git grep <TeamID>` 確認 tracked 檔案無殘留。
 
 ### Reactive binding
 
